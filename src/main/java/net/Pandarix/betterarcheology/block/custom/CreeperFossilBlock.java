@@ -1,69 +1,63 @@
 package net.Pandarix.betterarcheology.block.custom;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.swing.text.html.BlockView;
 import java.util.Map;
-import java.util.Random;
-import java.util.stream.Stream;
 
 public class CreeperFossilBlock extends FossilBaseBlock {
     //Map of hitboxes for every direction the model can be facing
     private static final Map<Direction, VoxelShape> CREEPER_SHAPES_FOR_DIRECTION = ImmutableMap.of(
-            Direction.NORTH, Stream.of(
-                    Block.createCuboidShape(3.5, 17.25, 3.5, 12.5, 26.25, 12.5),
-                    Block.createCuboidShape(3.5, 5.25, 5.5, 12.5, 17.25, 10.5),
-                    Block.createCuboidShape(3, 0, 9.5, 13, 6.5, 14.5),
-                    Block.createCuboidShape(3, 0, 1.5, 13, 6.5, 6.5)).reduce(VoxelShapes::union).get(),
-            Direction.SOUTH, Stream.of(
-                    Block.createCuboidShape(3.5, 17.25, 3.5, 12.5, 26.25, 12.5),
-                    Block.createCuboidShape(3.5, 5.25, 5.5, 12.5, 17.25, 10.5),
-                    Block.createCuboidShape(3, 0, 9.5, 13, 6.5, 14.5),
-                    Block.createCuboidShape(3, 0, 1.5, 13, 6.5, 6.5)).reduce(VoxelShapes::union).get(),
-            Direction.WEST, Stream.of(
-                    Block.createCuboidShape(3.5, 17.25, 3.5, 12.5, 26.25, 12.5),
-                    Block.createCuboidShape(5.5, 5.25, 3.5, 10.5, 17.25, 12.5),
-                    Block.createCuboidShape(1.5, 0, 3, 6.5, 6.5, 13),
-                    Block.createCuboidShape(9.5, 0, 3, 14.5, 6.5, 13)).reduce(VoxelShapes::union).get(),
-            Direction.EAST, Stream.of(Block.createCuboidShape(3.5, 17.25, 3.5, 12.5, 26.25, 12.5),
-                    Block.createCuboidShape(5.5, 5.25, 3.5, 10.5, 17.25, 12.5),
-                    Block.createCuboidShape(1.5, 0, 3, 6.5, 6.5, 13),
-                    Block.createCuboidShape(9.5, 0, 3, 14.5, 6.5, 13)).reduce(VoxelShapes::union).get());
+            Direction.NORTH, Shapes.or(
+                    Block.box(3.5, 17.25, 3.5, 12.5, 26.25, 12.5),
+                    Block.box(3.5, 5.25, 5.5, 12.5, 17.25, 10.5),
+                    Block.box(3, 0, 9.5, 13, 6.5, 14.5),
+                    Block.box(3, 0, 1.5, 13, 6.5, 6.5)),
+            Direction.SOUTH, Shapes.or(
+                    Block.box(3.5, 17.25, 3.5, 12.5, 26.25, 12.5),
+                    Block.box(3.5, 5.25, 5.5, 12.5, 17.25, 10.5),
+                    Block.box(3, 0, 9.5, 13, 6.5, 14.5),
+                    Block.box(3, 0, 1.5, 13, 6.5, 6.5)),
+            Direction.WEST, Shapes.or(
+                    Block.box(3.5, 17.25, 3.5, 12.5, 26.25, 12.5),
+                    Block.box(5.5, 5.25, 3.5, 10.5, 17.25, 12.5),
+                    Block.box(1.5, 0, 3, 6.5, 6.5, 13),
+                    Block.box(9.5, 0, 3, 14.5, 6.5, 13)),
+            Direction.EAST, Shapes.or(
+                    Block.box(3.5, 17.25, 3.5, 12.5, 26.25, 12.5),
+                    Block.box(5.5, 5.25, 3.5, 10.5, 17.25, 12.5),
+                    Block.box(1.5, 0, 3, 6.5, 6.5, 13),
+                    Block.box(9.5, 0, 3, 14.5, 6.5, 13)));
 
     public CreeperFossilBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        super.randomDisplayTick(state, world, pos, random);
+    public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource random) {
+        super.animateTick(blockState, level, pos, random);
 
-        DefaultParticleType particle = random.nextBoolean() ? ParticleTypes.SMALL_FLAME : ParticleTypes.SMOKE; //50:50 chance for either spawning Smoke or Flames
-        Vec3d center = pos.toCenterPos();
+        ParticleOptions particle = random.nextBoolean() ? ParticleTypes.SMALL_FLAME : ParticleTypes.SMOKE; //50:50 chance for either spawning Smoke or Flames
+        Vec3 center = pos.getCenter();
 
-        if (world.isClient()) {
+        if (level.isClientSide()) {
             //spawns particle at center of Block with random offset & velocity
-            world.addParticle(particle,
-                    center.getX() + random.nextFloat() * getRandomSign(random),
-                    center.getY() + random.nextFloat() * getRandomSign(random),
-                    center.getZ() + random.nextFloat() * getRandomSign(random),
+            level.addParticle(particle,
+                    center.x() + random.nextFloat() * getRandomSign(random),
+                    center.y() + random.nextFloat() * getRandomSign(random),
+                    center.z() + random.nextFloat() * getRandomSign(random),
                     random.nextFloat() / 50f * getRandomSign(random),
                     random.nextFloat() / 30f,
                     random.nextFloat() / 50f * getRandomSign(random)
@@ -71,11 +65,12 @@ public class CreeperFossilBlock extends FossilBaseBlock {
         }
     }
 
-    private static int getRandomSign(Random rand) {
+    private static int getRandomSign(RandomSource rand) {
         return (rand.nextBoolean() ? 1 : -1);
     }
 
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return CREEPER_SHAPES_FOR_DIRECTION.get(state.getValue(FACING));
+    @Override
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return CREEPER_SHAPES_FOR_DIRECTION.get(blockState.getValue(FACING));
     }
 }

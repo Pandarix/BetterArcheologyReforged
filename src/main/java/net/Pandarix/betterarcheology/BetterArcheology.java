@@ -1,6 +1,7 @@
 package net.Pandarix.betterarcheology;
 
 import com.mojang.logging.LogUtils;
+import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.Pandarix.betterarcheology.block.ModBlocks;
@@ -39,6 +40,8 @@ public class BetterArcheology
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+
+        ModBlockEntities.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

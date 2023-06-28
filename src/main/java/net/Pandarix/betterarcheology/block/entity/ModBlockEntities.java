@@ -3,43 +3,26 @@ package net.Pandarix.betterarcheology.block.entity;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlockEntities {
-    public static BlockEntityType<ArcheologyTableBlockEntity> ARCHEOLOGY_TABLE;
-    public static BlockEntityType<VillagerFossilBlockEntity> VILLAGER_FOSSIL;
-    public static BlockEntityType<ChickenFossilBlockEntity> CHICKEN_FOSSIL;
-    public static BlockEntityType<FleeFromBlockEntity> FLEE_FROM;
-    public static BlockEntityType<SusBlockEntity> SUSBLOCK;
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BetterArcheology.MOD_ID);
 
-    public static void registerBlockEntities() {
-        ARCHEOLOGY_TABLE = Registry.register(Registries.BLOCK_ENTITY_TYPE,
-                new Identifier(BetterArcheology.MOD_ID, "archeology_table"),
-                FabricBlockEntityTypeBuilder.create(ArcheologyTableBlockEntity::new,
-                        ModBlocks.ARCHEOLOGY_TABLE).build(null));
+    public static final RegistryObject<BlockEntityType<ArcheologyTableBlockEntity>> ARCHEOLOGY_TABLE = BLOCK_ENTITIES.register("archeology_table", () - > BlockEntityType.Builder.of(ArcheologyTableBlockEntity::new, ModBlocks.ARCHEOLOGY_TABLE.get()).build(null));
 
-        VILLAGER_FOSSIL = Registry.register(Registries.BLOCK_ENTITY_TYPE,
-                new Identifier(BetterArcheology.MOD_ID, "villager_fossil"),
-                FabricBlockEntityTypeBuilder.create(VillagerFossilBlockEntity::new,
-                        ModBlocks.VILLAGER_FOSSIL).build(null));
+    public static final RegistryObject<BlockEntityType<VillagerFossilBlockEntity>> VILLAGER_FOSSIL = BLOCK_ENTITIES.register("villager_fossil", () - > BlockEntityType.Builder.of(VillagerFossilBlockEntity::new, ModBlocks.VILLAGER_FOSSIL.get()).build(null));
 
-        CHICKEN_FOSSIL = Registry.register(Registries.BLOCK_ENTITY_TYPE,
-                new Identifier(BetterArcheology.MOD_ID, "chicken_fossil"),
-                FabricBlockEntityTypeBuilder.create(ChickenFossilBlockEntity::new,
-                        ModBlocks.CHICKEN_FOSSIL).build(null));
+    public static final RegistryObject<BlockEntityType<ChickenFossilBlockEntity>> CHICKEN_FOSSIL = BLOCK_ENTITIES.register("chicken_fossil", () - > BlockEntityType.Builder.of(ChickenFossilBlockEntity::new, ModBlocks.CHICKEN_FOSSIL.get()).build(null));
 
-        SUSBLOCK = Registry.register(Registries.BLOCK_ENTITY_TYPE,
-                new Identifier(BetterArcheology.MOD_ID, "sus_block"),
-                FabricBlockEntityTypeBuilder.create(SusBlockEntity::new,
-                        ModBlocks.SUSPICIOUS_DIRT, ModBlocks.SUSPICIOUS_RED_SAND, ModBlocks.FOSSILIFEROUS_DIRT).build(null));
+    public static final RegistryObject<BlockEntityType<FleeFromBlockEntity>> FLEE_FROM = BLOCK_ENTITIES.register("flee_from", () - > BlockEntityType.Builder.of(FleeFromBlockEntity::new, ModBlocks.OCELOT_FOSSIL.get()).build(null));
 
-        FLEE_FROM = Registry.register(Registries.BLOCK_ENTITY_TYPE,
-                new Identifier(BetterArcheology.MOD_ID, "flee_from"),
-                FabricBlockEntityTypeBuilder.create(FleeFromBlockEntity::new,
-                        ModBlocks.OCELOT_FOSSIL).build(null));
+    public static final RegistryObject<BlockEntityType<SusBlockEntity>> SUSBLOCK = BLOCK_ENTITIES.register("sus_block", () - > BlockEntityType.Builder.of(SusBlockEntity::new, ModBlocks.SUSPICIOUS_DIRT.get(), ModBlocks.SUSPICIOUS_RED_SAND.get(), ModBlocks.FOSSILIFEROUS_DIRT.get()).build(null));
+
+    public static void register(IEventBus eventBus){
+        BLOCK_ENTITIES.register(eventBus);
     }
 }

@@ -1,3 +1,10 @@
+# Files from Forge MDK
+forge*changelog.txt
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+
 # eclipse
 bin
 *.launch
@@ -20,10 +27,4 @@ build
 # other
 eclipse
 run
-
-# Files from Forge MDK
-forge*changelog.txt
 .idea/compiler.xml
-.idea/gradle.xml
-.idea/misc.xml
-.idea/modules.xml

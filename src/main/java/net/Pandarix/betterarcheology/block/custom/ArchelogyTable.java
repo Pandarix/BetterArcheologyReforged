@@ -2,80 +2,90 @@ package net.Pandarix.betterarcheology.block.custom;
 
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
+import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.Nullable;
 
-public class ArchelogyTable extends BaseEntityBlock implements BlockEntityProvider {
+public class ArchelogyTable extends BaseEntityBlock {
     //indicates if the table is currently "crafting" the identified artifact
     //triggers particle creation
     public static final BooleanProperty DUSTING = BooleanProperty.create("dusting");
 
     public ArchelogyTable(BlockBehaviour.Properties settings) {
         super(settings);
-        this.setDefaultState((BlockState) this.defaultBlockState().setValue(DUSTING, false));
+        this.registerDefaultState(this.defaultBlockState().setValue(DUSTING, false));
     }
 
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(DUSTING);
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        super.createBlockStateDefinition(pBuilder);
+        pBuilder.add(DUSTING);
     }
 
     /* BLOCK ENTITY STUFF */
-
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
     }
-
 
     //Drops Items present in the table at the time of destruction
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof ArcheologyTableBlockEntity) {
-                ItemScatterer.spawn(world, pos, (ArcheologyTableBlockEntity) blockEntity);
-                world.updateComparators(pos, this);
+                ((ArcheologyTableBlockEntity) blockEntity).drops();
+                level.updateNeighbourForOutputSignal(pos, this);
             }
         }
-        super.onStateReplaced(state, world, pos, newState, moved);
+        super.onRemove(state, level, pos, newState, moved);
     }
 
-    //Creates the Screen-Handler belonging to the BlockEntity
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            NamedScreenHandlerFactory handledScreen = state.createScreenHandlerFactory(world, pos);
-
-            if (handledScreen != null) {
-                player.openHandledScreen(handledScreen);
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if (!pLevel.isClientSide()) {
+            BlockEntity entity = pLevel.getBlockEntity(pPos);
+            if (entity instanceof ArcheologyTableBlockEntity) {
+                NetworkHooks.openScreen((ServerPlayer) pPlayer, (ArcheologyTableBlockEntity) entity, pPos);
+            } else {
+                throw new IllegalStateException("Container Provider Missing!");
             }
         }
-
-        return ActionResult.SUCCESS;
-
+        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     // creates ArcheologyTableBlockEntity for each ArcheologyTable
@@ -87,8 +97,8 @@ public class ArchelogyTable extends BaseEntityBlock implements BlockEntityProvid
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntities.ARCHEOLOGY_TABLE, ArcheologyTableBlockEntity::tick);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return createTickerHelper(pBlockEntityType, ModBlockEntities.ARCHEOLOGY_TABLE.get(), ArcheologyTableBlockEntity::tick);
     }
 
     @Override
