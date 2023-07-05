@@ -1,100 +1,132 @@
 package net.Pandarix.betterarcheology.block.entity;
 
+import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.block.custom.VillagerFossilBlock;
 import net.Pandarix.betterarcheology.networking.ModMessages;
-import net.Pandarix.betterarcheology.screen.FossilInventoryScreenHandler;
+import net.Pandarix.betterarcheology.screen.FossilInventoryMenu;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.network.chat.Component;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Containers;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class VillagerFossilBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
+import java.util.List;
+
+public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvider {
+    private final ItemStackHandler itemStackHandler = new ItemStackHandler(1){
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+    };
+
+    private LazyOptional<IItemHandler> lazyOptional = LazyOptional.empty();
+
     public VillagerFossilBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.VILLAGER_FOSSIL, pos, state);
+        super(ModBlockEntities.VILLAGER_FOSSIL.get(), pos, state);
+    }
+
+    //ITEMHANDLER stuff----------------------------------------------------------------------------------//
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER){
+            return lazyOptional.cast();
+        }
+
+        return super.getCapability(cap, side);
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        Inventories.writeNbt(nbt, inventory);
+    public void onLoad() {
+        super.onLoad();
+        lazyOptional = LazyOptional.of(()-> itemStackHandler);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        Inventories.readNbt(nbt, inventory);
-        super.readNbt(nbt);
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyOptional.invalidate();
+    }
+
+    //Reading & writing----------------------------------------------------------------------------------//
+    @Override
+    protected void saveAdditional(CompoundTag nbt) {
+        nbt.put("inventory", itemStackHandler.serializeNBT());
+        super.saveAdditional(nbt);
     }
 
     @Override
-    public DefaultedList<ItemStack> getItems(){
-        return this.inventory;
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
+        itemStackHandler.deserializeNBT(nbt.getCompound("inventory"));
+    }
+
+    public void drops() {
+        SimpleContainer inventory = new SimpleContainer(itemStackHandler.getSlots());
+        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+            inventory.setItem(i, itemStackHandler.getStackInSlot(i));
+        }
+
+        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     @Override
-    public Text getDisplayName(){
-        return Text.translatable(getCachedState().getBlock().getTranslationKey());
+    public Component getDisplayName() {
+        return Component.translatable(ModBlocks.VILLAGER_FOSSIL.getKey().toString());
     }
 
     //update luminance of block based on the luminance of the item given when it would be in its placed state
     @Override
-    public void onClose(PlayerEntity player) {
+    public void onClose(Player player) {
         ImplementedInventory.super.onClose(player);
-        int luminance = Block.getBlockFromItem(this.getInventoryContents().getItem()).getDefaultState().getLuminance();
-        player.getWorld().setBlockState(this.getPos(), world.getBlockState(this.getPos()).with(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance));
+        int luminance = Block.byItem(this.getInventoryContents().getItem()).defaultBlockState().getLightEmission();
+        player.level().setBlock(this.getBlockPos(), level.getBlockState(this.getBlockPos()).setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance), 3);
     }
 
     @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player){
-        return new FossilInventoryScreenHandler(syncId, inv, this);
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        return new FossilInventoryMenu(pContainerId, pPlayerInventory, this);
     }
 
     public ItemStack getInventoryContents() {
-        return this.getStack(0);
+        return itemStackHandler.getStackInSlot(0);
     }
 
-    public void setInventory(DefaultedList<ItemStack> inventory) {
+    public void setInventory(List<ItemStack> inventory) {
         for (int i = 0; i < inventory.size(); i++) {
-            this.inventory.set(i, inventory.get(i));
+            itemStackHandler.setStackInSlot(i, inventory.get(i));
         }
     }
 
-    @Override
-    public void markDirty() {
-        assert world != null;
-        if(!world.isClient()) {
-            PacketByteBuf data = PacketByteBufs.create();
-            data.writeInt(inventory.size());
-            for (ItemStack itemStack : inventory) {
-                data.writeItemStack(itemStack);
-            }
-            data.writeBlockPos(getPos());
-
-            for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
-                ServerPlayNetworking.send(player, ModMessages.ITEM_SYNC, data);
-            }
-
-            int luminance = Block.getBlockFromItem(this.getInventoryContents().getItem()).getDefaultState().getLuminance();
-            world.setBlockState(this.getPos(), getCachedState().with(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance));
-        }
-
-        super.markDirty();
+    public static <E extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, E e) {
     }
 }

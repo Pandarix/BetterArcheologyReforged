@@ -72,20 +72,6 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock {
 
     //Creates the Screen-Handler belonging to the BlockEntity
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            NamedScreenHandlerFactory handledScreen = state.createScreenHandlerFactory(world, pos);
-
-            if (handledScreen != null) {
-                player.openHandledScreen(handledScreen);
-            }
-        }
-
-        return ActionResult.SUCCESS;
-
-    }
-
-    @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
             NamedScreenHandlerFactory handledScreen = state.createScreenHandlerFactory(world, pos);

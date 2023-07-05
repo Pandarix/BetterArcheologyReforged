@@ -2,7 +2,10 @@ package net.Pandarix.betterarcheology;
 
 import com.mojang.logging.LogUtils;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
+import net.Pandarix.betterarcheology.screen.FossilInventoryScreen;
+import net.Pandarix.betterarcheology.screen.ModMenuTypes;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,6 +45,7 @@ public class BetterArcheology
         CREATIVE_MODE_TABS.register(modEventBus);
 
         ModBlockEntities.register(modEventBus);
+        ModMenuTypes.MENUS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -78,9 +82,7 @@ public class BetterArcheology
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            MenuScreens.register(ModMenuTypes.FOSSIL_MENU.get(), FossilInventoryScreen::new);
         }
     }
 }

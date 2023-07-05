@@ -1,29 +1,39 @@
 package net.Pandarix.betterarcheology.block.custom;
 
 import com.google.common.collect.ImmutableMap;
+import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class VillagerFossilBlock extends FossilBaseWithEntityBlock implements BlockEntityType.BlockEntitySupplier {
+public class VillagerFossilBlock extends FossilBaseWithEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final IntegerProperty INVENTORY_LUMINANCE = IntegerProperty.create("inventory_luminance", 0, 15); //used to store the amount of light that the item in its inventory would emit and to emit that luminance itself
 
@@ -57,17 +67,11 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock implements Bl
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof VillagerFossilBlockEntity) {
-                Containers.dropContents(pLevel, pPos, (VillagerFossilBlockEntity) blockEntity);
+                ((VillagerFossilBlockEntity) blockEntity).drops();
                 pLevel.updateNeighbourForOutputSignal(pPos, this);
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity create(BlockPos pos, BlockState state) {
-        return new VillagerFossilBlockEntity(pos, state);
     }
 
     @Override
@@ -79,5 +83,39 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock implements Bl
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
         pBuilder.add(INVENTORY_LUMINANCE);
+    }
+
+    //BLOCKENTITY STUFF
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new VillagerFossilBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+                                                                  BlockEntityType<T> type) {
+        return createTickerHelper(type, ModBlockEntities.VILLAGER_FOSSIL.get(),
+                VillagerFossilBlockEntity::tick);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
+                                 Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if (!pLevel.isClientSide()) {
+            BlockEntity entity = pLevel.getBlockEntity(pPos);
+            if(entity instanceof VillagerFossilBlockEntity) {
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (VillagerFossilBlockEntity)entity, pPos);
+            } else {
+                throw new IllegalStateException("VillagerFossilBlockEntity Container provider is missing!");
+            }
+        }
+
+        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 }

@@ -2,31 +2,18 @@ package net.Pandarix.betterarcheology.block.custom;
 
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
-import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.Containers;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.World;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -37,7 +24,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
-import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.Nullable;
 
 public class ArchelogyTable extends BaseEntityBlock {
@@ -102,26 +88,26 @@ public class ArchelogyTable extends BaseEntityBlock {
     }
 
     @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        if (world.isClient() && state.get(DUSTING)) {
-            addDustParticles(world, pos, random);
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
+        if (pLevel.isClientSide() && pState.getValue(DUSTING)) {
+            addDustParticles(pLevel, pPos, pRandom);
         }
-        super.randomDisplayTick(state, world, pos, random);
+        super.animateTick(pState, pLevel, pPos, pRandom);
     }
 
-    public void addDustParticles(World world, BlockPos pos, Random random) {
+    public void addDustParticles(Level pLevel, BlockPos pos, RandomSource random) {
         if (random.nextBoolean()) {
             return;
         } //create particles half of the time
-        int i = random.nextBetweenExclusive(1, 3); //number of particles to be created
+        int i = random.nextIntBetweenInclusive(1, 3); //number of particles to be created
 
-        BlockStateParticleEffect blockStateParticleEffect = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.SAND.getDefaultState());
+        BlockParticleOption blockStateParticleEffect = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState());
 
         for (int j = 0; j < i; ++j) {
             //centering Block position
             //setting base velocity to 3 and multiplying it with rand double with random sign
             //that way particles can spread in every direction by chance
-            world.addParticle(blockStateParticleEffect,
+            pLevel.addParticle(blockStateParticleEffect,
                     pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5,
                     3.0 * random.nextDouble() * (random.nextBoolean() ? 1 : -1),
                     0.0,
