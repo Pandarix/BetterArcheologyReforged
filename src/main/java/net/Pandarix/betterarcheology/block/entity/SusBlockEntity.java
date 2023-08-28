@@ -1,9 +1,9 @@
 package net.Pandarix.betterarcheology.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.BrushableBlockEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BrushableBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SusBlockEntity extends BrushableBlockEntity {
     public SusBlockEntity(BlockPos pos, BlockState state) {
@@ -11,6 +11,6 @@ public class SusBlockEntity extends BrushableBlockEntity {
     }
     @Override
     public BlockEntityType<?> getType() {
-        return ModBlockEntities.SUSBLOCK;
+        return ModBlockEntities.SUSBLOCK.get();
     }
 }

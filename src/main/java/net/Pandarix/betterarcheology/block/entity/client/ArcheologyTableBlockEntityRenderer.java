@@ -1,78 +1,70 @@
 package net.Pandarix.betterarcheology.block.entity.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 
 import java.util.List;
 import java.util.Objects;
 
-@Environment(EnvType.CLIENT)
 public class ArcheologyTableBlockEntityRenderer implements BlockEntityRenderer<ArcheologyTableBlockEntity> {
-    public ArcheologyTableBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
+    public ArcheologyTableBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(ArcheologyTableBlockEntity entity, float tickDelta, MatrixStack matrices,
-                       VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+    public void render(ArcheologyTableBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
         //gets List of all Items in inventory and stores corresponding indexes
-        List<ItemStack> inventoryContents = entity.getInventoryContents();
+        List<ItemStack> inventoryContents = pBlockEntity.getInventoryContents();
         ItemStack brush = inventoryContents.get(0);
         ItemStack unidentified = inventoryContents.get(1);
         ItemStack identified = inventoryContents.get(2);
 
         //BRUSH
         //transform the items rotation, scale and position
-        matrices.push();
-        matrices.translate(0.35f, 1.025f, 0.7f);
-        matrices.scale(0.65f, 0.65f, 0.65f);
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.35f, 1.025f, 0.7f);
+        pPoseStack.scale(0.65f, 0.65f, 0.65f);
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(90));
 
         //display brush on top of the table
-        itemRenderer.renderItem(brush, ModelTransformationMode.GUI, getLightLevel(Objects.requireNonNull(entity.getWorld()), entity.getPos().up()),
-                OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
+        itemRenderer.renderStatic(brush, ItemDisplayContext.GUI, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos().above()), OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, pBlockEntity.getLevel(), 1);
 
-        matrices.pop();
+        pPoseStack.popPose();
 
         //ARTIFACTS
         //transform the items rotation, scale and position
-        matrices.push();
-        matrices.translate(0.55f, 1.025, 0.4f);
-        matrices.scale(0.55f, 0.55f, 0.55f);
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.55f, 1.025, 0.4f);
+        pPoseStack.scale(0.55f, 0.55f, 0.55f);
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(90));
 
         //if there is no identified artifact in the output slot, render the unidentified one
-        if(identified.isEmpty()){
-            itemRenderer.renderItem(unidentified, ModelTransformationMode.GUI, getLightLevel(Objects.requireNonNull(entity.getWorld()), entity.getPos().up()),
-                    OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
+        if (identified.isEmpty()) {
+            itemRenderer.renderStatic(unidentified, ItemDisplayContext.GUI, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos().above()), OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, pBlockEntity.getLevel(), 1);
         } else {
-            itemRenderer.renderItem(identified, ModelTransformationMode.GUI, getLightLevel(Objects.requireNonNull(entity.getWorld()), entity.getPos().up()),
-                    OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
+            itemRenderer.renderStatic(identified, ItemDisplayContext.GUI, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos().above()), OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, pBlockEntity.getLevel(), 1);
         }
 
-        matrices.pop();
+        pPoseStack.popPose();
     }
 
-    private int getLightLevel(World world, BlockPos pos) {
-        int bLight = world.getLightLevel(LightType.BLOCK, pos);
-        int sLight = world.getLightLevel(LightType.SKY, pos);
-        return LightmapTextureManager.pack(bLight, sLight);
+    private int getLightLevel(Level world, BlockPos pos) {
+        int bLight = world.getBrightness(LightLayer.BLOCK, pos);
+        int sLight = world.getBrightness(LightLayer.SKY, pos);
+        return LightTexture.pack(bLight, sLight);
     }
 }

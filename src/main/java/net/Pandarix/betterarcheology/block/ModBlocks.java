@@ -91,7 +91,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> ROTTEN_DOOR = BLOCKS.register("rotten_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR).sound(SoundType.STEM), ROTTEN_WOOD_BLOCKSET));
 
     //-------------MUD Brick Stuff----------------//
-    public static final RegistryObject<Block> INFESTED_MUD_BRICKS = BLOCKS.register("infested_mud_bricks", () -> new InfestedMudBricks(Blocks.MUD_BRICKS, BlockBehaviour.Properties.copy(Blocks.INFESTED_STONE_BRICKS)));
+    public static final RegistryObject<Block> INFESTED_MUD_BRICKS = BLOCKS.register("infested_mud_bricks", () -> new InfestedBlock(Blocks.MUD_BRICKS, BlockBehaviour.Properties.copy(Blocks.INFESTED_STONE_BRICKS)));
 
     public static final RegistryObject<Block> CRACKED_MUD_BRICKS = BLOCKS.register("cracked_mud_bricks", () -> new Block(BlockBehaviour.Properties.copy(Blocks.INFESTED_STONE_BRICKS)));
 

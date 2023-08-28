@@ -3,6 +3,7 @@ package net.Pandarix.betterarcheology.block.entity;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.item.ModItems;
+import net.Pandarix.betterarcheology.screen.IdentifyingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +15,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.BrushItem;
 import net.minecraft.world.item.Item;
@@ -24,7 +28,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
@@ -35,7 +38,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +56,9 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if(!level.isClientSide()) {
+                ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
+            }
         }
     };
 
@@ -96,11 +101,6 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
                 return 0;
             }
         };
-    }
-
-    @Override
-    public DefaultedList<ItemStack> getItems() {
-        return this.inventory;
     }
 
     @Override
@@ -153,26 +153,12 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
 
     @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new IdentifyingScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
-    }
-
-    @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        Inventories.writeNbt(nbt, inventory);
-        nbt.putInt("archeology_table.progress", progress);          //saves the block inventory upon closing the world
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        return new IdentifyingMenu(id, inventory, this, this.data);
     }
 
     private void resetProgress() {
         this.progress = 0;
-    }
-
-    @Override
-    public void readNbt(NbtCompound nbt) {                          //reads saved inventory upon opening the world
-        Inventories.readNbt(nbt, inventory);
-        super.readNbt(nbt);
-        progress = nbt.getInt("archeology_table");
     }
 
     public static void tick(Level world, BlockPos blockPos, BlockState blockState, ArcheologyTableBlockEntity entity) {
@@ -204,9 +190,9 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private void craftItem() {
-        SimpleContainer inventory = new SimpleContainer(this.size());
-        for (int i = 0; i < this.size(); i++) {
-            inventory.setStack(i, this.getStack(i));
+        SimpleContainer inventory = new SimpleContainer(this.itemHandler.getSlots());
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, this.itemHandler.getStackInSlot(i));
         }
 
         //if there is an unidentified artifact in the input slot and the output slot is empty:
@@ -240,7 +226,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
             }
             this.itemHandler.setStackInSlot(2, generateCraftingLoot(this, this.level)); //set crafted output in the output slot
             this.resetProgress(); //resets crafting progress
-            this.markDirty();
+            this.setChanged();
         }
 
     }
@@ -283,13 +269,11 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
         return hasShardInFirstSlot && hasBrushInSlot && canInsertAmountIntoOutputSlot(entity.itemHandler) && canInsertItemIntoOutputSlot(entity.itemHandler, entity.itemHandler.getStackInSlot(2).getItem());
     }
 
-    @Override
     public boolean canExtract(int slot, ItemStack stack, Direction side) {
         //only extract on the bottom
         return side == Direction.DOWN && slot == 2;
     }
 
-    @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
         //no insertion into the output slot
         if (side == Direction.DOWN) {
@@ -300,7 +284,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
             return slot == 0 && stack.getItem() instanceof BrushItem;
         }
         //for the sides: if it is an unidentified artifact
-        return slot == 1 && stack.isOf(ModItems.UNIDENTIFIED_ARTIFACT);
+        return slot == 1 && stack.is(ModItems.UNIDENTIFIED_ARTIFACT.get());
     }
 
     private static boolean canInsertItemIntoOutputSlot(ItemStackHandler handler, Item output) {
@@ -312,15 +296,11 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public List<ItemStack> getInventoryContents() {
-        return Arrays.asList(this.getStack(0), this.getStack(1), this.getStack(2));
+        return Arrays.asList(itemHandler.getStackInSlot(0), itemHandler.getStackInSlot(1), itemHandler.getStackInSlot(2));
     }
 
-    public void setInventory(DefaultedList<ItemStack> inventory) {
-        for (int i = 0; i < inventory.size(); i++) {
-            this.inventory.set(i, inventory.get(i));
-        }
-    }
-
+    /*
+    Forge stuff
     @Override
     public void markDirty() {
         if (world != null && !world.isClient()) {
@@ -338,4 +318,5 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
 
         super.markDirty();
     }
+    */
 }

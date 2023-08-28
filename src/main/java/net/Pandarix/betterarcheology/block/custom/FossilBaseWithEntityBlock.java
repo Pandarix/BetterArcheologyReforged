@@ -1,8 +1,10 @@
 package net.Pandarix.betterarcheology.block.custom;
 
+import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -25,9 +27,9 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.List;
 
 public class FossilBaseWithEntityBlock extends BaseEntityBlock {
@@ -74,11 +76,8 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
-            NamedScreenHandlerFactory handledScreen = state.createScreenHandlerFactory(world, pos);
-
-            if (handledScreen != null) {
-                player.openHandledScreen(handledScreen);
-            }
+            BlockEntity entity = level.getBlockEntity(blockPos);
+            NetworkHooks.openScreen(((ServerPlayer)player), (VillagerFossilBlockEntity)entity, blockPos);
         }
 
         return InteractionResult.SUCCESS;

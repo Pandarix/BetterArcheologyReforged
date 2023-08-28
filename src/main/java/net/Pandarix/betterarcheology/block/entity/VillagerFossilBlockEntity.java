@@ -1,24 +1,11 @@
 package net.Pandarix.betterarcheology.block.entity;
 
 import net.Pandarix.betterarcheology.block.ModBlocks;
-import net.Pandarix.betterarcheology.block.custom.VillagerFossilBlock;
-import net.Pandarix.betterarcheology.networking.ModMessages;
 import net.Pandarix.betterarcheology.screen.FossilInventoryMenu;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.Block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -27,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -103,6 +89,8 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
         return Component.translatable(ModBlocks.VILLAGER_FOSSIL.getKey().toString());
     }
 
+    /*
+    Still From Forge
     //update luminance of block based on the luminance of the item given when it would be in its placed state
     @Override
     public void onClose(Player player) {
@@ -110,6 +98,7 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
         int luminance = Block.byItem(this.getInventoryContents().getItem()).defaultBlockState().getLightEmission();
         player.level().setBlock(this.getBlockPos(), level.getBlockState(this.getBlockPos()).setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance), 3);
     }
+     */
 
     @Nullable
     @Override
@@ -128,5 +117,8 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public static <E extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, E e) {
+        if(level.isClientSide()) {
+            return;
+        }
     }
 }
