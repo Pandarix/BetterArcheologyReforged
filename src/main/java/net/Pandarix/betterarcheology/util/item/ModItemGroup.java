@@ -1,4 +1,4 @@
-package net.Pandarix.betterarcheology.item;
+package net.Pandarix.betterarcheology.util.item;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.minecraft.core.registries.Registries;

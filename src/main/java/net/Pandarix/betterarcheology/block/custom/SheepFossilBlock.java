@@ -108,6 +108,6 @@ public class SheepFossilBlock extends FossilBaseBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(FACING, HORN_SOUND, PLAYING);
+        pBuilder.add(HORN_SOUND, PLAYING);
     }
 }

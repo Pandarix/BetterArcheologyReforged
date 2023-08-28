@@ -1,79 +1,74 @@
 package net.Pandarix.betterarcheology.block.entity.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.Pandarix.betterarcheology.block.entity.SusBlockEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-@Environment(EnvType.CLIENT)
 public class SusBlockEntityRenderer implements BlockEntityRenderer<SusBlockEntity> {
-    //just a hacky class to copy the behaviour of minecrafts BrushalbeBlockEntityRenderer
-    //discussed in Fabric forums an there doesn't seem to be a better way
-    public final ItemRenderer itemRenderer;
+    private final ItemRenderer itemRenderer;
 
-    public SusBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
-        this.itemRenderer = context.getItemRenderer();
+    public SusBlockEntityRenderer(BlockEntityRendererProvider.Context p_277899_) {
+        this.itemRenderer = p_277899_.getItemRenderer();
     }
 
-    public void render(SusBlockEntity susBlockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
-        if (susBlockEntity.getWorld() != null) {
-            int k = (Integer)susBlockEntity.getCachedState().get(Properties.DUSTED);
-            if (k > 0) {
-                Direction direction = susBlockEntity.getHitDirection();
+    public void render(SusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+        if (pBlockEntity.getLevel() != null) {
+            int i = pBlockEntity.getBlockState().getValue(BlockStateProperties.DUSTED);
+            if (i > 0) {
+                Direction direction = pBlockEntity.getHitDirection();
                 if (direction != null) {
-                    ItemStack itemStack = susBlockEntity.getItem();
-                    if (!itemStack.isEmpty()) {
-                        matrixStack.push();
-                        matrixStack.translate(0.0F, 0.5F, 0.0F);
-                        float[] fs = getTranslation(direction, k);
-                        matrixStack.translate(fs[0], fs[1], fs[2]);
-                        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(75.0F));
-                        boolean bl = direction == Direction.EAST || direction == Direction.WEST;
-                        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float)((bl ? 90 : 0) + 11)));
-                        matrixStack.scale(0.5F, 0.5F, 0.5F);
-                        int l = WorldRenderer.getLightmapCoordinates(susBlockEntity.getWorld(), susBlockEntity.getCachedState(), susBlockEntity.getPos().offset(direction));
-                        this.itemRenderer.renderItem(itemStack, ModelTransformationMode.FIXED, l, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, susBlockEntity.getWorld(), 0);
-                        matrixStack.pop();
+                    ItemStack itemstack = pBlockEntity.getItem();
+                    if (!itemstack.isEmpty()) {
+                        pPoseStack.pushPose();
+                        pPoseStack.translate(0.0F, 0.5F, 0.0F);
+                        float[] afloat = this.translations(direction, i);
+                        pPoseStack.translate(afloat[0], afloat[1], afloat[2]);
+                        pPoseStack.mulPose(Axis.YP.rotationDegrees(75.0F));
+                        boolean flag = direction == Direction.EAST || direction == Direction.WEST;
+                        pPoseStack.mulPose(Axis.YP.rotationDegrees((float)((flag ? 90 : 0) + 11)));
+                        pPoseStack.scale(0.5F, 0.5F, 0.5F);
+                        int j = LevelRenderer.getLightColor(pBlockEntity.getLevel(), pBlockEntity.getBlockState(), pBlockEntity.getBlockPos().relative(direction));
+                        this.itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, j, OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, pBlockEntity.getLevel(), 0);
+                        pPoseStack.popPose();
                     }
                 }
             }
         }
     }
 
-    public final float[] getTranslation(Direction direction, int dustedLevel) {
-        float[] fs = new float[]{0.5F, 0.0F, 0.5F};
-        float f = (float)dustedLevel / 10.0F * 0.75F;
-        switch (direction) {
+    private float[] translations(Direction p_278030_, int p_277997_) {
+        float[] afloat = new float[]{0.5F, 0.0F, 0.5F};
+        float f = (float)p_277997_ / 10.0F * 0.75F;
+        switch (p_278030_) {
             case EAST:
-                fs[0] = 0.73F + f;
+                afloat[0] = 0.73F + f;
                 break;
             case WEST:
-                fs[0] = 0.25F - f;
+                afloat[0] = 0.25F - f;
                 break;
             case UP:
-                fs[1] = 0.25F + f;
+                afloat[1] = 0.25F + f;
                 break;
             case DOWN:
-                fs[1] = -0.23F - f;
+                afloat[1] = -0.23F - f;
                 break;
             case NORTH:
-                fs[2] = 0.25F - f;
+                afloat[2] = 0.25F - f;
                 break;
             case SOUTH:
-                fs[2] = 0.73F + f;
+                afloat[2] = 0.73F + f;
         }
 
-        return fs;
+        return afloat;
     }
 }

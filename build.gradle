@@ -1,11 +1,24 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        // MixinGradle:
+        classpath 'org.spongepowered:mixingradle:0.7.+'
+    }
+}
+
 plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'org.spongepowered.mixin' version '0.7.+'
 }
+
+apply plugin: "org.spongepowered.mixin"
 
 version = '1.0.2'
 group = 'net.Pandarix.betterarcheology'
@@ -184,9 +197,9 @@ dependencies {
 }
 
 mixin {
-    // MixinGradle Settings
-    add sourceSets.main, 'mixins.mymod.refmap.json'
-    config 'mixins.mymod.json'
+    add sourceSets.main, "betterarcheology.refmap.json"
+
+    config "betterarcheology.mixins.json"
 
     debug.verbose = true
     debug.export = true

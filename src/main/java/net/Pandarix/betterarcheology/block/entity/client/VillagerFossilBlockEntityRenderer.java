@@ -1,73 +1,67 @@
 package net.Pandarix.betterarcheology.block.entity.client;
 
+import com.mojang.math.Axis;
 import net.Pandarix.betterarcheology.block.custom.FossilBaseWithEntityBlock;
 import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
-
-@Environment(EnvType.CLIENT)
 public class VillagerFossilBlockEntityRenderer implements BlockEntityRenderer<VillagerFossilBlockEntity> {
-    public VillagerFossilBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
+    public VillagerFossilBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(VillagerFossilBlockEntity entity, float tickDelta, MatrixStack matrices,
-                       VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+    public void render(VillagerFossilBlockEntity pBlockEntity, float pPartialTick, com.mojang.blaze3d.vertex.PoseStack pPoseStack,
+                       MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        matrices.push();
+        pPoseStack.pushPose();
 
-        BlockState state = entity.getWorld().getBlockState(entity.getPos());
-        Direction facing = state.getBlock() instanceof FossilBaseWithEntityBlock ? state.get(FossilBaseWithEntityBlock.FACING) : Direction.NORTH;
+        BlockState state = pBlockEntity.getLevel().getBlockState(pBlockEntity.getBlockPos());
+        Direction facing = state.getBlock() instanceof FossilBaseWithEntityBlock ? state.getValue(FossilBaseWithEntityBlock.FACING) : Direction.NORTH;
 
         //rotation based on direction the Block ist facing
         switch (facing) {
             case EAST -> {
-                matrices.translate(0.75f, 0.95f, 0.5f);
-                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90));
+                pPoseStack.translate(0.75f, 0.95f, 0.5f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(-90));
             }
             case WEST -> {
-                matrices.translate(0.25f, 0.95f, 0.5f);
-                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90));
+                pPoseStack.translate(0.25f, 0.95f, 0.5f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
             }
-            case NORTH -> matrices.translate(0.5f, 0.95f, 0.25f);
+            case NORTH -> pPoseStack.translate(0.5f, 0.95f, 0.25f);
             case SOUTH -> {
-                matrices.translate(0.5f, 0.95f, 0.75f);
-                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));;
+                pPoseStack.translate(0.5f, 0.95f, 0.75f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(180));;
             }
-            default -> matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90));
+            default -> pPoseStack.mulPose(Axis.YP.rotationDegrees(-90));
         }
 
         //scale item to 0.5x size
-        matrices.scale(0.5f, 0.5f, 0.5f);
+        pPoseStack.scale(0.5f, 0.5f, 0.5f);
 
         //render item in inventory to hand position with lightlevel at blockpos
-        itemRenderer.renderItem(entity.getInventoryContents(), ModelTransformationMode.FIXED, getLightLevel(Objects.requireNonNull(entity.getWorld()), entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
+        itemRenderer.renderStatic(pBlockEntity.getInventoryContents(), ItemDisplayContext.FIXED, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, pBlockEntity.getLevel(), 1);
 
-        matrices.pop();
+        pPoseStack.popPose();
     }
 
-    private int getLightLevel(World world, BlockPos pos) {
-        int bLight = world.getLightLevel(LightType.BLOCK, pos);
-        int sLight = world.getLightLevel(LightType.SKY, pos);
-        return LightmapTextureManager.pack(bLight, sLight);
+    private int getLightLevel(Level level, BlockPos pos) {
+        int bLight = level.getBrightness(LightLayer.BLOCK, pos);
+        int sLight = level.getBrightness(LightLayer.SKY, pos);
+        return LightTexture.pack(bLight, sLight);
     }
 }

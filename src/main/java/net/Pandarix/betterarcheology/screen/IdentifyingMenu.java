@@ -2,7 +2,7 @@ package net.Pandarix.betterarcheology.screen;
 
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
-import net.Pandarix.betterarcheology.item.ModItems;
+import net.Pandarix.betterarcheology.util.item.ModItems;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
