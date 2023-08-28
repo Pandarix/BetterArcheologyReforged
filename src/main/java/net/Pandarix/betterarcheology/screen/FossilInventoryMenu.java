@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.screen;
 
+import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
@@ -102,9 +103,10 @@ public class FossilInventoryMenu extends AbstractContainerMenu {
 
         //MainSize is the number of Slots besides the Armor and Offhand
         //HotbarSize is the number of Slots in the Hotbar, which incidentally is the number of slots per Column
-        int inventorySize = Inventory.INVENTORY_SIZE - Inventory.DEFAULT_DISTANCE_LIMIT;    //Because Main includes the Hotbar Slots, we have to subtract them to get the raw Inventory size
-        int inventoryRows = inventorySize / Inventory.DEFAULT_DISTANCE_LIMIT;    //All Slots : Slots per Column = Number of Rows to draw
-        int inventoryColumns = Inventory.DEFAULT_DISTANCE_LIMIT;
+        int hotbarSize = Inventory.DEFAULT_DISTANCE_LIMIT + 1;
+        int inventorySize = Inventory.INVENTORY_SIZE - hotbarSize;    //Because Main includes the Hotbar Slots, we have to subtract them to get the raw Inventory size
+        int inventoryRows = inventorySize / hotbarSize;    //All Slots : Slots per Column = Number of Rows to draw
+        int inventoryColumns = hotbarSize;
 
         //For every Row in the Inventory
         for (int i = 0; i < inventoryRows; ++i) {
@@ -119,7 +121,7 @@ public class FossilInventoryMenu extends AbstractContainerMenu {
     //Helper Method to add Players HotBarSlots to Screen
     private void addPlayerHotbar(Inventory playerInventory) {
         //Adds a new Slot to the Screen for every Slot in the Players Hotbar
-        for (int i = 0; i < Inventory.DEFAULT_DISTANCE_LIMIT; ++i) {
+        for (int i = 0; i < Inventory.DEFAULT_DISTANCE_LIMIT + 1; ++i) {
             //Numbers are Minecrafts pre-defined offsets due to the textures
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
         }

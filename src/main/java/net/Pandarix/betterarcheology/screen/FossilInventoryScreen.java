@@ -2,6 +2,7 @@ package net.Pandarix.betterarcheology.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.Pandarix.betterarcheology.BetterArcheology;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -13,13 +14,13 @@ public class FossilInventoryScreen extends AbstractContainerScreen<FossilInvento
     private static final ResourceLocation TEXTURE = new ResourceLocation(BetterArcheology.MOD_ID, "textures/gui/fossil_gui.png");
 
     public FossilInventoryScreen(FossilInventoryMenu handler, Inventory inventory, Component title) {
-        super(handler, inventory, title);
+        super(handler, inventory, Component.translatable(title.getString()).withStyle(ChatFormatting.GRAY));
     }
 
     @Override
     protected void init() {
         super.init();
-        this.titleLabelX = 60;
+        this.titleLabelX = imageWidth/2 - 35;
     }
 
     @Override
@@ -27,8 +28,8 @@ public class FossilInventoryScreen extends AbstractContainerScreen<FossilInvento
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - guiGraphics.guiWidth()) / 2;
-        int y = (height - guiGraphics.guiHeight()) / 2;
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
         guiGraphics.blit(TEXTURE, x, y - 8, 0, 0, 176, 176);
     }
 

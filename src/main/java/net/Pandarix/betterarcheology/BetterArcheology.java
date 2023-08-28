@@ -3,9 +3,10 @@ package net.Pandarix.betterarcheology;
 import com.mojang.logging.LogUtils;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.networking.ModMessages;
-import net.Pandarix.betterarcheology.util.item.ModItemGroup;
-import net.Pandarix.betterarcheology.util.item.ModItems;
+import net.Pandarix.betterarcheology.item.ModItemGroup;
+import net.Pandarix.betterarcheology.item.ModItems;
 import net.Pandarix.betterarcheology.screen.FossilInventoryScreen;
+import net.Pandarix.betterarcheology.screen.IdentifyingScreen;
 import net.Pandarix.betterarcheology.screen.ModMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -80,6 +81,7 @@ public class BetterArcheology {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(ModMenuTypes.FOSSIL_MENU.get(), FossilInventoryScreen::new);
+            MenuScreens.register(ModMenuTypes.IDENTIFYING_MENU.get(), IdentifyingScreen::new);
         }
     }
 }

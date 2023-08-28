@@ -1,8 +1,9 @@
 package net.Pandarix.betterarcheology.screen;
 
+import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
-import net.Pandarix.betterarcheology.util.item.ModItems;
+import net.Pandarix.betterarcheology.item.ModItems;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,8 +16,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class IdentifyingMenu extends AbstractContainerMenu {
-    private final Level level;
     public final ArcheologyTableBlockEntity blockEntity;
+    private final Level level;
     private final ContainerData data;
 
     public IdentifyingMenu(int syncId, Inventory inventory, FriendlyByteBuf extraData) {
@@ -25,7 +26,6 @@ public class IdentifyingMenu extends AbstractContainerMenu {
 
     public IdentifyingMenu(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.IDENTIFYING_MENU.get(), syncId);    //creates a new Instance of Screenhandler
-
         checkContainerSize(playerInventory, ArcheologyTableBlockEntity.INV_SIZE);
         blockEntity = (ArcheologyTableBlockEntity) entity;
         this.level = playerInventory.player.level();
@@ -35,7 +35,7 @@ public class IdentifyingMenu extends AbstractContainerMenu {
         addPlayerHotbar(playerInventory);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
-            this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 22));
+            this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 20));
             this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 20));
             this.addSlot(new SlotItemHandler(iItemHandler, 1, 26, 48));
             this.addSlot(new SlotItemHandler(iItemHandler, 2, 134, 48));
@@ -132,9 +132,10 @@ public class IdentifyingMenu extends AbstractContainerMenu {
 
         //MainSize is the number of Slots besides the Armor and Offhand
         //HotbarSize is the number of Slots in the Hotbar, which incidentally is the number of slots per Column
-        int inventorySize = Inventory.INVENTORY_SIZE - Inventory.DEFAULT_DISTANCE_LIMIT;    //Because Main includes the Hotbar Slots, we have to subtract them to get the raw Inventory size
-        int inventoryRows = inventorySize / Inventory.DEFAULT_DISTANCE_LIMIT;    //All Slots : Slots per Column = Number of Rows to draw
-        int inventoryColumns = Inventory.DEFAULT_DISTANCE_LIMIT;
+        int hotbarSize = Inventory.DEFAULT_DISTANCE_LIMIT + 1;
+        int inventorySize = Inventory.INVENTORY_SIZE - hotbarSize;    //Because Main includes the Hotbar Slots, we have to subtract them to get the raw Inventory size
+        int inventoryRows = inventorySize / hotbarSize;    //All Slots : Slots per Column = Number of Rows to draw
+        int inventoryColumns = hotbarSize;
 
         //For every Row in the Inventory
         for (int i = 0; i < inventoryRows; ++i) {
@@ -149,7 +150,7 @@ public class IdentifyingMenu extends AbstractContainerMenu {
     //Helper Method to add Players HotBarSlots to Screen
     private void addPlayerHotbar(Inventory playerInventory) {
         //Adds a new Slot to the Screen for every Slot in the Players Hotbar
-        for (int i = 0; i < Inventory.DEFAULT_DISTANCE_LIMIT; ++i) {
+        for (int i = 0; i < Inventory.DEFAULT_DISTANCE_LIMIT + 1; ++i) {
             //Numbers are Minecrafts pre-defined offsets due to the textures
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
         }

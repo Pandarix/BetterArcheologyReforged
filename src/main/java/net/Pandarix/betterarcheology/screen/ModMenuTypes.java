@@ -13,7 +13,7 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, BetterArcheology.MOD_ID);
 
     public static final RegistryObject<MenuType<FossilInventoryMenu>> FOSSIL_MENU = registerMenuType(FossilInventoryMenu::new, "fossil");
-    public static final RegistryObject<MenuType<IdentifyingMenu>> IDENTIFYING_MENU = registerMenuType(IdentifyingMenu::new, "archeology_table");
+    public static final RegistryObject<MenuType<IdentifyingMenu>> IDENTIFYING_MENU = registerMenuType(IdentifyingMenu::new, "identifying");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));

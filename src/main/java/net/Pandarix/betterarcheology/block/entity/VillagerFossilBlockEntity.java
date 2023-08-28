@@ -86,7 +86,7 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable(ModBlocks.VILLAGER_FOSSIL.getKey().toString());
+        return Component.translatable("block.betterarcheology.villager_fossil");
     }
 
     /*
