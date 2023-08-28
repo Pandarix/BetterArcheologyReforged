@@ -75,11 +75,6 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock {
     //Creates the Screen-Handler belonging to the BlockEntity
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(blockPos);
-            NetworkHooks.openScreen(((ServerPlayer)player), (VillagerFossilBlockEntity)entity, blockPos);
-        }
-
         return InteractionResult.SUCCESS;
     }
 }

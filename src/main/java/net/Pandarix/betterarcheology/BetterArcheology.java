@@ -49,9 +49,6 @@ public class BetterArcheology {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -59,13 +56,6 @@ public class BetterArcheology {
             ModMessages.register();
             //ModVillagers.registerPOIs();
         });
-    }
-
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            //event.accept(EXAMPLE_BLOCK_ITEM);
-        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
