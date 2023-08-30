@@ -28,3 +28,4 @@ build
 eclipse
 run
 .idea/compiler.xml
+.idea/misc.xml

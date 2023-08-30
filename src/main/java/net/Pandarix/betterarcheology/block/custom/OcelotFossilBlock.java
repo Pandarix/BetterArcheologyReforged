@@ -2,8 +2,12 @@ package net.Pandarix.betterarcheology.block.custom;
 
 import com.google.common.collect.ImmutableMap;
 import net.Pandarix.betterarcheology.block.entity.FleeFromBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -12,8 +16,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 public class OcelotFossilBlock extends FossilBaseWithEntityBlock {
@@ -44,5 +51,12 @@ public class OcelotFossilBlock extends FossilBaseWithEntityBlock {
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return OCELOT_SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag) {
+        component.add(Component.translatable("block.betterarcheology.ocelot_fossil_tooltip").withStyle(ChatFormatting.GRAY));
+        super.appendHoverText(stack, getter, component, flag);
     }
 }

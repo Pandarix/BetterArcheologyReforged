@@ -45,13 +45,6 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock {
         return null;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag) {
-        component.add(Component.translatable(this.getName() + "_tooltip").withStyle(ChatFormatting.GRAY));
-        super.appendHoverText(stack, getter, component, flag);
-    }
-
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         if(!level.isClientSide()) {

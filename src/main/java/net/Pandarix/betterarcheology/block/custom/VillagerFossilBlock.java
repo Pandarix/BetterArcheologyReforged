@@ -3,13 +3,17 @@ package net.Pandarix.betterarcheology.block.custom;
 import com.google.common.collect.ImmutableMap;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -27,10 +31,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 public class VillagerFossilBlock extends FossilBaseWithEntityBlock {
@@ -117,5 +124,12 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock {
         }
 
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag) {
+        component.add(Component.translatable("block.betterarcheology.villager_fossil_tooltip").withStyle(ChatFormatting.GRAY));
+        super.appendHoverText(stack, getter, component, flag);
     }
 }

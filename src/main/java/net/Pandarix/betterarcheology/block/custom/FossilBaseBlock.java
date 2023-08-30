@@ -28,14 +28,6 @@ public class FossilBaseBlock extends HorizontalDirectionalBlock {
         super(settings);
     }
 
-    //used to give all fossil blocks their own tooltip
-    //gets blocks translationkey itself and appends "_tooltip" to get the xyz_tooltip lang content
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag) {
-        components.add(Component.translatable(this.getName() + "_tooltip").withStyle(ChatFormatting.GRAY));
-        super.appendHoverText(stack, blockGetter, components, tooltipFlag);
-    }
-
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         if(!level.isClientSide()) {

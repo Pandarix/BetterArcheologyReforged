@@ -1,11 +1,14 @@
 package net.Pandarix.betterarcheology.block.entity;
 
-import net.Pandarix.betterarcheology.block.ModBlocks;
+import net.Pandarix.betterarcheology.block.custom.VillagerFossilBlock;
 import net.Pandarix.betterarcheology.screen.FossilInventoryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -14,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -100,6 +104,7 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     }
      */
 
+
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
@@ -113,6 +118,11 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     public void setInventory(List<ItemStack> inventory) {
         for (int i = 0; i < inventory.size(); i++) {
             itemStackHandler.setStackInSlot(i, inventory.get(i));
+
+            if(this.level != null){
+                int luminance = Block.byItem(this.getInventoryContents().getItem()).defaultBlockState().getLightEmission();
+                this.level.setBlock(this.getBlockPos(), level.getBlockState(this.getBlockPos()).setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance), 3);
+            }
         }
     }
 
@@ -120,5 +130,25 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
         if(level.isClientSide()) {
             return;
         }
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        if(this.level != null){
+            int luminance = Block.byItem(this.getInventoryContents().getItem()).defaultBlockState().getLightEmission();
+            this.level.setBlock(this.getBlockPos(), level.getBlockState(this.getBlockPos()).setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance), 3);
+        }
+    }
+
+    /*Synchronization to the client*/
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+    @Override
+    public CompoundTag getUpdateTag() {
+        return this.saveWithoutMetadata();
     }
 }
