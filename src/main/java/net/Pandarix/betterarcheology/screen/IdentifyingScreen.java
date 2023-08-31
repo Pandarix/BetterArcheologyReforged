@@ -22,7 +22,8 @@ public class IdentifyingScreen extends AbstractContainerScreen<IdentifyingMenu> 
     @Override
     protected void init() {
         super.init();
-        this.titleLabelX = width/2;
+        this.titleLabelX = imageWidth/2 - 43;
+        this.titleLabelY += 2;
     }
 
     @Override

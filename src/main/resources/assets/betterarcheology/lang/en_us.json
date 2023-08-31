@@ -81,7 +81,7 @@
   "item.betterarcheology.soul_totem": "Totem of Souls",
   "item.betterarcheology.soul_totem_description": "Ability: Damage target & regain health",
 
-  "entity.minecraft.villager.archeologist": "Archeologist",
+  "entity.minecraft.villager.betterarcheology.archeologist": "Archeologist",
 
   "enchantment.betterarcheology.penetrating_strike": "Penetrating Strike",
   "item.betterarcheology.penetrating_strike_tooltip": "Partially ignores effects of Protection Enchantments",

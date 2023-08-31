@@ -9,6 +9,10 @@ import net.Pandarix.betterarcheology.item.ModItems;
 import net.Pandarix.betterarcheology.screen.FossilInventoryScreen;
 import net.Pandarix.betterarcheology.screen.IdentifyingScreen;
 import net.Pandarix.betterarcheology.screen.ModMenuTypes;
+import net.Pandarix.betterarcheology.villager.ModVillagers;
+import net.Pandarix.betterarcheology.world.structure.ArcheologyStructures;
+import net.Pandarix.betterarcheology.world.structure.ModStructures;
+import net.Pandarix.betterarcheology.world.structure.ModStructuresMain;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.Pandarix.betterarcheology.block.ModBlocks;
@@ -49,6 +53,11 @@ public class BetterArcheology {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
 
+        ModVillagers.POI_TYPES.register(modEventBus);
+        ModVillagers.VILLAGER_PROFESSIONS.register(modEventBus);
+
+        ModStructuresMain.register(modEventBus);
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -56,7 +65,6 @@ public class BetterArcheology {
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModMessages.register();
-            //ModVillagers.registerPOIs();
         });
     }
 

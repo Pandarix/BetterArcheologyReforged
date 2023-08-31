@@ -110,7 +110,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     public net.minecraft.network.chat.Component getDisplayName() {
-        return Component.translatable(new ResourceLocation(BetterArcheology.MOD_ID, translationKey).toLanguageKey());
+        return Component.translatable(new ResourceLocation("block." + BetterArcheology.MOD_ID, translationKey).toLanguageKey());
     }
 
     @Override
