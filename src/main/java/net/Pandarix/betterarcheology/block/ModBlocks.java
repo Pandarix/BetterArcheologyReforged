@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -40,42 +41,42 @@ public class ModBlocks {
 
     //-------------FOSSILS---------------//
     //Villager
-    public static final RegistryObject<Block> VILLAGER_FOSSIL = registerBlock("villager_fossil", () -> new VillagerFossilBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK).lightLevel(
+    public static final RegistryObject<Block> VILLAGER_FOSSIL = registerRareBlock("villager_fossil", () -> new VillagerFossilBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK).lightLevel(
             (state) -> {
-        return state.getValue(VillagerFossilBlock.INVENTORY_LUMINANCE);
-    })));
+                return state.getValue(VillagerFossilBlock.INVENTORY_LUMINANCE);
+            })));
 
-    public static final RegistryObject<Block> VILLAGER_FOSSIL_HEAD = registerBlock("villager_fossil_head", () -> new VillagerFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> VILLAGER_FOSSIL_HEAD = registerRareBlock("villager_fossil_head", () -> new VillagerFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
-    public static final RegistryObject<Block> VILLAGER_FOSSIL_BODY = registerBlock("villager_fossil_body", () -> new VillagerFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> VILLAGER_FOSSIL_BODY = registerRareBlock("villager_fossil_body", () -> new VillagerFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
     //Ocelot
-    public static final RegistryObject<Block> OCELOT_FOSSIL = registerBlock("ocelot_fossil", () -> new OcelotFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> OCELOT_FOSSIL = registerRareBlock("ocelot_fossil", () -> new OcelotFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
-    public static final RegistryObject<Block> OCELOT_FOSSIL_HEAD = registerBlock("ocelot_fossil_head", () -> new OcelotFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> OCELOT_FOSSIL_HEAD = registerRareBlock("ocelot_fossil_head", () -> new OcelotFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
-    public static final RegistryObject<Block> OCELOT_FOSSIL_BODY = registerBlock("ocelot_fossil_body", () -> new OcelotFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
-
-    //Sheep
-    public static final RegistryObject<Block> SHEEP_FOSSIL = registerBlock("sheep_fossil", () -> new SheepFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
-
-    public static final RegistryObject<Block> SHEEP_FOSSIL_HEAD = registerBlock("sheep_fossil_head", () -> new SheepFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
-
-    public static final RegistryObject<Block> SHEEP_FOSSIL_BODY = registerBlock("sheep_fossil_body", () -> new SheepFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> OCELOT_FOSSIL_BODY = registerRareBlock("ocelot_fossil_body", () -> new OcelotFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
     //Sheep
-    public static final RegistryObject<Block> CHICKEN_FOSSIL = registerBlock("chicken_fossil", () -> new ChickenFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> SHEEP_FOSSIL = registerRareBlock("sheep_fossil", () -> new SheepFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
-    public static final RegistryObject<Block> CHICKEN_FOSSIL_HEAD = registerBlock("chicken_fossil_head", () -> new ChickenFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> SHEEP_FOSSIL_HEAD = registerRareBlock("sheep_fossil_head", () -> new SheepFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
-    public static final RegistryObject<Block> CHICKEN_FOSSIL_BODY = registerBlock("chicken_fossil_body", () -> new ChickenFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> SHEEP_FOSSIL_BODY = registerRareBlock("sheep_fossil_body", () -> new SheepFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    //Sheep
+    public static final RegistryObject<Block> CHICKEN_FOSSIL = registerRareBlock("chicken_fossil", () -> new ChickenFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> CHICKEN_FOSSIL_HEAD = registerRareBlock("chicken_fossil_head", () -> new ChickenFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> CHICKEN_FOSSIL_BODY = registerRareBlock("chicken_fossil_body", () -> new ChickenFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
     //Creeper
-    public static final RegistryObject<Block> CREEPER_FOSSIL = registerBlock("creeper_fossil", () -> new CreeperFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> CREEPER_FOSSIL = registerRareBlock("creeper_fossil", () -> new CreeperFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
-    public static final RegistryObject<Block> CREEPER_FOSSIL_HEAD = registerBlock("creeper_fossil_head", () -> new CreeperFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> CREEPER_FOSSIL_HEAD = registerRareBlock("creeper_fossil_head", () -> new CreeperFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
-    public static final RegistryObject<Block> CREEPER_FOSSIL_BODY = registerBlock("creeper_fossil_body", () -> new CreeperFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+    public static final RegistryObject<Block> CREEPER_FOSSIL_BODY = registerRareBlock("creeper_fossil_body", () -> new CreeperFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
     //-----------ROTTEN WOOD-------------//
     public static final WoodType ROTTEN_WOOD_TYPE = registerWoodType("rotten_wood");
@@ -122,12 +123,20 @@ public class ModBlocks {
     //REGISTERING--------------------------------------------------------------------------//
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn);
+        registerBlockItem(name, toReturn, null);
         return toReturn;
     }
 
-    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    private static <T extends Block> RegistryObject<T> registerRareBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerBlockItem(name, toReturn, Rarity.UNCOMMON);
+        return toReturn;
+    }
+
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, Rarity rarity) {
+        return rarity != null ?
+                ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().rarity(rarity))) :
+                ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
     private static WoodType registerWoodType(String id) {

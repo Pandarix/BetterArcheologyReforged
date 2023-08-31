@@ -22,6 +22,9 @@ public class ModItemGroup {
                 //ITEMS
                 output.accept(ModItems.IRON_BRUSH.get());
                 output.accept(ModItems.DIAMOND_BRUSH.get());
+                output.accept(ModItems.BOMB_ITEM.get());
+                output.accept(ModItems.TORRENT_TOTEM.get());
+                output.accept(ModItems.SOUL_TOTEM.get());
                 output.accept(ModItems.ARTIFACT_SHARDS.get());
                 output.accept(ModItems.UNIDENTIFIED_ARTIFACT.get());
                 //BLOCKS

@@ -6,8 +6,10 @@ import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.block.entity.client.ArcheologyTableBlockEntityRenderer;
 import net.Pandarix.betterarcheology.block.entity.client.SusBlockEntityRenderer;
 import net.Pandarix.betterarcheology.block.entity.client.VillagerFossilBlockEntityRenderer;
+import net.Pandarix.betterarcheology.entity.ModEntityTypes;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,6 +27,7 @@ public class ClientEvents {
                     SusBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.VILLAGER_FOSSIL.get(),
                     VillagerFossilBlockEntityRenderer::new);
+            event.registerEntityRenderer(ModEntityTypes.BOMB_ENTITY.get(), ThrownItemRenderer::new);
         }
 
         @SubscribeEvent

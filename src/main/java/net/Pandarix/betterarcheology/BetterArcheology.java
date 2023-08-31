@@ -2,6 +2,7 @@ package net.Pandarix.betterarcheology;
 
 import com.mojang.logging.LogUtils;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
+import net.Pandarix.betterarcheology.entity.ModEntityTypes;
 import net.Pandarix.betterarcheology.networking.ModMessages;
 import net.Pandarix.betterarcheology.item.ModItemGroup;
 import net.Pandarix.betterarcheology.item.ModItems;
@@ -36,13 +37,14 @@ public class BetterArcheology {
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-
-        // Register the Deferred Register to the mod event bus so blocks get registered
-        ModBlocks.BLOCKS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
         ModItems.ITEMS.register(modEventBus);
+        // Register the Deferred Register to the mod event bus so blocks get registered
+        ModBlocks.BLOCKS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         ModItemGroup.CREATIVE_MODE_TABS.register(modEventBus);
+        // Register the Deferred Register to the mod event bus so Entities get registered
+        ModEntityTypes.ENTITY_TYPES.register(modEventBus);
 
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);

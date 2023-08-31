@@ -21,10 +21,9 @@ public class ModItems {
     public static final RegistryObject<Item> ARTIFACT_SHARDS = ITEMS.register("artifact_shards", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> UNIDENTIFIED_ARTIFACT = ITEMS.register("unidentified_artifact", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 
-    /*
+
     //LOOT ITEMS
     public static final RegistryObject<Item> BOMB_ITEM = ITEMS.register("bomb", () -> new BombItem(new Item.Properties().rarity(Rarity.COMMON).stacksTo(16)));
     public static final RegistryObject<Item> TORRENT_TOTEM = ITEMS.register("torrent_totem", () -> new TorrentTotemItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).durability(32)));
     public static final RegistryObject<Item> SOUL_TOTEM = ITEMS.register("soul_totem", () -> new SoulTotemItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).durability(32)));
-     */
 }
