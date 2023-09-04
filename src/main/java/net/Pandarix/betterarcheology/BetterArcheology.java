@@ -2,6 +2,7 @@ package net.Pandarix.betterarcheology;
 
 import com.mojang.logging.LogUtils;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
+import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
 import net.Pandarix.betterarcheology.entity.ModEntityTypes;
 import net.Pandarix.betterarcheology.networking.ModMessages;
 import net.Pandarix.betterarcheology.item.ModItemGroup;
@@ -9,6 +10,7 @@ import net.Pandarix.betterarcheology.item.ModItems;
 import net.Pandarix.betterarcheology.screen.FossilInventoryScreen;
 import net.Pandarix.betterarcheology.screen.IdentifyingScreen;
 import net.Pandarix.betterarcheology.screen.ModMenuTypes;
+import net.Pandarix.betterarcheology.util.ModConfigs;
 import net.Pandarix.betterarcheology.villager.ModVillagers;
 import net.Pandarix.betterarcheology.world.structure.ArcheologyStructures;
 import net.Pandarix.betterarcheology.world.structure.ModStructures;
@@ -41,6 +43,8 @@ public class BetterArcheology {
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+
+        ModConfigs.register();
         // Register the Deferred Register to the mod event bus so items get registered
         ModItems.ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so blocks get registered
@@ -55,6 +59,8 @@ public class BetterArcheology {
 
         ModVillagers.POI_TYPES.register(modEventBus);
         ModVillagers.VILLAGER_PROFESSIONS.register(modEventBus);
+
+        ModEnchantments.ENCHANTMENTS.register(modEventBus);
 
         ModStructuresMain.register(modEventBus);
 

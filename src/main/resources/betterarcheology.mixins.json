@@ -1,11 +1,21 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "net.Pandarix.betterarcheology.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "betterarcheology.refmap.json",
   "mixins": [
+    "AddCreeperGoalsMixin",
+    "ElytraStartupMixin",
+    "FasterBrushingMixin",
+    "TorrentTotemItemTickMixin",
+    "TunnelingEnchantmentMixin"
   ],
   "client": [
+    "BetterArcheologyMixin"
   ],
-  "minVersion": "0.8"
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

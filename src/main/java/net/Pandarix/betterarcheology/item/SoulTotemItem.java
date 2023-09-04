@@ -66,8 +66,8 @@ public class SoulTotemItem extends Item {
                     //spawn particles from player to target on client
                     //particles move towards the player
                     if (pLevel.isClientSide()) {
-                        Vec3 playerPos = player.getOnPos().above().getCenter();
-                        Vec3 targetPos = entity.getOnPos().above().getCenter();
+                        Vec3 playerPos = player.position();
+                        Vec3 targetPos = entity.position();
                         Vec3 toPlayerPos = playerPos.subtract(targetPos);
                         BetterArcheology.LOGGER.info("Movement: " + toPlayerPos);
                         for (float f = 0; f <= 1; f += 0.05) {

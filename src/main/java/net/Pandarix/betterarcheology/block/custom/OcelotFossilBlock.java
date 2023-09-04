@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,6 +52,11 @@ public class OcelotFossilBlock extends FossilBaseWithEntityBlock {
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return OCELOT_SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
     }
 
     @OnlyIn(Dist.CLIENT)

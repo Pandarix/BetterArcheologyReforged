@@ -2,12 +2,18 @@ package net.Pandarix.betterarcheology.item;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
+import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.enchanting.EnchantmentLevelSetEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -67,5 +73,9 @@ public class ModItemGroup {
                 output.accept(ModBlocks.VASE.get());
                 output.accept(ModBlocks.VASE_CREEPER.get());
                 output.accept(ModBlocks.EVOKER_TRAP.get());
+                    //enchantments
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.SOARING_WINDS.get(), 1)).setHoverName(Component.translatable("item.betterarcheology.identified_artifact").withStyle(ChatFormatting.RESET, ChatFormatting.YELLOW)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.TUNNELING.get(), 1)).setHoverName(Component.translatable("item.betterarcheology.identified_artifact").withStyle(ChatFormatting.RESET, ChatFormatting.YELLOW)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.PENETRATING_STRIKE.get(), 1)).setHoverName(Component.translatable("item.betterarcheology.identified_artifact").withStyle(ChatFormatting.RESET, ChatFormatting.YELLOW)));
             }).build());
 }
