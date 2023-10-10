@@ -1,0 +1,19 @@
+{
+  "name": "betterarcheology:catacombs/bottom_pool",
+
+  "fallback": "betterarcheology:catacombs/bottom_pool",
+
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+
+        "location": "betterarcheology:catacombs_bottom",
+
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

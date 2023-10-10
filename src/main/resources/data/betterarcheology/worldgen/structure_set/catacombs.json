@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "betterarcheology:catacombs",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+
+    "salt": 132572638,
+
+    "spacing": 64,
+
+    "separation": 32
+  }
+}
