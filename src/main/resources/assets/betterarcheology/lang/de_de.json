@@ -16,6 +16,7 @@
   "block.betterarcheology.suspicious_red_sand": "Seltsamer Roter Sand",
   "block.betterarcheology.suspicious_dirt": "Seltsame Erde",
   "block.betterarcheology.fossiliferous_dirt": "Fossilreiche Erde",
+  "block.betterarcheology.chiseled_bone_block": "Gemeißelter Knochenblock",
   "block.betterarcheology.fossiliferous_dirt_tooltip": "Vielleicht gibt es was zu entdecken?",
   "block.betterarcheology.villager_fossil": "Villager-Fossil",
   "block.betterarcheology.villager_fossil_tooltip": "Die versteinerten Arme könnten als eine Art Aufsteller dienen.",
@@ -51,6 +52,8 @@
   "block.betterarcheology.vase": "Antike Vase",
   "block.betterarcheology.loot_vase_creeper": "Antike Vase",
   "block.betterarcheology.vase_creeper": "Antike Vase",
+  "block.betterarcheology.loot_vase_green": "Antike Vase",
+  "block.betterarcheology.vase_green": "Antike Vase",
   "block.betterarcheology.evoker_trap": "Fangzahn Falle",
 
   "advancements.shards": "Fragmentiertes Wissen",

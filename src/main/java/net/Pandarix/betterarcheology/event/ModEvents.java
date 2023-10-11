@@ -72,6 +72,11 @@ public class ModEvents {
                     new ItemStack(ModBlocks.VASE.get(),1),
                     8, 10, 0.025F));
 
+            trades.get(4).add((trader, rand) -> new MerchantOffer(
+                    new ItemStack(Items.EMERALD,8),
+                    new ItemStack(ModBlocks.VASE_GREEN.get(),1),
+                    8, 10, 0.025F));
+
             //level 5
             trades.get(5).add((trader, rand) -> new MerchantOffer(
                     new ItemStack(Items.EMERALD,16),

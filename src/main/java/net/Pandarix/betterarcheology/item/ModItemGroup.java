@@ -55,6 +55,7 @@ public class ModItemGroup {
                 output.accept(ModBlocks.SUSPICIOUS_RED_SAND.get());
                 output.accept(ModBlocks.SUSPICIOUS_RED_SAND.get());
                 output.accept(ModBlocks.FOSSILIFEROUS_DIRT.get());
+                output.accept(ModBlocks.CHISELED_BONE_BLOCK.get());
                     //wood
                 output.accept(ModBlocks.ROTTEN_LOG.get());
                 output.accept(ModBlocks.ROTTEN_PLANKS.get());
@@ -72,6 +73,7 @@ public class ModItemGroup {
                     //vases
                 output.accept(ModBlocks.VASE.get());
                 output.accept(ModBlocks.VASE_CREEPER.get());
+                output.accept(ModBlocks.VASE_GREEN.get());
                 output.accept(ModBlocks.EVOKER_TRAP.get());
                     //enchantments
                 output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.SOARING_WINDS.get(), 1)).setHoverName(Component.translatable("item.betterarcheology.identified_artifact").withStyle(ChatFormatting.RESET, ChatFormatting.YELLOW)));

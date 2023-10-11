@@ -16,6 +16,7 @@
   "block.betterarcheology.suspicious_red_sand": "Suspicious Red Sand",
   "block.betterarcheology.suspicious_dirt": "Suspicious Dirt",
   "block.betterarcheology.fossiliferous_dirt": "Fossiliferous Dirt",
+  "block.betterarcheology.chiseled_bone_block": "Chiseled Bone Block",
   "block.betterarcheology.fossiliferous_dirt_tooltip": "Maybe something can be uncovered?",
   "block.betterarcheology.villager_fossil": "Villager-Fossil",
   "block.betterarcheology.villager_fossil_tooltip": "Its fossilized arms could act as a sort of display",
@@ -51,6 +52,8 @@
   "block.betterarcheology.vase": "Ancient Vase",
   "block.betterarcheology.loot_vase_creeper": "Ancient Vase",
   "block.betterarcheology.vase_creeper": "Ancient Vase",
+  "block.betterarcheology.loot_vase_green": "Ancient Vase",
+  "block.betterarcheology.vase_green": "Ancient Vase",
   "block.betterarcheology.evoker_trap": "Evoker Trap",
 
   "advancements.shards": "Shattered Knowledge",
