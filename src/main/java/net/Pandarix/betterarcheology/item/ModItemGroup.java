@@ -63,6 +63,7 @@ public class ModItemGroup {
                 output.accept(ModBlocks.ROTTEN_SLAB.get());
                 output.accept(ModBlocks.ROTTEN_TRAPDOOR.get());
                 output.accept(ModBlocks.ROTTEN_DOOR.get());
+                output.accept(ModBlocks.ROTTEN_PRESSURE_PLATE.get());
                 output.accept(ModBlocks.ROTTEN_FENCE.get());
                 output.accept(ModBlocks.ROTTEN_FENCE_GATE.get());
                     //bricks
