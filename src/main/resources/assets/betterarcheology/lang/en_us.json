@@ -83,7 +83,9 @@
   "item.betterarcheology.torrent_totem": "Totem of Torrents",
   "item.betterarcheology.torrent_totem_description": "Use on land to torrent dash",
   "item.betterarcheology.soul_totem": "Totem of Souls",
-  "item.betterarcheology.soul_totem_description": "Ability: Damage target & regain health",
+  "item.betterarcheology.soul_totem_description": "Damage target & regain health",
+  "block.betterarcheology.growth_totem": "Totem of Growth",
+  "block.betterarcheology.growth_totem_tooltip": "Its glow speeds up nearby crop growth when placed",
 
   "entity.minecraft.villager.betterarcheology.archeologist": "Archeologist",
 

@@ -83,7 +83,9 @@
   "item.betterarcheology.torrent_totem": "Totem der Strömungen",
   "item.betterarcheology.torrent_totem_description": "Nutze für einen Strömungs-Sprung and Land",
   "item.betterarcheology.soul_totem": "Totem der Seelen",
-  "item.betterarcheology.soul_totem_description": "Fähigkeit: Ziel schaden zufügen & Leben regenerieren",
+  "item.betterarcheology.soul_totem_description": "Ziel schaden zufügen & Leben regenerieren",
+  "block.betterarcheology.growth_totem": "Totem des Wachstums",
+  "block.betterarcheology.growth_totem_tooltip": "Sein Glühen scheint das Wachstum von Pflanzen zu erhöhen, wenn es in der Nähe steht",
 
   "entity.minecraft.villager.archeologist": "Archäologe",
 

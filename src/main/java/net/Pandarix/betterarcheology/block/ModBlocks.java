@@ -3,9 +3,8 @@ package net.Pandarix.betterarcheology.block;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.custom.*;
 import net.Pandarix.betterarcheology.item.ModItems;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -130,6 +129,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> VASE_GREEN = registerBlock("vase_green", () -> new VaseBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT).sound(SoundType.DECORATED_POT)));
 
     public static final RegistryObject<Block> EVOKER_TRAP = registerBlock("evoker_trap", () -> new EvokerTrapBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(25f)));
+
+    public static final RegistryObject<Block> GROWTH_TOTEM = registerRareBlock("growth_totem", () -> new GrowthTotemBlock(() -> MobEffects.GLOWING, 15, BlockBehaviour.Properties.copy(Blocks.POPPY).sound(SoundType.AMETHYST).offsetType(BlockBehaviour.OffsetType.NONE).lightLevel(
+            (state) -> 15)));
 
     //REGISTERING--------------------------------------------------------------------------//
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
