@@ -29,7 +29,7 @@
             },
             {
               "type": "minecraft:loot_table",
-              "name": "betterarcheology:blocks/loot_from_loot_vase"
+              "name": "betterarcheology:blocks/loot_from_green_loot_vase"
             }
           ]
         }

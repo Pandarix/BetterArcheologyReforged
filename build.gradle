@@ -20,7 +20,7 @@ plugins {
 
 apply plugin: "org.spongepowered.mixin"
 
-version = '1.0.2'
+version = '1.0.6'
 group = 'net.Pandarix.betterarcheology'
 
 base {
