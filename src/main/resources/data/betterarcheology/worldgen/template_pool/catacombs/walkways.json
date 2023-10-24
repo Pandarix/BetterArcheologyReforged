@@ -1,6 +1,6 @@
 {
   "name": "betterarcheology:catacombs/walkways",
-  "fallback": "minecraft:empty",
+  "fallback": "betterarcheology:catacombs/endpieces",
 
   "elements": [
     {
@@ -15,7 +15,7 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 1,
       "element": {
 
         "location": "betterarcheology:catacombs/catacombs_tunnel_2",
