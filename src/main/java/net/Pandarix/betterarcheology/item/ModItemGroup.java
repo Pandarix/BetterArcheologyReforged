@@ -49,6 +49,9 @@ public class ModItemGroup {
                 output.accept(ModBlocks.OCELOT_FOSSIL.get());
                 output.accept(ModBlocks.OCELOT_FOSSIL_BODY.get());
                 output.accept(ModBlocks.OCELOT_FOSSIL_HEAD.get());
+                output.accept(ModBlocks.WOLF_FOSSIL.get());
+                output.accept(ModBlocks.WOLF_FOSSIL_BODY.get());
+                output.accept(ModBlocks.WOLF_FOSSIL_HEAD.get());
                 output.accept(ModBlocks.SHEEP_FOSSIL.get());
                 output.accept(ModBlocks.SHEEP_FOSSIL_BODY.get());
                 output.accept(ModBlocks.SHEEP_FOSSIL_HEAD.get());

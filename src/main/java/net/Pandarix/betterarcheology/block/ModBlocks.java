@@ -82,6 +82,13 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> CREEPER_FOSSIL_BODY = registerRareBlock("creeper_fossil_body", () -> new CreeperFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
+    //Wolf
+    public static final RegistryObject<Block> WOLF_FOSSIL = registerRareBlock("wolf_fossil", () -> new WolfFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> WOLF_FOSSIL_HEAD = registerRareBlock("wolf_fossil_head", () -> new WolfFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> WOLF_FOSSIL_BODY = registerRareBlock("wolf_fossil_body", () -> new WolfFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
     //-----------ROTTEN WOOD-------------//
     public static final WoodType ROTTEN_WOOD_TYPE = registerWoodType("rotten_wood");
     public static final BlockSetType ROTTEN_WOOD_BLOCKSET = registerBlockSetType("rotten_wood");
