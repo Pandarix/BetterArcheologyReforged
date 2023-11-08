@@ -61,6 +61,13 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> OCELOT_FOSSIL_BODY = registerRareBlock("ocelot_fossil_body", () -> new OcelotFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
+    //Guardian
+    public static final RegistryObject<Block> GUARDIAN_FOSSIL = registerRareBlock("guardian_fossil", () -> new GuardianFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> GUARDIAN_FOSSIL_HEAD = registerRareBlock("guardian_fossil_head", () -> new GuardianFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> GUARDIAN_FOSSIL_BODY = registerRareBlock("guardian_fossil_body", () -> new GuardianFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
     //Sheep
     public static final RegistryObject<Block> SHEEP_FOSSIL = registerRareBlock("sheep_fossil", () -> new SheepFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 

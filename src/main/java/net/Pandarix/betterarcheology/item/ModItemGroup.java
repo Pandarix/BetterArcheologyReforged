@@ -55,6 +55,9 @@ public class ModItemGroup {
                 output.accept(ModBlocks.SHEEP_FOSSIL.get());
                 output.accept(ModBlocks.SHEEP_FOSSIL_BODY.get());
                 output.accept(ModBlocks.SHEEP_FOSSIL_HEAD.get());
+                output.accept(ModBlocks.GUARDIAN_FOSSIL.get());
+                output.accept(ModBlocks.GUARDIAN_FOSSIL_HEAD.get());
+                output.accept(ModBlocks.GUARDIAN_FOSSIL_BODY.get());
                     //blocks
                 output.accept(ModBlocks.SUSPICIOUS_RED_SAND.get());
                 output.accept(ModBlocks.SUSPICIOUS_RED_SAND.get());

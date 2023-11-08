@@ -144,6 +144,30 @@
           }
         ]
       }
+    },
+    "betterarcheology:guardian_fossil_body": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "betterarcheology:guardian_fossil_body"
+            ]
+          }
+        ]
+      }
+    },
+    "betterarcheology:guardian_fossil_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "betterarcheology:guardian_fossil_head"
+            ]
+          }
+        ]
+      }
     }
   },
   "display": {
@@ -200,6 +224,12 @@
     ],
     [
       "betterarcheology:wolf_fossil_body"
+    ],
+    [
+      "betterarcheology:guardian_fossil_head"
+    ],
+    [
+      "betterarcheology:guardian_fossil_body"
     ]
   ],
   "sends_telemetry_event": true

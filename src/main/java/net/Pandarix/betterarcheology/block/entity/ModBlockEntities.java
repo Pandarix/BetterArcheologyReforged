@@ -18,6 +18,8 @@ public class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<ChickenFossilBlockEntity>> CHICKEN_FOSSIL = BLOCK_ENTITIES.register("chicken_fossil", ()-> BlockEntityType.Builder.of(ChickenFossilBlockEntity::new, ModBlocks.CHICKEN_FOSSIL.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<GuardianFossilBlockEntity>> GUARDIAN_FOSSIL = BLOCK_ENTITIES.register("guardian_fossil", ()-> BlockEntityType.Builder.of(GuardianFossilBlockEntity::new, ModBlocks.GUARDIAN_FOSSIL.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<FleeFromBlockEntity>> FLEE_FROM = BLOCK_ENTITIES.register("flee_from", ()-> BlockEntityType.Builder.of(FleeFromBlockEntity::new, ModBlocks.OCELOT_FOSSIL.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<SkeletonFleeFromBlockEntity>> SKELETON_FLEE_FROM = BLOCK_ENTITIES.register("skeleton_flee_from", ()-> BlockEntityType.Builder.of(SkeletonFleeFromBlockEntity::new, ModBlocks.WOLF_FOSSIL.get()).build(null));
