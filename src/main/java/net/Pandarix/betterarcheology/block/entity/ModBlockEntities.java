@@ -24,5 +24,7 @@ public class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<SkeletonFleeFromBlockEntity>> SKELETON_FLEE_FROM = BLOCK_ENTITIES.register("skeleton_flee_from", ()-> BlockEntityType.Builder.of(SkeletonFleeFromBlockEntity::new, ModBlocks.WOLF_FOSSIL.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<RadianceTotemBlockEntity>> RADIANCE_TOTEM = BLOCK_ENTITIES.register("radiance_totem", ()-> BlockEntityType.Builder.of(RadianceTotemBlockEntity::new, ModBlocks.RADIANCE_TOTEM.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<SusBlockEntity>> SUSBLOCK = BLOCK_ENTITIES.register("sus_block", ()-> BlockEntityType.Builder.of(SusBlockEntity::new, ModBlocks.SUSPICIOUS_DIRT.get(), ModBlocks.SUSPICIOUS_RED_SAND.get(), ModBlocks.FOSSILIFEROUS_DIRT.get()).build(null));
 }

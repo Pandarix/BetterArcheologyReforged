@@ -1,14 +1,14 @@
 {
   "structures": [
     {
-      "structure": "betterarcheology:catacombs",
+      "structure": "betterarcheology:light_temple",
       "weight": 1
     }
   ],
   "placement": {
     "type": "minecraft:random_spread",
 
-    "salt": 122122138,
+    "salt": 164128139,
 
     "spacing": 150,
 

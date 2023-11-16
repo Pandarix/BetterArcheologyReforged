@@ -45,14 +45,6 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock {
         return null;
     }
 
-    @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        if(!level.isClientSide()) {
-            level.playSound(null, pos, SoundEvents.SKELETON_HURT, SoundSource.BLOCKS, 0.1f, 0.35f);
-        }
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-    }
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {

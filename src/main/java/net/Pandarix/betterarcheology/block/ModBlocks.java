@@ -144,8 +144,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> EVOKER_TRAP = registerBlock("evoker_trap", () -> new EvokerTrapBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(25f)));
 
-    public static final RegistryObject<Block> GROWTH_TOTEM = registerRareBlock("growth_totem", () -> new GrowthTotemBlock(() -> MobEffects.GLOWING, 15, BlockBehaviour.Properties.copy(Blocks.POPPY).sound(SoundType.AMETHYST).offsetType(BlockBehaviour.OffsetType.NONE).lightLevel(
-            (state) -> 15)));
+    public static final RegistryObject<Block> GROWTH_TOTEM = registerRareBlock("growth_totem", () -> new GrowthTotemBlock(() -> MobEffects.GLOWING, 15, BlockBehaviour.Properties.copy(Blocks.POPPY).sound(SoundType.AMETHYST).offsetType(BlockBehaviour.OffsetType.NONE).lightLevel((state) -> 15)));
+
+    public static final RegistryObject<Block> RADIANCE_TOTEM = registerRareBlock("radiance_totem", () -> new RadianceTotemBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN).sound(SoundType.AMETHYST).lightLevel((state) -> 15)));
 
     //REGISTERING--------------------------------------------------------------------------//
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
