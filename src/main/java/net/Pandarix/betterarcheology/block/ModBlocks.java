@@ -3,16 +3,17 @@ package net.Pandarix.betterarcheology.block;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.custom.*;
 import net.Pandarix.betterarcheology.item.ModItems;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -39,6 +40,9 @@ public class ModBlocks {
     //---------FOSSILIFEROUS BLOCKS-----------//
     public static final RegistryObject<Block> FOSSILIFEROUS_DIRT = registerBlock("fossiliferous_dirt", () -> new SusBlock(Blocks.DIRT, BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_GRAVEL), SoundEvents.BRUSH_GRAVEL, SoundEvents.BRUSH_GRAVEL_COMPLETED));
 
+    public static final RegistryObject<Block> CHISELED_BONE_BLOCK = registerBlock("chiseled_bone_block",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.3F).instrument(NoteBlockInstrument.XYLOPHONE).sound(SoundType.BONE_BLOCK)));
+
     //-------------FOSSILS---------------//
     //Villager
     public static final RegistryObject<Block> VILLAGER_FOSSIL = registerRareBlock("villager_fossil", () -> new VillagerFossilBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK).lightLevel(
@@ -56,6 +60,13 @@ public class ModBlocks {
     public static final RegistryObject<Block> OCELOT_FOSSIL_HEAD = registerRareBlock("ocelot_fossil_head", () -> new OcelotFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
     public static final RegistryObject<Block> OCELOT_FOSSIL_BODY = registerRareBlock("ocelot_fossil_body", () -> new OcelotFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    //Guardian
+    public static final RegistryObject<Block> GUARDIAN_FOSSIL = registerRareBlock("guardian_fossil", () -> new GuardianFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> GUARDIAN_FOSSIL_HEAD = registerRareBlock("guardian_fossil_head", () -> new GuardianFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> GUARDIAN_FOSSIL_BODY = registerRareBlock("guardian_fossil_body", () -> new GuardianFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
     //Sheep
     public static final RegistryObject<Block> SHEEP_FOSSIL = registerRareBlock("sheep_fossil", () -> new SheepFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
@@ -78,6 +89,13 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> CREEPER_FOSSIL_BODY = registerRareBlock("creeper_fossil_body", () -> new CreeperFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
 
+    //Wolf
+    public static final RegistryObject<Block> WOLF_FOSSIL = registerRareBlock("wolf_fossil", () -> new WolfFossilBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> WOLF_FOSSIL_HEAD = registerRareBlock("wolf_fossil_head", () -> new WolfFossilHeadBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
+    public static final RegistryObject<Block> WOLF_FOSSIL_BODY = registerRareBlock("wolf_fossil_body", () -> new WolfFossilBodyBlock(BlockBehaviour.Properties.copy(Blocks.SKELETON_SKULL).sound(SoundType.BONE_BLOCK)));
+
     //-----------ROTTEN WOOD-------------//
     public static final WoodType ROTTEN_WOOD_TYPE = registerWoodType("rotten_wood");
     public static final BlockSetType ROTTEN_WOOD_BLOCKSET = registerBlockSetType("rotten_wood");
@@ -97,6 +115,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> ROTTEN_TRAPDOOR = registerBlock("rotten_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR).sound(SoundType.STEM), ROTTEN_WOOD_BLOCKSET));
 
     public static final RegistryObject<Block> ROTTEN_DOOR = registerBlock("rotten_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR).sound(SoundType.STEM), ROTTEN_WOOD_BLOCKSET));
+
+    public static final RegistryObject<Block> ROTTEN_PRESSURE_PLATE = registerBlock("rotten_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(Blocks.OAK_PRESSURE_PLATE).sound(SoundType.STEM), ROTTEN_WOOD_BLOCKSET));
 
     //-------------MUD Brick Stuff----------------//
     public static final RegistryObject<Block> INFESTED_MUD_BRICKS = registerBlock("infested_mud_bricks", () -> new InfestedBlock(Blocks.MUD_BRICKS, BlockBehaviour.Properties.copy(Blocks.INFESTED_STONE_BRICKS)));
@@ -118,7 +138,15 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> VASE_CREEPER = registerBlock("vase_creeper", () -> new VaseBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT).sound(SoundType.DECORATED_POT)));
 
+    public static final RegistryObject<Block> LOOT_VASE_GREEN = registerBlock("loot_vase_green", () -> new LootVaseBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT).sound(SoundType.DECORATED_POT)));
+
+    public static final RegistryObject<Block> VASE_GREEN = registerBlock("vase_green", () -> new VaseBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT).sound(SoundType.DECORATED_POT)));
+
     public static final RegistryObject<Block> EVOKER_TRAP = registerBlock("evoker_trap", () -> new EvokerTrapBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(25f)));
+
+    public static final RegistryObject<Block> GROWTH_TOTEM = registerRareBlock("growth_totem", () -> new GrowthTotemBlock(() -> MobEffects.GLOWING, 15, BlockBehaviour.Properties.copy(Blocks.POPPY).sound(SoundType.AMETHYST).offsetType(BlockBehaviour.OffsetType.NONE).lightLevel((state) -> 15)));
+
+    public static final RegistryObject<Block> RADIANCE_TOTEM = registerRareBlock("radiance_totem", () -> new RadianceTotemBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN).sound(SoundType.AMETHYST).lightLevel((state) -> 15)));
 
     //REGISTERING--------------------------------------------------------------------------//
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

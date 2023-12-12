@@ -31,6 +31,8 @@ public class ModItemGroup {
                 output.accept(ModItems.BOMB_ITEM.get());
                 output.accept(ModItems.TORRENT_TOTEM.get());
                 output.accept(ModItems.SOUL_TOTEM.get());
+                output.accept(ModBlocks.GROWTH_TOTEM.get());
+                output.accept(ModBlocks.RADIANCE_TOTEM.get());
                 output.accept(ModItems.ARTIFACT_SHARDS.get());
                 output.accept(ModItems.UNIDENTIFIED_ARTIFACT.get());
                 //BLOCKS
@@ -48,13 +50,20 @@ public class ModItemGroup {
                 output.accept(ModBlocks.OCELOT_FOSSIL.get());
                 output.accept(ModBlocks.OCELOT_FOSSIL_BODY.get());
                 output.accept(ModBlocks.OCELOT_FOSSIL_HEAD.get());
+                output.accept(ModBlocks.WOLF_FOSSIL.get());
+                output.accept(ModBlocks.WOLF_FOSSIL_BODY.get());
+                output.accept(ModBlocks.WOLF_FOSSIL_HEAD.get());
                 output.accept(ModBlocks.SHEEP_FOSSIL.get());
                 output.accept(ModBlocks.SHEEP_FOSSIL_BODY.get());
                 output.accept(ModBlocks.SHEEP_FOSSIL_HEAD.get());
+                output.accept(ModBlocks.GUARDIAN_FOSSIL.get());
+                output.accept(ModBlocks.GUARDIAN_FOSSIL_HEAD.get());
+                output.accept(ModBlocks.GUARDIAN_FOSSIL_BODY.get());
                     //blocks
                 output.accept(ModBlocks.SUSPICIOUS_RED_SAND.get());
                 output.accept(ModBlocks.SUSPICIOUS_RED_SAND.get());
                 output.accept(ModBlocks.FOSSILIFEROUS_DIRT.get());
+                output.accept(ModBlocks.CHISELED_BONE_BLOCK.get());
                     //wood
                 output.accept(ModBlocks.ROTTEN_LOG.get());
                 output.accept(ModBlocks.ROTTEN_PLANKS.get());
@@ -62,6 +71,7 @@ public class ModItemGroup {
                 output.accept(ModBlocks.ROTTEN_SLAB.get());
                 output.accept(ModBlocks.ROTTEN_TRAPDOOR.get());
                 output.accept(ModBlocks.ROTTEN_DOOR.get());
+                output.accept(ModBlocks.ROTTEN_PRESSURE_PLATE.get());
                 output.accept(ModBlocks.ROTTEN_FENCE.get());
                 output.accept(ModBlocks.ROTTEN_FENCE_GATE.get());
                     //bricks
@@ -72,6 +82,7 @@ public class ModItemGroup {
                     //vases
                 output.accept(ModBlocks.VASE.get());
                 output.accept(ModBlocks.VASE_CREEPER.get());
+                output.accept(ModBlocks.VASE_GREEN.get());
                 output.accept(ModBlocks.EVOKER_TRAP.get());
                     //enchantments
                 output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.SOARING_WINDS.get(), 1)).setHoverName(Component.translatable("item.betterarcheology.identified_artifact").withStyle(ChatFormatting.RESET, ChatFormatting.YELLOW)));

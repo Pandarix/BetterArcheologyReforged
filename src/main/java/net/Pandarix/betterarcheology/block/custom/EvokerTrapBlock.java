@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
 public class EvokerTrapBlock extends HorizontalDirectionalBlock {
@@ -33,6 +34,11 @@ public class EvokerTrapBlock extends HorizontalDirectionalBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    public @Nullable PushReaction getPistonPushReaction(BlockState state) {
+        return PushReaction.BLOCK;
     }
 
     @Override

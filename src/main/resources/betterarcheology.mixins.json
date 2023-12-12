@@ -5,6 +5,7 @@
   "refmap": "betterarcheology.refmap.json",
   "mixins": [
     "AddCreeperGoalsMixin",
+    "AddSkeletonGoalsMixin",
     "ElytraStartupMixin",
     "FasterBrushingMixin",
     "TorrentTotemItemTickMixin",

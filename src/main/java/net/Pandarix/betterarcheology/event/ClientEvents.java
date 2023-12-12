@@ -49,6 +49,14 @@ public class ClientEvents {
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CREEPER_FOSSIL.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CREEPER_FOSSIL_BODY.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.CREEPER_FOSSIL_HEAD.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.WOLF_FOSSIL.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.WOLF_FOSSIL_BODY.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.WOLF_FOSSIL_HEAD.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.GUARDIAN_FOSSIL.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.GUARDIAN_FOSSIL_BODY.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.GUARDIAN_FOSSIL_HEAD.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.GROWTH_TOTEM.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.RADIANCE_TOTEM.get(), RenderType.cutout());
         }
     }
 }
