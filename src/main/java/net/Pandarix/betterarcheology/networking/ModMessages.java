@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.SimpleChannel;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class ModMessages {
@@ -17,7 +18,7 @@ public class ModMessages {
     }
 
     public static void register() {
-        SimpleChannel net = NetworkRegistry.ChannelBuilder
+        SimpleChannel net = NetworkRegistry.
                 .named(new ResourceLocation(BetterArcheology.MOD_ID, "messages"))
                 .networkProtocolVersion(() -> "1.0")
                 .clientAcceptedVersions(s -> true)

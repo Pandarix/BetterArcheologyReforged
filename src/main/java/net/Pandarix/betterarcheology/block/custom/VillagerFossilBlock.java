@@ -7,8 +7,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -33,8 +31,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -117,7 +113,7 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof VillagerFossilBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (VillagerFossilBlockEntity)entity, pPos);
+                pPlayer.openMenu((VillagerFossilBlockEntity)entity);
             } else {
                 throw new IllegalStateException("VillagerFossilBlockEntity Container provider is missing!");
             }
