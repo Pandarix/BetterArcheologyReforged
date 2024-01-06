@@ -20,7 +20,7 @@ plugins {
 
 apply plugin: "org.spongepowered.mixin"
 
-version = '1.1.1'
+version = '1.1.2-1.20.1'
 group = 'net.Pandarix.betterarcheology'
 
 base {
@@ -177,6 +177,10 @@ dependencies {
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    // YUNG's API
+    implementation fg.deobf("com.yungnickyoung.minecraft." +
+            "yungsapi:YungsApi:${yungsapi_mc_version}-Forge-${yungsapi_version}")
+
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
@@ -213,6 +217,7 @@ def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
 def replaceProperties = [
         minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
         forge_version: forge_version, forge_version_range: forge_version_range,
+        yungsapi_mc_version: yungsapi_mc_version, yungsapi_version: yungsapi_version,
         loader_version_range: loader_version_range,
         mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
         mod_authors: mod_authors, mod_description: mod_description
@@ -232,7 +237,7 @@ jar {
         attributes([
                 "Specification-Title"     : 'betterarcheology',
                 "Specification-Vendor"    : 'Pandarix',
-                "Specification-Version"   : "1.1.1", // We are version 1 of ourselves
+                "Specification-Version"   : "1.1.2-1.20.1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : 'Pandarix',
