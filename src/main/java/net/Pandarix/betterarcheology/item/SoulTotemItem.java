@@ -69,7 +69,6 @@ public class SoulTotemItem extends Item {
                         Vec3 playerPos = player.position();
                         Vec3 targetPos = entity.position();
                         Vec3 toPlayerPos = playerPos.subtract(targetPos);
-                        BetterArcheology.LOGGER.info("Movement: " + toPlayerPos);
                         for (float f = 0; f <= 1; f += 0.05) {
                             pLevel.addParticle(ParticleTypes.SCULK_SOUL,
                                     lerp(playerPos.x, targetPos.x, f),
