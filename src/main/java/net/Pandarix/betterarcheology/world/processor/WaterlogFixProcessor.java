@@ -21,6 +21,8 @@ import java.util.Optional;
 
 /**
  * A patchwork fix for https://bugs.mojang.com/browse/MC-130584.
+ *
+ * @author yungnickyoung
  */
 public class WaterlogFixProcessor extends StructureProcessor implements ISafeWorldModifier {
     public static final WaterlogFixProcessor INSTANCE = new WaterlogFixProcessor();
