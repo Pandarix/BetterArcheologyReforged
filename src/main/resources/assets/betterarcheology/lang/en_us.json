@@ -111,14 +111,10 @@
 
   "enchantment.betterarcheology.penetrating_strike": "Penetrating Strike",
   "enchantment.betterarcheology.penetrating_strike.desc": "Partially ignores effects of Protection Enchantments",
-  "item.betterarcheology.penetrating_strike_tooltip": "Partially ignores effects of Protection Enchantments",
   "enchantment.betterarcheology.seas_bounty": "Sea's Bounty",
   "enchantment.betterarcheology.seas_bounty.desc": "Catch a wider variety of treasures from the depths",
-  "item.betterarcheology.seas_bounty_tooltip": "Catch a wider variety of treasures from the depths",
   "enchantment.betterarcheology.soaring_winds": "Soaring Winds",
   "enchantment.betterarcheology.soaring_winds.desc": "Harnesses winds to give a startup-boost when using an Elytra",
-  "item.betterarcheology.soaring_winds_tooltip": "Harnesses winds to give a startup-boost when using an Elytra",
   "enchantment.betterarcheology.tunneling": "Tunneling",
-  "enchantment.betterarcheology.tunneling.desc": "Also breaks the Block below the mined block",
-  "item.betterarcheology.tunneling_tooltip": "Also breaks the Block below the mined block"
+  "enchantment.betterarcheology.tunneling.desc": "Also breaks the Block below the mined block"
 }
