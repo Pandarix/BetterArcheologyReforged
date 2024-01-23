@@ -110,11 +110,15 @@
   "entity.minecraft.villager.archeologist": "Archäologe",
 
   "enchantment.betterarcheology.penetrating_strike": "Durchdringender Hieb",
+  "enchantment.betterarcheology.penetrating_strike.desc": "Ignoriert die Effekte von Schutz-Verzauberungen teilweise",
   "item.betterarcheology.penetrating_strike_tooltip": "Ignoriert die Effekte von Schutz-Verzauberungen teilweise",
   "enchantment.betterarcheology.seas_bounty": "Reichtum des Meeres",
+  "enchantment.betterarcheology.seas_bounty.desc": "Ermöglicht das Fangen eines größeren Spektrums von Schätzen",
   "item.betterarcheology.seas_bounty_tooltip": "Ermöglicht das Fangen eines größeren Spektrums von Schätzen",
   "enchantment.betterarcheology.soaring_winds": "Aufwinde",
+  "enchantment.betterarcheology.soaring_winds.desc": "Bändigt den Wind, um beim Starten mit Elytren einen Start-Boost zu geben",
   "item.betterarcheology.soaring_winds_tooltip": "Bändigt den Wind, um beim Starten mit Elytren einen Start-Boost zu geben",
   "enchantment.betterarcheology.tunneling": "Tunnelbau",
+  "enchantment.betterarcheology.tunneling.desc": "Baut auch den Block unterhalb des abgebauten Blocks ab",
   "item.betterarcheology.tunneling_tooltip": "Baut auch den Block unterhalb des abgebauten Blocks ab"
 }
