@@ -91,6 +91,9 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'betterarcheology'
 
@@ -167,6 +170,10 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    maven {
+        name = "C4"
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 dependencies {
@@ -198,6 +205,10 @@ dependencies {
 
     // Apply Mixin AP
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // CURIOS
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}")
 }
 
 mixin {
@@ -237,7 +248,7 @@ jar {
         attributes([
                 "Specification-Title"     : 'betterarcheology',
                 "Specification-Vendor"    : 'Pandarix',
-                "Specification-Version"   : "1.1.4-1.20.1", // We are version 1 of ourselves
+                "Specification-Version"   : "1.1.5-1.20.1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : 'Pandarix',
