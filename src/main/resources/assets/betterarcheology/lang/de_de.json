@@ -107,7 +107,7 @@
   "block.betterarcheology.radiance_totem_message_2": "Erleuchtet Tiere",
   "block.betterarcheology.radiance_totem_message_3": "Erleuchtet Spieler",
 
-  "entity.minecraft.villager.archeologist": "Archäologe",
+  "entity.minecraft.villager.betterarcheology.archeologist": "Archäologe",
 
   "enchantment.betterarcheology.penetrating_strike": "Durchdringender Hieb",
   "enchantment.betterarcheology.penetrating_strike.desc": "Ignoriert die Effekte von Schutz-Verzauberungen teilweise",
