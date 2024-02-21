@@ -30,24 +30,34 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemStackHandler = new ItemStackHandler(1){
+public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvider
+{
+    private final ItemStackHandler itemStackHandler = new ItemStackHandler(1)
+    {
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int slot)
+        {
             setChanged();
+            if (level !=null && !level.isClientSide())
+            {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
     };
 
     private LazyOptional<IItemHandler> lazyOptional = LazyOptional.empty();
 
-    public VillagerFossilBlockEntity(BlockPos pos, BlockState state) {
+    public VillagerFossilBlockEntity(BlockPos pos, BlockState state)
+    {
         super(ModBlockEntities.VILLAGER_FOSSIL.get(), pos, state);
     }
 
     //ITEMHANDLER stuff----------------------------------------------------------------------------------//
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER){
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
+    {
+        if (cap == ForgeCapabilities.ITEM_HANDLER)
+        {
             return lazyOptional.cast();
         }
 
@@ -55,33 +65,39 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    public void onLoad() {
+    public void onLoad()
+    {
         super.onLoad();
-        lazyOptional = LazyOptional.of(()-> itemStackHandler);
+        lazyOptional = LazyOptional.of(() -> itemStackHandler);
     }
 
     @Override
-    public void invalidateCaps() {
+    public void invalidateCaps()
+    {
         super.invalidateCaps();
         lazyOptional.invalidate();
     }
 
     //Reading & writing----------------------------------------------------------------------------------//
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
+    protected void saveAdditional(CompoundTag nbt)
+    {
         nbt.put("inventory", itemStackHandler.serializeNBT());
         super.saveAdditional(nbt);
     }
 
     @Override
-    public void load(CompoundTag nbt) {
+    public void load(CompoundTag nbt)
+    {
         super.load(nbt);
         itemStackHandler.deserializeNBT(nbt.getCompound("inventory"));
     }
 
-    public void drops() {
+    public void drops()
+    {
         SimpleContainer inventory = new SimpleContainer(itemStackHandler.getSlots());
-        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+        for (int i = 0; i < itemStackHandler.getSlots(); i++)
+        {
             inventory.setItem(i, itemStackHandler.getStackInSlot(i));
         }
 
@@ -89,7 +105,8 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    public Component getDisplayName() {
+    public Component getDisplayName()
+    {
         return Component.translatable("block.betterarcheology.villager_fossil");
     }
 
@@ -107,35 +124,44 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer)
+    {
         return new FossilInventoryMenu(pContainerId, pPlayerInventory, this);
     }
 
-    public ItemStack getInventoryContents() {
+    public ItemStack getInventoryContents()
+    {
         return itemStackHandler.getStackInSlot(0);
     }
 
-    public void setInventory(List<ItemStack> inventory) {
-        for (int i = 0; i < inventory.size(); i++) {
+    public void setInventory(List<ItemStack> inventory)
+    {
+        for (int i = 0; i < inventory.size(); i++)
+        {
             itemStackHandler.setStackInSlot(i, inventory.get(i));
 
-            if(this.level != null){
+            if (this.level != null)
+            {
                 int luminance = Block.byItem(this.getInventoryContents().getItem()).defaultBlockState().getLightEmission();
                 this.level.setBlock(this.getBlockPos(), level.getBlockState(this.getBlockPos()).setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance), 3);
             }
         }
     }
 
-    public static <E extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, E e) {
-        if(level.isClientSide()) {
+    public static <E extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, E e)
+    {
+        if (level.isClientSide())
+        {
             return;
         }
     }
 
     @Override
-    public void setChanged() {
+    public void setChanged()
+    {
         super.setChanged();
-        if(this.level != null){
+        if (this.level != null)
+        {
             int luminance = Block.byItem(this.getInventoryContents().getItem()).defaultBlockState().getLightEmission();
             this.level.setBlock(this.getBlockPos(), level.getBlockState(this.getBlockPos()).setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance), 3);
         }
@@ -144,11 +170,14 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     /*Synchronization to the client*/
     @Nullable
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
+    public Packet<ClientGamePacketListener> getUpdatePacket()
+    {
         return ClientboundBlockEntityDataPacket.create(this);
     }
+
     @Override
-    public CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag()
+    {
         return this.saveWithoutMetadata();
     }
 }
