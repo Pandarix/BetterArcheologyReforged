@@ -1,6 +1,5 @@
 package net.Pandarix.betterarcheology.screen;
 
-import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
 import net.Pandarix.betterarcheology.item.ModItems;
@@ -70,11 +69,11 @@ public class IdentifyingMenu extends AbstractContainerMenu {
             if (originalStack.getItem() instanceof BrushItem) {
                 if (isInInv(pIndex)) {
                     //inventory -> slots
-                    if (!this.moveItemStackTo(originalStack, 0, this.slots.size(), true)) {
+                    if (!this.moveItemStackTo(originalStack, this.slots.size()-3, this.slots.size()-2, true)) {
                         return ItemStack.EMPTY;
                     }
                     //slots -> inventory
-                } else if (!this.moveItemStackTo(originalStack, 0, ArcheologyTableBlockEntity.INV_SIZE, false)) {
+                } else if (!this.moveItemStackTo(originalStack, 0, this.slots.size()-ArcheologyTableBlockEntity.INV_SIZE-1, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -83,29 +82,32 @@ public class IdentifyingMenu extends AbstractContainerMenu {
             if (originalStack.is(ModItems.UNIDENTIFIED_ARTIFACT.get())) {
                 if (isInInv(pIndex)) {
                     //inventory -> slots
-                    if (!this.moveItemStackTo(originalStack, 1, this.slots.size(), true)) {
+                    if (!this.moveItemStackTo(originalStack, this.slots.size()-2, this.slots.size()-1, true)) {
                         return ItemStack.EMPTY;
                     }
                     //slots -> inventory
-                } else if (!this.moveItemStackTo(originalStack, 1, ArcheologyTableBlockEntity.INV_SIZE, false)) {
+                } else if (!this.moveItemStackTo(originalStack, 0, this.slots.size()-ArcheologyTableBlockEntity.INV_SIZE-1, false)) {
                     return ItemStack.EMPTY;
                 }
             }
 
-            if (isInInv(pIndex)) {
-                if (!this.moveItemStackTo(originalStack, ArcheologyTableBlockEntity.INV_SIZE, this.slots.size(), true)) {
+            if (!isInInv(pIndex)) {
+                if (!this.moveItemStackTo(originalStack, 0, this.slots.size()-ArcheologyTableBlockEntity.INV_SIZE-1, false)) {
                     return ItemStack.EMPTY;
                 }
+            }
+
+            if (originalStack.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
+            }
+
+            if (originalStack.getCount() == newStack.getCount()) {
                 return ItemStack.EMPTY;
             }
 
-            //If the to-be-moved-Itemstack is empty, replace the ItemStack with "Empty-Item"
-            if (originalStack.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
-            }
-            slot.setChanged();
+            slot.onTake(pPlayer, originalStack);
         }
 
         return newStack;
@@ -118,7 +120,7 @@ public class IdentifyingMenu extends AbstractContainerMenu {
     }
 
     private boolean isInInv(int invSlot) {
-        return invSlot < ArcheologyTableBlockEntity.INV_SIZE;
+        return invSlot < this.slots.size()-ArcheologyTableBlockEntity.INV_SIZE-1;
     }
 
     //Helper Method to add Players Inventoryslots to Screen
