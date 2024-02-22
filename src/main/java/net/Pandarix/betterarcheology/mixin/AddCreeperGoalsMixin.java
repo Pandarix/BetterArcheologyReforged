@@ -16,7 +16,6 @@ public class AddCreeperGoalsMixin
     @Redirect(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/goal/GoalSelector;addGoal(ILnet/minecraft/world/entity/ai/goal/Goal;)V", ordinal = 2))
     private void injectMethod(GoalSelector instance, int pPriority, Goal pGoal)
     {
-        BetterArcheology.LOGGER.warn("GOAL: " + pGoal + "\nPRIO: " + pPriority);
         instance.addGoal(pPriority, pGoal); //add what would've been added anyway
         instance.addGoal(pPriority, new FleeBlockGoal<>((Creeper) (Object) this, FleeFromBlockEntity.class, 1.0, 1.2));
     }
