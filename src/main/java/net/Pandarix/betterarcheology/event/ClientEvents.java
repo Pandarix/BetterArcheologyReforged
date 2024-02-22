@@ -16,11 +16,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-public class ClientEvents {
+public class ClientEvents
+{
     @Mod.EventBusSubscriber(modid = BetterArcheology.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ClientModBusEvents {
+    public static class ClientModBusEvents
+    {
         @SubscribeEvent
-        public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event)
+        {
             event.registerBlockEntityRenderer(ModBlockEntities.ARCHEOLOGY_TABLE.get(),
                     ArcheologyTableBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.SUSBLOCK.get(),
@@ -31,7 +34,8 @@ public class ClientEvents {
         }
 
         @SubscribeEvent
-        public static void clientSetup(FMLClientSetupEvent event){
+        public static void clientSetup(FMLClientSetupEvent event)
+        {
             //RENDERING
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.ROTTEN_DOOR.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.ROTTEN_TRAPDOOR.get(), RenderType.cutout());

@@ -14,21 +14,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class WolfFossilBodyBlock extends FossilBaseBodyBlock {
+public class WolfFossilBodyBlock extends FossilBaseBodyBlock
+{
     //Map of hitboxes for every direction the model can be facing
     private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 8, 15);
 
-    public WolfFossilBodyBlock(Properties settings) {
+    public WolfFossilBodyBlock(Properties settings)
+    {
         super(settings);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
+    {
         return SHAPE;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag)
+    {
         components.add(Component.translatable("block.betterarcheology.wolf_fossil_body_tooltip").withStyle(ChatFormatting.GRAY).append(Component.translatable("block.betterarcheology.fossil_body_set").withStyle(ChatFormatting.BLUE)));
         super.appendHoverText(stack, blockGetter, components, tooltipFlag);
     }

@@ -24,7 +24,8 @@ import java.util.Optional;
  *
  * @author yungnickyoung
  */
-public class WaterlogFixProcessor extends StructureProcessor implements ISafeWorldModifier {
+public class WaterlogFixProcessor extends StructureProcessor implements ISafeWorldModifier
+{
     public static final WaterlogFixProcessor INSTANCE = new WaterlogFixProcessor();
     public static final Codec<WaterlogFixProcessor> CODEC = Codec.unit(() -> INSTANCE);
 
@@ -39,42 +40,51 @@ public class WaterlogFixProcessor extends StructureProcessor implements ISafeWor
                                                              BlockPos jigsawPieceBottomCenterPos,
                                                              StructureTemplate.StructureBlockInfo blockInfoLocal,
                                                              StructureTemplate.StructureBlockInfo blockInfoGlobal,
-                                                             StructurePlaceSettings structurePlacementData) {
+                                                             StructurePlaceSettings structurePlacementData)
+    {
         // Check if block is waterloggable and not intended to be waterlogged
-        if (blockInfoGlobal.state().hasProperty(BlockStateProperties.WATERLOGGED) && !blockInfoGlobal.state().getValue(BlockStateProperties.WATERLOGGED)) {
+        if (blockInfoGlobal.state().hasProperty(BlockStateProperties.WATERLOGGED) && !blockInfoGlobal.state().getValue(BlockStateProperties.WATERLOGGED))
+        {
             ChunkPos currentChunkPos = new ChunkPos(blockInfoGlobal.pos());
             ChunkAccess currentChunk = levelReader.getChunk(currentChunkPos.x, currentChunkPos.z);
             int sectionYIndex = currentChunk.getSectionIndex(blockInfoGlobal.pos().getY());
 
             // Validate chunk section index. Sometimes the index is -1. Not sure why, but this will
             // at least prevent the game from crashing.
-            if (sectionYIndex < 0) {
+            if (sectionYIndex < 0)
+            {
                 return blockInfoGlobal;
             }
 
             LevelChunkSection currChunkSection = currentChunk.getSection(sectionYIndex);
 
-            if (getFluidStateSafe(levelReader, blockInfoGlobal.pos()).is(FluidTags.WATER)) {
+            if (getFluidStateSafe(levelReader, blockInfoGlobal.pos()).is(FluidTags.WATER))
+            {
                 setBlockStateSafe(levelReader, blockInfoGlobal.pos(), Blocks.STONE_BRICKS.defaultBlockState());
             }
 
             // Remove water in adjacent blocks
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-            for (Direction direction : Direction.values()) {
+            for (Direction direction : Direction.values())
+            {
                 mutable.set(blockInfoGlobal.pos()).move(direction);
-                if (currentChunkPos.x != mutable.getX() >> 4 || currentChunkPos.z != mutable.getZ() >> 4) {
+                if (currentChunkPos.x != mutable.getX() >> 4 || currentChunkPos.z != mutable.getZ() >> 4)
+                {
                     currentChunkPos = new ChunkPos(mutable);
                     currentChunk = levelReader.getChunk(currentChunkPos.x, currentChunkPos.z);
                     sectionYIndex = currentChunk.getSectionIndex(mutable.getY());
-                    if (sectionYIndex < 0) {
+                    if (sectionYIndex < 0)
+                    {
                         return blockInfoGlobal;
                     }
                     currChunkSection = currentChunk.getSection(sectionYIndex);
                 }
 
-                if (getFluidStateSafe(currChunkSection, mutable).is(FluidTags.WATER)) {
+                if (getFluidStateSafe(currChunkSection, mutable).is(FluidTags.WATER))
+                {
                     Optional<BlockState> blockState = getBlockStateSafe(currChunkSection, mutable);
-                    if (blockState.isPresent() && !(blockState.get().hasProperty(BlockStateProperties.WATERLOGGED) && blockState.get().getValue(BlockStateProperties.WATERLOGGED))) {
+                    if (blockState.isPresent() && !(blockState.get().hasProperty(BlockStateProperties.WATERLOGGED) && blockState.get().getValue(BlockStateProperties.WATERLOGGED)))
+                    {
                         setBlockStateSafe(currChunkSection, mutable, Blocks.STONE_BRICKS.defaultBlockState());
                     }
                 }
@@ -84,7 +94,8 @@ public class WaterlogFixProcessor extends StructureProcessor implements ISafeWor
         return blockInfoGlobal;
     }
 
-    protected StructureProcessorType<?> getType() {
+    protected StructureProcessorType<?> getType()
+    {
         return StructureProcessorTypes.WATERLOGFIX_PROCESSOR;
     }
 }

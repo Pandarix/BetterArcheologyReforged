@@ -9,14 +9,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class VaseBlock extends Block {
+public class VaseBlock extends Block
+{
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 14, 13);
-    public VaseBlock(BlockBehaviour.Properties settings) {
+
+    public VaseBlock(BlockBehaviour.Properties settings)
+    {
         super(settings);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
+    {
         return SHAPE;
     }
 }

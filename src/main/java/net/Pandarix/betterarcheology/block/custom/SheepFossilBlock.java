@@ -33,7 +33,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 import java.util.Map;
 
-public class SheepFossilBlock extends FossilBaseBlock {
+public class SheepFossilBlock extends FossilBaseBlock
+{
     public static final BooleanProperty PLAYING = BooleanProperty.create("playing"); //true while sound is played and for the duration of "playCooldown"
     private static final int playCooldown = 80; //used to prevent sound-spamming
     public static final IntegerProperty HORN_SOUND = IntegerProperty.create("horn_sound", 0, 7); //index of the goat horn sound currently used
@@ -57,23 +58,28 @@ public class SheepFossilBlock extends FossilBaseBlock {
                     Block.box(0, 9, 4, 4, 17.75, 12),
                     Block.box(-7.5, 14, 4, 5, 25, 12.25)));
 
-    public SheepFossilBlock(BlockBehaviour.Properties settings) {
+    public SheepFossilBlock(BlockBehaviour.Properties settings)
+    {
         super(settings);
         this.registerDefaultState(this.defaultBlockState().setValue(HORN_SOUND, 0).setValue(PLAYING, false));
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
+    {
         return SHEEP_SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
     }
 
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify)
+    {
         boolean powered = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
         boolean playing = (Boolean) state.getValue(PLAYING);
 
-        if (powered && !playing) {
+        if (powered && !playing)
+        {
             //play sound and set state to playing
-            if(!level.isClientSide()){
+            if (!level.isClientSide())
+            {
                 level.playSound(null, pos, SoundEvents.GOAT_HORN_SOUND_VARIANTS.get(state.getValue(HORN_SOUND)).value(), SoundSource.BLOCKS);
             }
             level.setBlock(pos, state.setValue(PLAYING, true), 3);
@@ -84,22 +90,30 @@ public class SheepFossilBlock extends FossilBaseBlock {
 
     //used to tune the SheepFossilBlock to an Index of the GoatHornsSounds
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit)
+    {
         //if sound is already being played, abort
-        if(pState.getValue(PLAYING)){return InteractionResult.FAIL;}
+        if (pState.getValue(PLAYING))
+        {
+            return InteractionResult.FAIL;
+        }
 
-        if (!pLevel.isClientSide()) {
+        if (!pLevel.isClientSide())
+        {
             //increase index or set to 0 if at max
-            if (pState.getValue(HORN_SOUND) + 1 <= 7) {
+            if (pState.getValue(HORN_SOUND) + 1 <= 7)
+            {
                 pLevel.setBlock(pPos, pState.setValue(HORN_SOUND, pState.getValue(HORN_SOUND) + 1).setValue(PLAYING, true), 3);
-            } else {
-                pLevel.setBlock(pPos, pState.setValue(HORN_SOUND, 0).setValue(PLAYING, true),3);
+            } else
+            {
+                pLevel.setBlock(pPos, pState.setValue(HORN_SOUND, 0).setValue(PLAYING, true), 3);
             }
 
             //play sound and set cooldown to reset "playing" property
             pLevel.playSound(null, pPos, SoundEvents.GOAT_HORN_SOUND_VARIANTS.get(pLevel.getBlockState(pPos).getValue(HORN_SOUND)).value(), SoundSource.BLOCKS);
             pLevel.scheduleTick(pPos, this, playCooldown);
-        } else {
+        } else
+        {
             //if on clientside, display a note particle
             pLevel.addParticle(ParticleTypes.NOTE, pPos.getX() + 0.5, pPos.getY() + 1.5, pPos.getZ() + 0.5, 0, 0.2, 0);
         }
@@ -107,20 +121,23 @@ public class SheepFossilBlock extends FossilBaseBlock {
     }
 
     @Override
-    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
+    {
         super.tick(pState, pLevel, pPos, pRandom);
         pLevel.setBlock(pPos, pState.setValue(PLAYING, false), 3);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
+    {
         super.createBlockStateDefinition(pBuilder);
         pBuilder.add(HORN_SOUND, PLAYING);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag)
+    {
         component.add(Component.translatable("block.betterarcheology.sheep_fossil_tooltip").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, getter, component, flag);
     }

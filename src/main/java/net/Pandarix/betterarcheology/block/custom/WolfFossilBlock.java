@@ -1,7 +1,6 @@
 package net.Pandarix.betterarcheology.block.custom;
 
 import com.google.common.collect.ImmutableMap;
-import net.Pandarix.betterarcheology.block.entity.FleeFromBlockEntity;
 import net.Pandarix.betterarcheology.block.entity.SkeletonFleeFromBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -24,7 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public class WolfFossilBlock extends FossilBaseWithEntityBlock {
+public class WolfFossilBlock extends FossilBaseWithEntityBlock
+{
     //Map of hitboxes for every direction the model can be facing
     private static final Map<Direction, VoxelShape> WOLF_SHAPES_FOR_DIRECTION = ImmutableMap.of(
             Direction.NORTH, Shapes.or(
@@ -40,28 +40,33 @@ public class WolfFossilBlock extends FossilBaseWithEntityBlock {
                     Block.box(2, 0, 4, 17, 16, 12),
                     Block.box(-6, 9, 4, 2, 16, 12)));
 
-    public WolfFossilBlock(Properties settings) {
+    public WolfFossilBlock(Properties settings)
+    {
         super(settings);
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+    {
         return new SkeletonFleeFromBlockEntity(pos, state);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
+    {
         return WOLF_SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState pState)
+    {
         return RenderShape.MODEL;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag)
+    {
         component.add(Component.translatable("block.betterarcheology.wolf_fossil_tooltip").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, getter, component, flag);
     }

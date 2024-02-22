@@ -5,7 +5,8 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ModStructures {
+public class ModStructures
+{
 
     /**
      * We are using the Deferred Registry system to register our structure as this is the preferred way on Forge.

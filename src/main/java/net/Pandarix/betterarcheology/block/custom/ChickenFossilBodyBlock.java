@@ -14,20 +14,24 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ChickenFossilBodyBlock extends FossilBaseBodyBlock {
+public class ChickenFossilBodyBlock extends FossilBaseBodyBlock
+{
     private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 6, 15);
 
-    public ChickenFossilBodyBlock(Properties settings) {
+    public ChickenFossilBodyBlock(Properties settings)
+    {
         super(settings);
     }
 
     @Override
-    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
+    {
         return SHAPE;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag)
+    {
         components.add(Component.translatable("block.betterarcheology.chicken_fossil_body_tooltip").withStyle(ChatFormatting.GRAY).append(Component.translatable("block.betterarcheology.fossil_body_set").withStyle(ChatFormatting.BLUE)));
         super.appendHoverText(stack, blockGetter, components, tooltipFlag);
     }

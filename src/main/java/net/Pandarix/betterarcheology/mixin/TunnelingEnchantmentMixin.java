@@ -15,19 +15,24 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DiggerItem.class)
-public class TunnelingEnchantmentMixin {
+public class TunnelingEnchantmentMixin
+{
     @Inject(method = "mineBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;hurtAndBreak(ILnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V", shift = At.Shift.AFTER))
-    private void injectMethod(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, CallbackInfoReturnable<Boolean> cir) {
+    private void injectMethod(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, CallbackInfoReturnable<Boolean> cir)
+    {
         //if it is enabled in the config and the stack exists, has Enchantments & is Tunneling
-        if (ModConfigs.ARTIFACT_ENCHANTMENTS_ENABLED.get() && !stack.isEmpty() && stack.isEnchanted() && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.TUNNELING.get(), stack) == 1) {
+        if (ModConfigs.ARTIFACT_ENCHANTMENTS_ENABLED.get() && !stack.isEmpty() && stack.isEnchanted() && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.TUNNELING.get(), stack) == 1)
+        {
             //if the tool is right for the block that should be broken
             //if the difference of the hardness of the block below is not more than 3,75
             BlockState blockBelow = level.getBlockState(pos.below());
 
-            if (stack.isCorrectToolForDrops(state) &&stack.isCorrectToolForDrops(blockBelow) && Math.abs(blockBelow.getDestroySpeed(level, pos.below()) - state.getDestroySpeed(level, pos)) <= 3.75) {
+            if (stack.isCorrectToolForDrops(state) && stack.isCorrectToolForDrops(blockBelow) && Math.abs(blockBelow.getDestroySpeed(level, pos.below()) - state.getDestroySpeed(level, pos)) <= 3.75)
+            {
                 //break the block below and damage the tool
                 level.destroyBlock(pos.below(), true, miner);
-                stack.hurtAndBreak(1, miner, (p) -> {
+                stack.hurtAndBreak(1, miner, (p) ->
+                {
                     p.broadcastBreakEvent(miner.getUsedItemHand());
                 });
             }

@@ -17,14 +17,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TorrentTotemItem extends Item {
-    public TorrentTotemItem(Item.Properties pProperties) {
+public class TorrentTotemItem extends Item
+{
+    public TorrentTotemItem(Item.Properties pProperties)
+    {
         super(pProperties);
     }
+
     private static final int speed = 2;
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
+    {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
 
         Vec3 rotationVector = pPlayer.getLookAngle();
@@ -38,30 +42,35 @@ public class TorrentTotemItem extends Item {
         pLevel.playSound(null, pPlayer, SoundEvents.PLAYER_SPLASH_HIGH_SPEED, SoundSource.NEUTRAL, 0.25F, 0.35F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
 
         pPlayer.getCooldowns().addCooldown(this, 120);
-        itemStack.hurtAndBreak(1, pPlayer, (p) -> {
+        itemStack.hurtAndBreak(1, pPlayer, (p) ->
+        {
             p.broadcastBreakEvent(pPlayer.getUsedItemHand());
         });
         return InteractionResultHolder.consume(itemStack);
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean isEnchantable(ItemStack stack)
+    {
         return false;
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced)
+    {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(Component.translatable("item.betterarcheology.torrent_totem_description").withStyle(ChatFormatting.DARK_AQUA));
     }
 
     @Override
-    public int getUseDuration(ItemStack pStack) {
+    public int getUseDuration(ItemStack pStack)
+    {
         return 0;
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack pStack) {
+    public UseAnim getUseAnimation(ItemStack pStack)
+    {
         return UseAnim.BOW;
     }
 }

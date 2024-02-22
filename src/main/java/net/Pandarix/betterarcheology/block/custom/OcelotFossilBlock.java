@@ -24,7 +24,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public class OcelotFossilBlock extends FossilBaseWithEntityBlock {
+public class OcelotFossilBlock extends FossilBaseWithEntityBlock
+{
     //Map of hitboxes for every direction the model can be facing
     private static final Map<Direction, VoxelShape> OCELOT_SHAPES_FOR_DIRECTION = ImmutableMap.of(
             Direction.NORTH, Shapes.or(
@@ -40,28 +41,33 @@ public class OcelotFossilBlock extends FossilBaseWithEntityBlock {
                     Block.box(0.5, 0, 5, 18.25, 9.5, 11),
                     Block.box(-6.5, 5, 5.5, 1.5, 10, 10.5)));
 
-    public OcelotFossilBlock(BlockBehaviour.Properties settings) {
+    public OcelotFossilBlock(BlockBehaviour.Properties settings)
+    {
         super(settings);
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+    {
         return new FleeFromBlockEntity(pos, state);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
+    {
         return OCELOT_SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState pState)
+    {
         return RenderShape.MODEL;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag)
+    {
         component.add(Component.translatable("block.betterarcheology.ocelot_fossil_tooltip").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, getter, component, flag);
     }

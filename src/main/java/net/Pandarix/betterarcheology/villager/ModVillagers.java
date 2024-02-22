@@ -10,7 +10,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ModVillagers {
+public class ModVillagers
+{
     //REGISTRIES--------------------------------------------------------------------//
     public static final DeferredRegister<PoiType> POI_TYPES =
             DeferredRegister.create(ForgeRegistries.POI_TYPES, BetterArcheology.MOD_ID);
@@ -28,7 +29,8 @@ public class ModVillagers {
                     SoundEvents.BRUSH_SAND));
 
     //REGISTRATION---------------------------------------------------------------//
-    public static void registerVillagers() {
+    public static void registerVillagers()
+    {
         BetterArcheology.LOGGER.debug("Registering Villagers for " + BetterArcheology.MOD_ID);
     }
 }

@@ -19,12 +19,15 @@ import net.minecraft.world.level.LightLayer;
 import java.util.List;
 import java.util.Objects;
 
-public class ArcheologyTableBlockEntityRenderer implements BlockEntityRenderer<ArcheologyTableBlockEntity> {
-    public ArcheologyTableBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+public class ArcheologyTableBlockEntityRenderer implements BlockEntityRenderer<ArcheologyTableBlockEntity>
+{
+    public ArcheologyTableBlockEntityRenderer(BlockEntityRendererProvider.Context context)
+    {
     }
 
     @Override
-    public void render(ArcheologyTableBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    public void render(ArcheologyTableBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay)
+    {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
         //gets List of all Items in inventory and stores corresponding indexes
@@ -53,16 +56,19 @@ public class ArcheologyTableBlockEntityRenderer implements BlockEntityRenderer<A
         pPoseStack.mulPose(Axis.XP.rotationDegrees(90));
 
         //if there is no identified artifact in the output slot, render the unidentified one
-        if (identified.isEmpty()) {
+        if (identified.isEmpty())
+        {
             itemRenderer.renderStatic(unidentified, ItemDisplayContext.GUI, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos().above()), OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, pBlockEntity.getLevel(), 1);
-        } else {
+        } else
+        {
             itemRenderer.renderStatic(identified, ItemDisplayContext.GUI, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos().above()), OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, pBlockEntity.getLevel(), 1);
         }
 
         pPoseStack.popPose();
     }
 
-    private int getLightLevel(Level world, BlockPos pos) {
+    private int getLightLevel(Level world, BlockPos pos)
+    {
         int bLight = world.getBrightness(LightLayer.BLOCK, pos);
         int sLight = world.getBrightness(LightLayer.SKY, pos);
         return LightTexture.pack(bLight, sLight);

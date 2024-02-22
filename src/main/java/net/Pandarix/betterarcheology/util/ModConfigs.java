@@ -1,12 +1,11 @@
 package net.Pandarix.betterarcheology.util;
 
-import com.mojang.datafixers.util.Pair;
-import net.Pandarix.betterarcheology.BetterArcheology;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
-public class ModConfigs {
+public class ModConfigs
+{
     public static final String CATEGORY_ARTIFACTS = "artifacts";
     public static final String CATEGORY_FOSSILS = "fossils";
 
@@ -16,11 +15,13 @@ public class ModConfigs {
     public static ForgeConfigSpec.DoubleValue PENETRATING_STRIKE_PROTECTION_IGNORANCE;
     public static ForgeConfigSpec.DoubleValue SOARING_WINDS_BOOST;
 
-    public static void register() {
+    public static void register()
+    {
         registerServerConfigs();
     }
 
-    private static void registerServerConfigs() {
+    private static void registerServerConfigs()
+    {
         ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
 
         SERVER_BUILDER.comment("Settings for Artifacts").push(CATEGORY_ARTIFACTS);

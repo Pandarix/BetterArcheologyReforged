@@ -18,7 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public class VillagerFossilBodyBlock extends FossilBaseBodyBlock {
+public class VillagerFossilBodyBlock extends FossilBaseBodyBlock
+{
     //Map of hitboxes for every direction the model can be facing
     private static final Map<Direction, VoxelShape> SHAPES_FOR_DIRECTION = ImmutableMap.of(
             Direction.NORTH, Block.box(0, 0, 8, 16, 12, 15),
@@ -26,17 +27,20 @@ public class VillagerFossilBodyBlock extends FossilBaseBodyBlock {
             Direction.EAST, Block.box(1, 0, 0, 8, 12, 16),
             Direction.WEST, Block.box(8, 0, 0, 15, 12, 16));
 
-    public VillagerFossilBodyBlock(BlockBehaviour.Properties settings) {
+    public VillagerFossilBodyBlock(BlockBehaviour.Properties settings)
+    {
         super(settings);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
+    {
         return SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag)
+    {
         components.add(Component.translatable("block.betterarcheology.villager_fossil_body_tooltip").withStyle(ChatFormatting.GRAY).append(Component.translatable("block.betterarcheology.fossil_body_set").withStyle(ChatFormatting.BLUE)));
         super.appendHoverText(stack, blockGetter, components, tooltipFlag);
     }

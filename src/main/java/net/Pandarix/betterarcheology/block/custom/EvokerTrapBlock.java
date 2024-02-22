@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.block.custom;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -19,76 +20,106 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
-public class EvokerTrapBlock extends HorizontalDirectionalBlock {
+public class EvokerTrapBlock extends HorizontalDirectionalBlock
+{
+    public static final MapCodec<EvokerTrapBlock> CODEC = m_306223_(EvokerTrapBlock::new);
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> m_304657_()
+    {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty TRIGGERED = BooleanProperty.create("triggered");
     private static final int fangCooldown = 40; //cooldown used to prevent Fang-spamming
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active"); //active as long as fangs are spawning and for the duration of fangcooldown
 
-    public EvokerTrapBlock(BlockBehaviour.Properties settings) {
+    public EvokerTrapBlock(BlockBehaviour.Properties settings)
+    {
         super(settings);
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(TRIGGERED, false).setValue(ACTIVE, false));
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+    public BlockState getStateForPlacement(BlockPlaceContext ctx)
+    {
         return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public @Nullable PushReaction getPistonPushReaction(BlockState state) {
+    public @Nullable PushReaction getPistonPushReaction(BlockState state)
+    {
         return PushReaction.BLOCK;
     }
 
     @Override
-    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos sourcePos, boolean notify) {
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos sourcePos, boolean notify)
+    {
         super.neighborChanged(blockState, level, blockPos, block, sourcePos, notify);
         boolean powered = level.hasNeighborSignal(blockPos) || level.hasNeighborSignal(blockPos.above());
         boolean active = (Boolean) blockState.getValue(ACTIVE);
 
         //if the Block is receiving a redstone signal and is not already activated
-        if (powered && !active) {
+        if (powered && !active)
+        {
             //set self to active state and spawn fangs
             level.setBlock(blockPos, blockState.setValue(ACTIVE, true), 3);
             spawnFangs(blockState, level, blockPos, level.getRandom());
             //set cooldown for active-state to be reset
             level.scheduleTick(blockPos, this, fangCooldown);
-        } else if (!powered && active) {
+        } else if (!powered && active)
+        {
             //world.setBlockState(pos, (BlockState) state.with(TRIGGERED, false), 4);
         }
     }
 
     //spawns 3 evoker fangs in a straight line in the direction the block is facing
-    private  void spawnFangs(BlockState state, Level level, BlockPos pos, RandomSource random){
-        if(level.isClientSide()){return;}
+    private void spawnFangs(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        if (level.isClientSide())
+        {
+            return;
+        }
 
         int maxFangs = 3;
 
         //spawns fangs with individual positional increase depending on the direction the block is facing
-        switch (state.getValue(FACING)) {
-            case NORTH -> {
-                for (int i = 0; i < maxFangs; ++i) {
+        switch (state.getValue(FACING))
+        {
+            case NORTH ->
+            {
+                for (int i = 0; i < maxFangs; ++i)
+                {
                     level.addFreshEntity(new EvokerFangs(level, pos.getX() + 0.5, pos.getY(), pos.getZ() - 0.5 - i * 1.5, (float) Math.toRadians(90), 0, null));
                 }
             }
-            case SOUTH -> {
-                for (int i = 0; i < maxFangs; ++i) {
+            case SOUTH ->
+            {
+                for (int i = 0; i < maxFangs; ++i)
+                {
                     level.addFreshEntity(new EvokerFangs(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 1.5 + i * 1.5, (float) Math.toRadians(90), 0, null));
                 }
             }
-            case EAST -> {
-                for (int i = 0; i < maxFangs; ++i) {
+            case EAST ->
+            {
+                for (int i = 0; i < maxFangs; ++i)
+                {
                     level.addFreshEntity(new EvokerFangs(level, pos.getX() + 1.5 + i * 1.5, pos.getY(), pos.getZ() + 0.5, 0, 0, null));
                 }
             }
-            case WEST -> {
-                for (int i = 0; i < maxFangs; ++i) {
+            case WEST ->
+            {
+                for (int i = 0; i < maxFangs; ++i)
+                {
                     level.addFreshEntity(new EvokerFangs(level, pos.getX() - 0.5 - i * 1.5, pos.getY(), pos.getZ() + 0.5, 0, 0, null));
                 }
             }
-            default -> {
-                for (int i = 0; i < maxFangs; ++i) {
+            default ->
+            {
+                for (int i = 0; i < maxFangs; ++i)
+                {
                     level.addFreshEntity(new EvokerFangs(level, pos.getX() + 0.5, pos.getY(), pos.getZ() - 0.5 - i * 1.5, 0, 0, null));
                 }
             }
@@ -96,23 +127,27 @@ public class EvokerTrapBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
+    {
         super.tick(pState, pLevel, pPos, pRandom);
         pLevel.setBlock(pPos, pState.setValue(ACTIVE, false), 3);
     }
 
     @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
-        return state.setValue(FACING, rotation.rotate((Direction)state.getValue(FACING)));
+    public BlockState rotate(BlockState state, Rotation rotation)
+    {
+        return state.setValue(FACING, rotation.rotate((Direction) state.getValue(FACING)));
     }
 
     @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation((Direction)state.getValue(FACING)));
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return state.rotate(mirror.getRotation((Direction) state.getValue(FACING)));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
+    {
         super.createBlockStateDefinition(pBuilder);
         pBuilder.add(FACING, TRIGGERED, ACTIVE);
     }

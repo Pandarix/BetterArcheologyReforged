@@ -10,21 +10,25 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class FossilInventoryScreen extends AbstractContainerScreen<FossilInventoryMenu> {
+public class FossilInventoryScreen extends AbstractContainerScreen<FossilInventoryMenu>
+{
     private static final ResourceLocation TEXTURE = new ResourceLocation(BetterArcheology.MOD_ID, "textures/gui/fossil_gui.png");
 
-    public FossilInventoryScreen(FossilInventoryMenu handler, Inventory inventory, Component title) {
+    public FossilInventoryScreen(FossilInventoryMenu handler, Inventory inventory, Component title)
+    {
         super(handler, inventory, Component.translatable(title.getString()).withStyle(ChatFormatting.GRAY));
     }
 
     @Override
-    protected void init() {
+    protected void init()
+    {
         super.init();
-        this.titleLabelX = imageWidth/2 - 35;
+        this.titleLabelX = imageWidth / 2 - 35;
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY)
+    {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -34,8 +38,9 @@ public class FossilInventoryScreen extends AbstractContainerScreen<FossilInvento
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        renderBackground(guiGraphics);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta)
+    {
+        renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }
