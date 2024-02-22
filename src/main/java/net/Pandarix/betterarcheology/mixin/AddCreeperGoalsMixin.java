@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Creeper.class)
 public class AddCreeperGoalsMixin
 {
-    @Redirect(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/goal/GoalSelector;addGoal(ILnet/minecraft/world/entity/ai/goal/Goal;)V", ordinal = 3))
+    @Redirect(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/goal/GoalSelector;addGoal(ILnet/minecraft/world/entity/ai/goal/Goal;)V", ordinal = 2))
     private void injectMethod(GoalSelector instance, int pPriority, Goal pGoal)
     {
         BetterArcheology.LOGGER.warn("GOAL: " + pGoal + "\nPRIO: " + pPriority);

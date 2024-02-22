@@ -3,9 +3,12 @@ package net.Pandarix.betterarcheology.block.custom;
 import com.mojang.serialization.MapCodec;
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
+import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
+import net.Pandarix.betterarcheology.util.ServerPlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -83,7 +86,7 @@ public class ArchelogyTable extends BaseEntityBlock
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof ArcheologyTableBlockEntity)
             {
-                pPlayer.openMenu((ArcheologyTableBlockEntity) entity);
+                ServerPlayerHelper.tryOpenScreen(pPlayer, (ArcheologyTableBlockEntity) entity, pPos);
             } else
             {
                 throw new IllegalStateException("Container Provider Missing!");

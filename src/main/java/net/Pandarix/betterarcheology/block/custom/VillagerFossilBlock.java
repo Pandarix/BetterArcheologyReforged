@@ -1,12 +1,15 @@
 package net.Pandarix.betterarcheology.block.custom;
 
 import com.google.common.collect.ImmutableMap;
+import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
+import net.Pandarix.betterarcheology.util.ServerPlayerHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -126,7 +129,7 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof VillagerFossilBlockEntity)
             {
-                pPlayer.openMenu((VillagerFossilBlockEntity) entity);
+                ServerPlayerHelper.tryOpenScreen(pPlayer, (VillagerFossilBlockEntity) entity, pPos);
             } else
             {
                 throw new IllegalStateException("VillagerFossilBlockEntity Container provider is missing!");
