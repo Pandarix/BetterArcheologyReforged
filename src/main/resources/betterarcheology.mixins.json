@@ -11,8 +11,5 @@
     "TorrentTotemItemTickMixin",
     "TunnelingEnchantmentMixin"
   ],
-  "client": [
-    "BetterArcheologyMixin"
-  ],
   "minVersion": "0.8"
 }
