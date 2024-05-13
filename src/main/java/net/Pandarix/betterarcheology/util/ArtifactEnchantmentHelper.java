@@ -3,7 +3,6 @@ package net.Pandarix.betterarcheology.util;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.fml.ModList;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -21,7 +20,7 @@ public class ArtifactEnchantmentHelper
         }
 
         //  if there is an elytra in the chestslot and it has the enchantment
-        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem
+        if (player.getItemBySlot(EquipmentSlot.CHEST).canElytraFly(player)
                 && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.SOARING_WINDS.get(), player.getItemBySlot(EquipmentSlot.CHEST)) >= 1)
         {
             return true;
@@ -38,7 +37,7 @@ public class ArtifactEnchantmentHelper
                 if (curios.isPresent())
                 {
                     return curios.get().findCurios("back").stream().anyMatch(
-                            (slotResult) -> slotResult.stack().getItem() instanceof ElytraItem
+                            (slotResult) -> slotResult.stack().canElytraFly(player)
                                     && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.SOARING_WINDS.get(), slotResult.stack()) >= 1);
                 }
             }
