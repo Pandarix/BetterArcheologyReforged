@@ -148,7 +148,7 @@ public class ModBlocks
 
     public static final RegistryObject<Block> VASE_GREEN = registerBlock("vase_green", () -> new VaseBlock(BlockBehaviour.Properties.of().instabreak().noOcclusion().pushReaction(PushReaction.DESTROY).sound(SoundType.DECORATED_POT)));
 
-    public static final RegistryObject<Block> EVOKER_TRAP = registerBlock("evoker_trap", () -> new EvokerTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(25f)));
+    public static final RegistryObject<Block> EVOKER_TRAP = registerBlock("evoker_trap", () -> new EvokerTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(20f).requiresCorrectToolForDrops()));
 
     public static final RegistryObject<Block> GROWTH_TOTEM = registerRareBlock("growth_totem",
             () -> new GrowthTotemBlock(MobEffects.GLOWING, 15,
