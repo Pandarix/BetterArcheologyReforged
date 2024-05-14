@@ -174,6 +174,12 @@ repositories {
         name = "C4"
         url = "https://maven.theillusivec4.top/"
     }
+    maven {
+        url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -209,6 +215,10 @@ dependencies {
     // CURIOS
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}")
+
+    // ALEX'S MOBS
+    implementation fg.deobf("curse.maven:citadel-331936:5143956")
+    implementation fg.deobf("curse.maven:alexs-mobs-426558:5160697")
 }
 
 mixin {
