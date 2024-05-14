@@ -35,7 +35,6 @@ public class IdentifyingMenu extends AbstractContainerMenu {
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
             this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 20));
-            this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 20));
             this.addSlot(new SlotItemHandler(iItemHandler, 1, 26, 48));
             this.addSlot(new SlotItemHandler(iItemHandler, 2, 134, 48));
         });

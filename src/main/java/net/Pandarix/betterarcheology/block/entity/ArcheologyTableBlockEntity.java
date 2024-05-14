@@ -277,7 +277,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
         boolean hasBrushInSlot = itemInSlot0 == ModItems.IRON_BRUSH.get() ||
                 itemInSlot0 == ModItems.DIAMOND_BRUSH.get() ||
                 itemInSlot0 == Items.BRUSH;
-        return hasShardInFirstSlot && hasBrushInSlot && canInsertAmountIntoOutputSlot(entity.itemHandler) && canInsertItemIntoOutputSlot(entity.itemHandler, entity.itemHandler.getStackInSlot(2).getItem());
+        return entity.itemHandler.getStackInSlot(2).isEmpty() && hasShardInFirstSlot && hasBrushInSlot && canInsertAmountIntoOutputSlot(entity.itemHandler);
     }
 
     public boolean canExtract(int slot, ItemStack stack, Direction side) {
@@ -296,10 +296,6 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
         }
         //for the sides: if it is an unidentified artifact
         return slot == 1 && stack.is(ModItems.UNIDENTIFIED_ARTIFACT.get());
-    }
-
-    private static boolean canInsertItemIntoOutputSlot(ItemStackHandler handler, Item output) {
-        return handler.getStackInSlot(2).getItem() == output || handler.getStackInSlot(2).isEmpty();
     }
 
     private static boolean canInsertAmountIntoOutputSlot(ItemStackHandler handler) {
