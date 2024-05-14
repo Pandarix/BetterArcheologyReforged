@@ -1,0 +1,13 @@
+{
+  "type": "betterarcheology:identifying",
+  "ingredients": [
+    {
+      "item": "betterarcheology:unidentified_artifact"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "item": "minecraft:enchanted_book",
+    "nbt": "{StoredEnchantments: [{lvl: 1s, id: \"betterarcheology:tunneling\"}], display: {Name: '{\"translate\":\"item.betterarcheology.identified_artifact\"}'}}"
+  }
+}
