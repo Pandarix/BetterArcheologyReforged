@@ -108,7 +108,7 @@ public class FleeBlockGoal<T extends BlockEntity> extends Goal
 
     private boolean isWithinDistance(BlockPos blockposition, Vec3 position)
     {
-        return blockposition.distToCenterSqr(position) - BetterArcheologyConfig.ocelotFleeRange.get() <= 0;
+        return blockposition.distToCenterSqr(position) - BetterArcheologyConfig.fossilFleeRange.get() <= 0;
     }
 
     public boolean canContinueToUse()

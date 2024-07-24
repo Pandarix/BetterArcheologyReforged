@@ -27,6 +27,10 @@ public class RadianceTotemBlockEntity extends BlockEntity
 
     public static void tick(Level world, BlockPos pos, BlockState state, RadianceTotemBlockEntity blockEntity)
     {
+        if (!BetterArcheologyConfig.radianceTotemEnabled.get() || !BetterArcheologyConfig.totemsEnabled.get())
+        {
+            return;
+        }
         // Apply the effects of the totem every 10 ticks (.5 seconds) to reduce server stress
         if (world.getRandom().nextIntBetweenInclusive(1, 10) == 1)
         {

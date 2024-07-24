@@ -14,14 +14,27 @@ public class BetterArcheologyConfig
     //ARTIFACTS
     public static final Supplier<Boolean> artifactsEnabled;
     public static final Supplier<Double> penetratingStrikeIgnorance;
+    public static final Supplier<Boolean> soaringWindsEnabled;
     public static final Supplier<Double> soaringWindsBoost;
     //TOTEMS
+    public static final Supplier<Boolean> totemsEnabled;
+
+    public static final Supplier<Boolean> radianceTotemEnabled;
     public static final Supplier<Boolean> radianceTotemDamageEnabled;
     public static final Supplier<Integer> radianceTotemDamage;
     public static final Supplier<Integer> radianceTotemDamageTickAverage;
     public static final Supplier<Integer> radianceTotemRadius;
+
+    public static final Supplier<Boolean> torrentTotemEnabled;
+    public static final Supplier<Double> torrentTotemBoost;
+    public static final Supplier<Boolean> torrentTotemUpwardsBoost;
+
+    public static final Supplier<Boolean> growthTotemEnabled;
+    public static final Supplier<Integer> growthTotemGrowRadius;
+    public static final Supplier<Integer> growthTotemGrowChance;
     //FOSSILS
-    public static final Supplier<Integer> ocelotFleeRange;
+    public static final Supplier<Boolean> fossilEffectsEnabled;
+    public static final Supplier<Integer> fossilFleeRange;
 
     static
     {
@@ -30,23 +43,51 @@ public class BetterArcheologyConfig
         builder.push("Artifacts");
             artifactsEnabled = builder.comment("Set to true or false to enable or disable effects.").define("artifactEnchantmentsEnabled", true);
 
-            penetratingStrikeIgnorance = builder.comment("Set to % of damage-reduction from Protection Enchantments that should be ignored, keep in range of 0-1.00").define("penetratingStrikeProtectionIgnorance", 0.33d, 0d, 1d);
+            penetratingStrikeIgnorance = builder.comment("Set to % of damage-reduction from Protection Enchantments that should be ignored.").define("penetratingStrikeProtectionIgnorance", 0.33d, 0d, 1d);
 
-            soaringWindsBoost = builder.comment("Set to movement speed multiplier, that should be applied when starting to fly").define("soaringWindsBoost", 0.3d, 0d, 1d);
+            builder.push("SoaringWinds");
+                soaringWindsEnabled = builder.comment("En-/Disables the effects of the Soaring Winds enchantment.").define("soaringWindsEnabled", true);
+
+                soaringWindsBoost = builder.comment("Set to movement speed multiplier, that should be applied when starting to fly").define("soaringWindsBoost", 0.5d, 0.1d, 3d);
+            builder.pop();
         builder.pop();
 
         builder.push("Totems");
-            radianceTotemDamageEnabled = builder.comment("En-/Disables the Radiance Totem damaging hostile mobs around it.").define("radianceTotemDamageEnabled", true);
+            totemsEnabled = builder.comment("En-/Disables ALL of the Totems' effects.").define("totemsEnabled", true);
 
-            radianceTotemDamage = builder.comment("Sets the damage in 1/2 hearts that will be dealt to hostile mobs when a damage tick occurs.").define("radianceTotemDamage", 4, 1, 40);
+            builder.push("Radiance");
+                radianceTotemEnabled = builder.comment("En-/Disables ALL of the Radiance Totem's effects.").define("radianceTotemEnabled", true);
 
-            radianceTotemDamageTickAverage = builder.comment("Sets the average time between damage ticks of the Radiance Totem in seconds. The totem will still damage mobs randomly, but the average time between damage ticks will be this value.").define("radianceTotemDamageTickAverage", 3, 1, 60);
+                radianceTotemDamageEnabled = builder.comment("En-/Disables the Radiance Totem damaging hostile mobs around it.").define("radianceTotemDamageEnabled", true);
 
-            radianceTotemRadius = builder.comment("Sets the radius around the radiance totem within which entities will be affected by the glowing and damaging effects.").define("radianceTotemRadius", 10, 1, 90);
+                radianceTotemDamage = builder.comment("Sets the damage in 1/2 hearts that will be dealt to hostile mobs when a damage tick occurs.").define("radianceTotemDamage", 4, 1, 40);
+
+                radianceTotemDamageTickAverage = builder.comment("Sets the average time between damage ticks of the Radiance Totem in seconds. The totem will still damage mobs randomly, but the average time between damage ticks will be this value.").define("radianceTotemDamageTickAverage", 3, 1, 60);
+
+                radianceTotemRadius = builder.comment("Sets the radius around the radiance totem within which entities will be affected by the glowing and damaging effects.").define("radianceTotemRadius", 10, 1, 90);
+            builder.pop();
+
+            builder.push("Torrent");
+                torrentTotemEnabled = builder.comment("En-/Disables the Torrent Totem's effects.").define("torrentTotemEnabled", true);
+
+                torrentTotemBoost = builder.comment("Sets the relative strength of the boost the player will get when using the Torrent Totem.").define("torrentTotemBoost", 1d, .1d, 3d);
+
+                torrentTotemUpwardsBoost = builder.comment("En-/Disables giving a player an upwards boost when using the Torrent Totem.").define("torrentTotemUpwardsBoost", false);
+            builder.pop();
+
+            builder.push("Growth");
+                growthTotemEnabled = builder.comment("En-/Disables the Growth Totem's effects.").define("growthTotemEnabled", true);
+
+                growthTotemGrowRadius = builder.comment("Sets the radius around the growth totem within which crops will be randomly bonemealed.").define("growthTotemGrowRadius", 5, 1, 50);
+
+                growthTotemGrowChance = builder.comment("The growth totem uses the randomTick to determine when it should grow crops. This value determines the chance in % that a random tick actually grows crops to potentially decrease its yield. For example, a 20% chance bonemeals a crop ~10.5 times an hour").define("growthTotemGrowChance", 20, 1, 100);
+            builder.pop();
         builder.pop();
 
         builder.push("Fossils");
-            ocelotFleeRange = builder.comment("Range in Blocks that the Fossil scares Creepers away.").define("fossilsOcelotFleeRange", 20, 10, 50);
+            fossilEffectsEnabled = builder.comment("En-/Disables the effects of the Fossils like PotionEffects etc.").define("fossilEffectsEnabled", true);
+
+            fossilFleeRange = builder.comment("Range in Blocks that the Ocelot/Wolf Fossils scare their corresponding mobs away.").define("fossilFleeRange", 20, 10, 50);
         builder.pop();
 
         builder.build();

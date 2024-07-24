@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.block.custom;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,8 +22,10 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 public class GrowthTotemBlock extends FlowerBlock
@@ -33,14 +36,19 @@ public class GrowthTotemBlock extends FlowerBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom)
     {
         super.animateTick(pState, pLevel, pPos, pRandom);
+        if (!BetterArcheologyConfig.totemsEnabled.get() || !BetterArcheologyConfig.growthTotemEnabled.get())
+        {
+            return;
+        }
         if (pLevel.isClientSide() && pRandom.nextIntBetweenInclusive(0, 15) == 0)
         {
-            for (int i = -5; i <= 5; i++)
+            for (int i = -BetterArcheologyConfig.growthTotemGrowRadius.get(); i <= BetterArcheologyConfig.growthTotemGrowRadius.get(); i++)
             {
-                for (int j = -5; j <= 5; j++)
+                for (int j = -BetterArcheologyConfig.growthTotemGrowRadius.get(); j <= BetterArcheologyConfig.growthTotemGrowRadius.get(); j++)
                 {
                     if (pRandom.nextIntBetweenInclusive(0, 3) == 3)
                     {
@@ -59,21 +67,27 @@ public class GrowthTotemBlock extends FlowerBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean isRandomlyTicking(BlockState pState)
     {
         return true;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
     {
-        if (pRandom.nextBoolean())
+        if (!BetterArcheologyConfig.totemsEnabled.get() || !BetterArcheologyConfig.growthTotemEnabled.get() || pRandom.nextBoolean())
         {
             return;
         }
-        for (int i = -5; i <= 5; i++)
+        if (pRandom.nextIntBetweenInclusive(1, 100) > BetterArcheologyConfig.growthTotemGrowChance.get())
         {
-            for (int j = -5; j <= 5; j++)
+            return;
+        }
+        for (int i = -BetterArcheologyConfig.growthTotemGrowRadius.get(); i <= BetterArcheologyConfig.growthTotemGrowRadius.get(); i++)
+        {
+            for (int j = -BetterArcheologyConfig.growthTotemGrowRadius.get(); j <= BetterArcheologyConfig.growthTotemGrowRadius.get(); j++)
             {
                 BlockPos pos = pPos.offset(i, 0, j);
                 BlockState state = pLevel.getBlockState(pos);
@@ -98,6 +112,7 @@ public class GrowthTotemBlock extends FlowerBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity)
     {
         super.entityInside(pState, pLevel, pPos, pEntity);
@@ -113,7 +128,7 @@ public class GrowthTotemBlock extends FlowerBlock
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag)
+    public void appendHoverText(@NotNull ItemStack pStack, @Nullable BlockGetter pLevel, @NotNull List<Component> pTooltip, @NotNull TooltipFlag pFlag)
     {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
         pTooltip.add(Component.translatable("block.betterarcheology.growth_totem_tooltip").withStyle(ChatFormatting.DARK_GREEN));

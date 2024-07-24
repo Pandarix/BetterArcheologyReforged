@@ -119,5 +119,7 @@
   "enchantment.betterarcheology.tunneling.desc": "Also breaks the Block below the mined block",
 
   "filled_map.catacombs": "Catacombs Explorer Map",
-  "filled_map.light": "Light Temple Explorer Map"
+  "filled_map.light": "Light Temple Explorer Map",
+
+  "config.notify.disabled": "This feature has been disabled in the config!"
 }

@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.block.entity;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -20,6 +21,10 @@ public class ChickenFossilBlockEntity extends BlockEntity
 
     public static void tick(Level world, BlockPos pos, BlockState state, ChickenFossilBlockEntity blockEntity)
     {
+        if (!BetterArcheologyConfig.fossilEffectsEnabled.get())
+        {
+            return;
+        }
         //get players in bounding box of 10 blocks
         List<Player> playersInRange = world.getEntitiesOfClass(Player.class, AABB.ofSize(pos.getCenter(), 10, 10, 10));
 

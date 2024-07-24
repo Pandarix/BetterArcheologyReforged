@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.block.custom;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.block.entity.RadianceTotemBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -39,8 +40,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 public class RadianceTotemBlock extends FossilBaseWithEntityBlock
@@ -60,12 +63,15 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
 
     @Nullable
     @Override
+    @ParametersAreNonnullByDefault
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type)
     {
         return createTickerHelper(type, ModBlockEntities.RADIANCE_TOTEM.get(), RadianceTotemBlockEntity::tick);
     }
 
     @Override
+    @NotNull
+    @ParametersAreNonnullByDefault
     public RenderShape getRenderShape(BlockState pState)
     {
         return RenderShape.MODEL;
@@ -73,12 +79,14 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
 
     @Nullable
     @Override
+    @ParametersAreNonnullByDefault
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
         return new RadianceTotemBlockEntity(pos, state);
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom)
     {
         super.animateTick(pState, pLevel, pPos, pRandom);
@@ -92,13 +100,24 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @NotNull
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult)
     {
         if (!blockState.is(this))
         {
             return InteractionResult.PASS;
         }
-        ;
+
+        // if feature is disabled, notify the user and skip
+        if (!BetterArcheologyConfig.radianceTotemEnabled.get() || !BetterArcheologyConfig.totemsEnabled.get())
+        {
+            if (level.isClientSide())
+            {
+                player.displayClientMessage(Component.translatableWithFallback("config.notify.disabled", "This feature has been disabled in the config!"), true);
+            }
+            return InteractionResult.PASS;
+        }
         BlockState newState = blockState.cycle(SELECTOR);
         level.setBlock(blockPos, newState, 3);
 
@@ -119,18 +138,21 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean isRandomlyTicking(BlockState pState)
     {
         return true;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
     {
         super.tick(pState, pLevel, pPos, pRandom);
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
     {
         super.randomTick(pState, pLevel, pPos, pRandom);
@@ -142,7 +164,7 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag)
+    public void appendHoverText(@NotNull ItemStack pStack, @Nullable BlockGetter pLevel, @NotNull List<Component> pTooltip, @NotNull TooltipFlag pFlag)
     {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
         pTooltip.add(Component.translatable("block.betterarcheology.radiance_totem_tooltip").withStyle(ChatFormatting.DARK_GREEN));
@@ -168,6 +190,8 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
         return null;
     }
 
+    @ParametersAreNonnullByDefault
+    @NotNull
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
     {
         return pState.getValue(HANGING) ? HANGING_AABB : AABB;
@@ -178,6 +202,7 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
         pBuilder.add(HANGING, WATERLOGGED, SELECTOR);
     }
 
+    @ParametersAreNonnullByDefault
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos)
     {
         Direction direction = getConnectedDirection(pState).getOpposite();
@@ -195,6 +220,8 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
      * returns its solidified counterpart.
      * Note that this method should ideally consider only the specific direction passed in.
      */
+    @ParametersAreNonnullByDefault
+    @NotNull
     public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pPos, BlockPos pNeighborPos)
     {
         if (pState.getValue(WATERLOGGED))
@@ -205,11 +232,13 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
         return getConnectedDirection(pState).getOpposite() == pDirection && !pState.canSurvive(pLevel, pPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(pState, pDirection, pNeighborState, pLevel, pPos, pNeighborPos);
     }
 
+    @NotNull
     public FluidState getFluidState(BlockState pState)
     {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
+    @ParametersAreNonnullByDefault
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType)
     {
         return false;

@@ -119,5 +119,7 @@
   "enchantment.betterarcheology.tunneling.desc": "Baut auch den Block unterhalb des abgebauten Blocks ab",
 
   "filled_map.catacombs": "Katakomben-Entdeckerkarte",
-  "filled_map.light": "Lichttempel-Entdeckerkarte"
+  "filled_map.light": "Lichttempel-Entdeckerkarte",
+
+  "config.notify.disabled": "Diese Funktion wurde in der Konfiguration deaktiviert!"
 }
