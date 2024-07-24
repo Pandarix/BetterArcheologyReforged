@@ -16,14 +16,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilBaseWithEntityBlock extends BaseEntityBlock
 {
-    public static final MapCodec<FossilBaseWithEntityBlock> CODEC = m_306223_(FossilBaseWithEntityBlock::new);
+    public static final MapCodec<FossilBaseWithEntityBlock> CODEC = simpleCodec(FossilBaseWithEntityBlock::new);
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> m_304657_()
+    @NotNull
+    protected MapCodec<? extends BaseEntityBlock> codec()
     {
         return CODEC;
     }
@@ -37,6 +41,7 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock
 
     @Nullable
     @Override
+    @ParametersAreNonnullByDefault
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
         return null;
@@ -50,6 +55,7 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
         super.createBlockStateDefinition(pBuilder);
@@ -58,6 +64,8 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock
 
     //Creates the Screen-Handler belonging to the BlockEntity
     @Override
+    @NotNull
+    @ParametersAreNonnullByDefault
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult)
     {
         return InteractionResult.SUCCESS;

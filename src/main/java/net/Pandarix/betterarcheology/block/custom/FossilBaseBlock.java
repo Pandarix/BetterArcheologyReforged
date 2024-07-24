@@ -13,14 +13,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilBaseBlock extends HorizontalDirectionalBlock
 {
-    public static final MapCodec<FossilBaseBlock> CODEC = m_306223_(FossilBaseBlock::new);
+    public static final MapCodec<FossilBaseBlock> CODEC = simpleCodec(FossilBaseBlock::new);
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> m_304657_()
+    @NotNull
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
     {
         return CODEC;
     }
@@ -50,6 +54,7 @@ public class FossilBaseBlock extends HorizontalDirectionalBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
         super.createBlockStateDefinition(pBuilder);

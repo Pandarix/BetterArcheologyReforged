@@ -3,7 +3,6 @@ package net.Pandarix.betterarcheology.block;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.custom.*;
 import net.Pandarix.betterarcheology.item.ModItems;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -49,11 +48,7 @@ public class ModBlocks
 
     //-------------FOSSILS---------------//
     //Villager
-    public static final RegistryObject<Block> VILLAGER_FOSSIL = registerRareBlock("villager_fossil", () -> new VillagerFossilBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.XYLOPHONE).requiresCorrectToolForDrops().strength(2.0F).sound(SoundType.BONE_BLOCK).lightLevel(
-            (state) ->
-            {
-                return state.getValue(VillagerFossilBlock.INVENTORY_LUMINANCE);
-            })));
+    public static final RegistryObject<Block> VILLAGER_FOSSIL = registerRareBlock("villager_fossil", () -> new VillagerFossilBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.XYLOPHONE).requiresCorrectToolForDrops().strength(2.0F).sound(SoundType.BONE_BLOCK).lightLevel((state) -> state.getValue(VillagerFossilBlock.INVENTORY_LUMINANCE))));
 
     public static final RegistryObject<Block> VILLAGER_FOSSIL_HEAD = registerRareBlock("villager_fossil_head", () -> new VillagerFossilHeadBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.SKELETON).strength(1.0F).pushReaction(PushReaction.DESTROY).sound(SoundType.BONE_BLOCK)));
 
@@ -154,10 +149,7 @@ public class ModBlocks
             () -> new GrowthTotemBlock(MobEffects.GLOWING, 15,
                     BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().pushReaction(PushReaction.DESTROY).sound(SoundType.AMETHYST).offsetType(BlockBehaviour.OffsetType.NONE).lightLevel((state) -> 15)));
 
-    public static final RegistryObject<Block> RADIANCE_TOTEM = registerRareBlock("radiance_totem", () -> new RadianceTotemBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN).lightLevel((p_152677_) ->
-    {
-        return 15;
-    }).noOcclusion().pushReaction(PushReaction.DESTROY)));
+    public static final RegistryObject<Block> RADIANCE_TOTEM = registerRareBlock("radiance_totem", () -> new RadianceTotemBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).forceSolidOn().requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.LANTERN).lightLevel((p_152677_) -> 15).noOcclusion().pushReaction(PushReaction.DESTROY)));
 
     //REGISTERING--------------------------------------------------------------------------//
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block)

@@ -1,7 +1,6 @@
 package net.Pandarix.betterarcheology.block.custom;
 
 import com.google.common.collect.ImmutableMap;
-import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
 import net.Pandarix.betterarcheology.util.ServerPlayerHelper;
@@ -9,7 +8,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -34,8 +32,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +71,7 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
 
     //Drops Items present in the table at the time of destruction//
     @Override
+    @ParametersAreNonnullByDefault
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving)
     {
         if (pState.getBlock() != pNewState.getBlock())
@@ -86,12 +87,15 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @NotNull
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
     {
         return VILLAGER_SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
         super.createBlockStateDefinition(pBuilder);
@@ -100,6 +104,7 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
 
     //BLOCKENTITY STUFF
     @Override
+    @ParametersAreNonnullByDefault
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
         return new VillagerFossilBlockEntity(pos, state);
@@ -107,6 +112,7 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
 
     @Nullable
     @Override
+    @ParametersAreNonnullByDefault
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type)
     {
@@ -115,12 +121,16 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
     }
 
     @Override
+    @NotNull
+    @ParametersAreNonnullByDefault
     public RenderShape getRenderShape(BlockState pState)
     {
         return RenderShape.MODEL;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @NotNull
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
                                  Player pPlayer, InteractionHand pHand, BlockHitResult pHit)
     {
@@ -141,7 +151,7 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag)
+    public void appendHoverText(@NotNull ItemStack stack, BlockGetter getter, List<Component> component, @NotNull TooltipFlag flag)
     {
         component.add(Component.translatable("block.betterarcheology.villager_fossil_tooltip").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, getter, component, flag);

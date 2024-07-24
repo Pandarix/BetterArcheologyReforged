@@ -17,6 +17,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class GuardianFossilHeadBlock extends FossilBaseHeadBlock implements Simp
     }
 
     @Override
-    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
     {
         return GUARDIAN_HEAD_SHAPE;
     }
@@ -56,7 +57,7 @@ public class GuardianFossilHeadBlock extends FossilBaseHeadBlock implements Simp
         super.appendHoverText(stack, blockGetter, components, tooltipFlag);
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> pBuilder)
     {
         pBuilder.add(WATERLOGGED, FACING);
     }

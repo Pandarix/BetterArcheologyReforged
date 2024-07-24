@@ -15,7 +15,9 @@ import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasBinding;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +34,7 @@ public class ArcheologyStructures extends Structure
                     HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
                     Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
                     Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter),
-                    Codec.list(PoolAliasBinding.f_303072_).optionalFieldOf("pool_aliases", List.of()).forGetter((structure) -> structure.poolAliasBindings)
+                    Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter((structure) -> structure.poolAliasBindings)
             ).apply(instance, ArcheologyStructures::new)).codec();
 
     private final Holder<StructureTemplatePool> startPool;
@@ -105,6 +107,8 @@ public class ArcheologyStructures extends Structure
     }
 
     @Override
+    @NotNull
+    @ParametersAreNonnullByDefault
     public Optional<GenerationStub> findGenerationPoint(GenerationContext context)
     {
 
@@ -137,7 +141,7 @@ public class ArcheologyStructures extends Structure
                         // Set this to false for structure to be place only at the passed in blockpos's Y value instead.
                         // Definitely keep this false when placing structures in the nether as otherwise, heightmap placing will put the structure on the Bedrock roof.
                         this.maxDistanceFromCenter, // Maximum limit for how far pieces can spawn from center. You cannot set this bigger than 128 or else pieces gets cutoff.
-                        PoolAliasLookup.m_307806_(this.poolAliasBindings, blockPos, context.seed()));
+                        PoolAliasLookup.create(this.poolAliasBindings, blockPos, context.seed()));
 
         /*
          * Note, you are always free to make your own JigsawPlacement class and implementation of how the structure
@@ -150,6 +154,7 @@ public class ArcheologyStructures extends Structure
     }
 
     @Override
+    @NotNull
     public StructureType<?> type()
     {
         return ModStructures.ARCHEOLOGY_STRUCTURES.get(); // Helps the game know how to turn this structure back to json to save to chunks

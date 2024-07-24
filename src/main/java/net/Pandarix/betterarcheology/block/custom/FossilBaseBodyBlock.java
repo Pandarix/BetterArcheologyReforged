@@ -8,20 +8,27 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilBaseBodyBlock extends HorizontalDirectionalBlock
 {
-    public static final MapCodec<FossilBaseBodyBlock> CODEC = m_306223_(FossilBaseBodyBlock::new);
+    public static final MapCodec<FossilBaseBodyBlock> CODEC = simpleCodec(FossilBaseBodyBlock::new);
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> m_304657_()
+    @NotNull
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
     {
         return CODEC;
     }
@@ -35,6 +42,7 @@ public class FossilBaseBodyBlock extends HorizontalDirectionalBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
         super.createBlockStateDefinition(pBuilder);
@@ -59,14 +67,16 @@ public class FossilBaseBodyBlock extends HorizontalDirectionalBlock
     }
 
     @Override
+    @NotNull
     public BlockState rotate(BlockState state, Rotation rotation)
     {
-        return state.setValue(FACING, rotation.rotate((Direction) state.getValue(FACING)));
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
+    @NotNull
     public BlockState mirror(BlockState state, Mirror mirror)
     {
-        return state.rotate(mirror.getRotation((Direction) state.getValue(FACING)));
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 }

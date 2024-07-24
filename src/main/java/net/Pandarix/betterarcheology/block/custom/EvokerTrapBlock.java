@@ -18,14 +18,18 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class EvokerTrapBlock extends HorizontalDirectionalBlock
 {
-    public static final MapCodec<EvokerTrapBlock> CODEC = m_306223_(EvokerTrapBlock::new);
+    public static final MapCodec<EvokerTrapBlock> CODEC = simpleCodec(EvokerTrapBlock::new);
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> m_304657_()
+    @NotNull
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
     {
         return CODEC;
     }
@@ -55,11 +59,12 @@ public class EvokerTrapBlock extends HorizontalDirectionalBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos sourcePos, boolean notify)
     {
         super.neighborChanged(blockState, level, blockPos, block, sourcePos, notify);
         boolean powered = level.hasNeighborSignal(blockPos) || level.hasNeighborSignal(blockPos.above());
-        boolean active = (Boolean) blockState.getValue(ACTIVE);
+        boolean active = blockState.getValue(ACTIVE);
 
         //if the Block is receiving a redstone signal and is not already activated
         if (powered && !active)
@@ -71,7 +76,7 @@ public class EvokerTrapBlock extends HorizontalDirectionalBlock
             level.scheduleTick(blockPos, this, fangCooldown);
         } else if (!powered && active)
         {
-            //world.setBlockState(pos, (BlockState) state.with(TRIGGERED, false), 4);
+            level.setBlock(blockPos, blockState.setValue(TRIGGERED, false), 4);
         }
     }
 
@@ -127,6 +132,7 @@ public class EvokerTrapBlock extends HorizontalDirectionalBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
     {
         super.tick(pState, pLevel, pPos, pRandom);
@@ -134,18 +140,21 @@ public class EvokerTrapBlock extends HorizontalDirectionalBlock
     }
 
     @Override
+    @NotNull
     public BlockState rotate(BlockState state, Rotation rotation)
     {
-        return state.setValue(FACING, rotation.rotate((Direction) state.getValue(FACING)));
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
+    @NotNull
     public BlockState mirror(BlockState state, Mirror mirror)
     {
-        return state.rotate(mirror.getRotation((Direction) state.getValue(FACING)));
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
         super.createBlockStateDefinition(pBuilder);

@@ -11,14 +11,18 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilBaseHeadBlock extends HorizontalDirectionalBlock
 {
-    public static final MapCodec<FossilBaseHeadBlock> CODEC = m_306223_(FossilBaseHeadBlock::new);
+    public static final MapCodec<FossilBaseHeadBlock> CODEC = simpleCodec(FossilBaseHeadBlock::new);
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> m_304657_()
+    @NotNull
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
     {
         return CODEC;
     }
@@ -32,6 +36,7 @@ public class FossilBaseHeadBlock extends HorizontalDirectionalBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
         super.createBlockStateDefinition(pBuilder);
@@ -46,12 +51,14 @@ public class FossilBaseHeadBlock extends HorizontalDirectionalBlock
     }
 
     @Override
+    @NotNull
     public BlockState rotate(BlockState state, Rotation rotation)
     {
-        return state.setValue(FACING, rotation.rotate((Direction) state.getValue(FACING)));
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
+    @NotNull
     public BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation((Direction) state.getValue(FACING)));

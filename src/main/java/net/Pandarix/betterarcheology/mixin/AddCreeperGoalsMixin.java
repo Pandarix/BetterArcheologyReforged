@@ -1,6 +1,5 @@
 package net.Pandarix.betterarcheology.mixin;
 
-import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.entity.FleeFromBlockEntity;
 import net.Pandarix.betterarcheology.util.FleeBlockGoal;
 import net.minecraft.world.entity.ai.goal.Goal;

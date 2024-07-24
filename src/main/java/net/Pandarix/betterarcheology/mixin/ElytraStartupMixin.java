@@ -1,7 +1,7 @@
 package net.Pandarix.betterarcheology.mixin;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.Pandarix.betterarcheology.util.ArtifactEnchantmentHelper;
-import net.Pandarix.betterarcheology.util.ModConfigs;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,12 +16,12 @@ public abstract class ElytraStartupMixin
     private void injectMethod(CallbackInfo ci)
     {
         //if it is enabled in the config and the chestslot is enchanted
-        if (ModConfigs.ARTIFACT_ENCHANTMENTS_ENABLED.get())
+        if (BetterArcheologyConfig.artifactsEnabled.get())
         {
             Player betterarcheology$player = (Player) (Object) this;
             if (ArtifactEnchantmentHelper.hasSoaringWinds(betterarcheology$player))
             {
-                float betterarcheology$boost = ModConfigs.SOARING_WINDS_BOOST.get().floatValue() * 0.5f;
+                float betterarcheology$boost = BetterArcheologyConfig.soaringWindsBoost.get().floatValue() * 0.5f;
                 Vec3 betterarcheology$vec3d = betterarcheology$player.getLookAngle();
                 Vec3 betterarcheology$vec3d2 = betterarcheology$player.getDeltaMovement();
 

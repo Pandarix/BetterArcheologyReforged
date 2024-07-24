@@ -1,7 +1,7 @@
 package net.Pandarix.betterarcheology.mixin;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.Pandarix.betterarcheology.item.ModItems;
-import net.Pandarix.betterarcheology.util.ModConfigs;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +22,7 @@ public class TorrentTotemItemTickMixin
 
         LivingEntity betterarcheology$livingEntity = (LivingEntity) (Object) this;
 
-        if (ModConfigs.ARTIFACT_ENCHANTMENTS_ENABLED.get() && betterarcheology$livingEntity.getUseItem().is(ModItems.TORRENT_TOTEM.get()))
+        if (BetterArcheologyConfig.artifactsEnabled.get() && betterarcheology$livingEntity.getUseItem().is(ModItems.TORRENT_TOTEM.get()))
         {
             Level betterarcheology$level = betterarcheology$livingEntity.level();
             if (betterarcheology$level.isClientSide())

@@ -11,7 +11,6 @@ import net.Pandarix.betterarcheology.networking.ModMessages;
 import net.Pandarix.betterarcheology.screen.FossilInventoryScreen;
 import net.Pandarix.betterarcheology.screen.IdentifyingScreen;
 import net.Pandarix.betterarcheology.screen.ModMenuTypes;
-import net.Pandarix.betterarcheology.util.ModConfigs;
 import net.Pandarix.betterarcheology.villager.ModVillagers;
 import net.Pandarix.betterarcheology.world.structure.ModStructuresMain;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -41,7 +40,8 @@ public class BetterArcheology
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        ModConfigs.register();
+        BetterArcheologyConfig.init();
+
         // Register the Deferred Register to the mod event bus so items get registered
         ModItems.ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so blocks get registered

@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.util;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -107,7 +108,7 @@ public class FleeBlockGoal<T extends BlockEntity> extends Goal
 
     private boolean isWithinDistance(BlockPos blockposition, Vec3 position)
     {
-        return blockposition.distToCenterSqr(position) - ModConfigs.OCELOT_FOSSIL_FLEE_RANGE.get() <= 0;
+        return blockposition.distToCenterSqr(position) - BetterArcheologyConfig.ocelotFleeRange.get() <= 0;
     }
 
     public boolean canContinueToUse()
@@ -127,7 +128,7 @@ public class FleeBlockGoal<T extends BlockEntity> extends Goal
 
     public void tick()
     {
-        if (this.mob.distanceToSqr(this.targetBlock.getBlockPos().getCenter()) < 49.0D)
+        if (this.targetBlock !=null && this.mob.distanceToSqr(this.targetBlock.getBlockPos().getCenter()) < 49.0D)
         {
             this.mob.getNavigation().setSpeedModifier(this.fastSpeed);
         } else

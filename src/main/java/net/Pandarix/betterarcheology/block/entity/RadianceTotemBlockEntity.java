@@ -26,59 +26,62 @@ public class RadianceTotemBlockEntity extends BlockEntity
 
     public static void tick(Level world, BlockPos pos, BlockState state, RadianceTotemBlockEntity blockEntity)
     {
-        if (world.getRandom().nextIntBetweenInclusive(0, 5) != 0)
+        // Apply the effects of the totem every 10 ticks (.5 seconds) to reduce server stress
+        if (world.getRandom().nextIntBetweenInclusive(1, 10) == 1)
         {
-            return;
+            //get all entities in a 10 block radius
+            List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(pos.getCenter(), 20, 20, 20));
+            applyGlowingEffect(livingEntities, state);
+
+            // 1/6 chance to hurt all monsters --> 1/6 chance every .5 seconds = damaging every 3 seconds
+            if (world.getRandom().nextIntBetweenInclusive(1, 6) == 1)
+            {
+                for (LivingEntity livingEntity : livingEntities)
+                {
+                    if (livingEntity instanceof Monster monster)
+                    {
+                        monster.hurt(monster.damageSources().magic(), 4);
+                        world.playSound(null, monster.position().x(), monster.position().y(), monster.position().z(), SoundEvents.AMETHYST_BLOCK_HIT, SoundSource.HOSTILE, 0.5f, 0.5f);
+                    }
+                }
+            }
         }
+    }
+
+    /**
+     * Applies glow effect to all entities that are selected in the selector from the block
+     *
+     * @param livingEntities List of living entities around the Totem
+     * @param state          BlockState of the Totem to get the selector from
+     */
+    private static void applyGlowingEffect(List<LivingEntity> livingEntities, BlockState state)
+    {
+        // get selector index which type of Entity should glow, default 0
         int selector = 0;
         if (state.getBlock() instanceof RadianceTotemBlock)
         {
             selector = state.getValue(RadianceTotemBlock.SELECTOR);
         }
-        //get players in bounding box of 10 blocks
-        List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(pos.getCenter(), 20, 20, 20));
 
-        if (world.getRandom().nextIntBetweenInclusive(0, 400) == 0)
-        {
-            for (LivingEntity livingEntity : livingEntities)
-            {
-                if (livingEntity instanceof Monster monster)
-                {
-                    monster.hurt(monster.damageSources().magic(), 1);
-                    world.playSound(null, monster.position().x(), monster.position().y(), monster.position().z(), SoundEvents.AMETHYST_BLOCK_HIT, SoundSource.HOSTILE, 0.5f, 0.5f);
-                }
-            }
-            return;
-        }
+        Class<?> filteredClass = getFilteredEntityClass(selector);
+        livingEntities.stream().filter(filteredClass::isInstance)
+                .forEach(livingEntity -> livingEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0, false, false)));
+    }
 
-        //give every player in range slow-falling for 10 seconds, particles are not being displayed for ux
-        for (LivingEntity livingEntity : livingEntities)
+    /**
+     * Gets the corresponding Class of the Entity that is selected by the index set in the Radiance Totem
+     *
+     * @param selector Index of the Entityfilter
+     * @return The Class of the Entities that should glow
+     */
+    private static Class<?> getFilteredEntityClass(int selector)
+    {
+        return switch (selector)
         {
-            switch (selector)
-            {
-                case 0 -> livingEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0, false, false));
-                case 1 ->
-                {
-                    if (livingEntity instanceof Monster)
-                    {
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0, false, false));
-                    }
-                }
-                case 2 ->
-                {
-                    if (livingEntity instanceof Animal)
-                    {
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0, false, false));
-                    }
-                }
-                case 3 ->
-                {
-                    if (livingEntity instanceof Player)
-                    {
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0, false, false));
-                    }
-                }
-            }
-        }
+            case 1 -> Monster.class;
+            case 2 -> Animal.class;
+            case 3 -> Player.class;
+            default -> LivingEntity.class;
+        };
     }
 }
