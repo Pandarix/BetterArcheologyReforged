@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.block.entity;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.Pandarix.betterarcheology.block.custom.RadianceTotemBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -30,17 +31,19 @@ public class RadianceTotemBlockEntity extends BlockEntity
         if (world.getRandom().nextIntBetweenInclusive(1, 10) == 1)
         {
             //get all entities in a 10 block radius
-            List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(pos.getCenter(), 20, 20, 20));
+            int totemRadius = BetterArcheologyConfig.radianceTotemRadius.get() * 2;
+            List<LivingEntity> livingEntities = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(pos.getCenter(), totemRadius, totemRadius, totemRadius));
             applyGlowingEffect(livingEntities, state);
 
-            // 1/6 chance to hurt all monsters --> 1/6 chance every .5 seconds = damaging every 3 seconds
-            if (world.getRandom().nextIntBetweenInclusive(1, 6) == 1)
+            //damages every hostile monster with a chance of 1/(configValue*2), resulting in an average damage tick every configValue seconds
+            if (BetterArcheologyConfig.radianceTotemDamageEnabled.get() &&
+                    world.getRandom().nextIntBetweenInclusive(1, BetterArcheologyConfig.radianceTotemDamageTickAverage.get() * 2) == 1)
             {
                 for (LivingEntity livingEntity : livingEntities)
                 {
                     if (livingEntity instanceof Monster monster)
                     {
-                        monster.hurt(monster.damageSources().magic(), 4);
+                        monster.hurt(monster.damageSources().magic(), BetterArcheologyConfig.radianceTotemDamage.get());
                         world.playSound(null, monster.position().x(), monster.position().y(), monster.position().z(), SoundEvents.AMETHYST_BLOCK_HIT, SoundSource.HOSTILE, 0.5f, 0.5f);
                     }
                 }
@@ -64,8 +67,13 @@ public class RadianceTotemBlockEntity extends BlockEntity
         }
 
         Class<?> filteredClass = getFilteredEntityClass(selector);
-        livingEntities.stream().filter(filteredClass::isInstance)
-                .forEach(livingEntity -> livingEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0, false, false)));
+        livingEntities.forEach(livingEntity ->
+        {
+            if (filteredClass.isInstance(livingEntity))
+            {
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0, false, false));
+            }
+        });
     }
 
     /**

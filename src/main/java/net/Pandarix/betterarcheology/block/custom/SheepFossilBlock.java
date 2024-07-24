@@ -29,7 +29,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Map;
 
@@ -65,15 +67,18 @@ public class SheepFossilBlock extends FossilBaseBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @NotNull
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
     {
         return SHEEP_SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
     }
 
+    @ParametersAreNonnullByDefault
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify)
     {
         boolean powered = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
-        boolean playing = (Boolean) state.getValue(PLAYING);
+        boolean playing = state.getValue(PLAYING);
 
         if (powered && !playing)
         {
@@ -90,6 +95,8 @@ public class SheepFossilBlock extends FossilBaseBlock
 
     //used to tune the SheepFossilBlock to an Index of the GoatHornsSounds
     @Override
+    @NotNull
+    @ParametersAreNonnullByDefault
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit)
     {
         //if sound is already being played, abort
@@ -121,6 +128,7 @@ public class SheepFossilBlock extends FossilBaseBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
     {
         super.tick(pState, pLevel, pPos, pRandom);
@@ -128,7 +136,7 @@ public class SheepFossilBlock extends FossilBaseBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> pBuilder)
     {
         super.createBlockStateDefinition(pBuilder);
         pBuilder.add(HORN_SOUND, PLAYING);
@@ -136,7 +144,7 @@ public class SheepFossilBlock extends FossilBaseBlock
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag)
+    public void appendHoverText(@NotNull ItemStack stack, BlockGetter getter, List<Component> component, @NotNull TooltipFlag flag)
     {
         component.add(Component.translatable("block.betterarcheology.sheep_fossil_tooltip").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, getter, component, flag);

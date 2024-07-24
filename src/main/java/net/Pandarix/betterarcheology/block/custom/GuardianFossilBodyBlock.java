@@ -18,8 +18,10 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 public class GuardianFossilBodyBlock extends FossilBaseBodyBlock implements SimpleWaterloggedBlock
@@ -31,7 +33,7 @@ public class GuardianFossilBodyBlock extends FossilBaseBodyBlock implements Simp
     public GuardianFossilBodyBlock(Properties settings)
     {
         super(settings);
-        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, Boolean.valueOf(false)).setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false).setValue(FACING, Direction.NORTH));
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext pContext)
@@ -40,24 +42,27 @@ public class GuardianFossilBodyBlock extends FossilBaseBodyBlock implements Simp
         return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(fluidstate.isSourceOfType(Fluids.WATER))).setValue(FACING, pContext.getHorizontalDirection().getOpposite());
     }
 
+    @NotNull
     public FluidState getFluidState(BlockState pState)
     {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
-    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
+    @NotNull
+    @ParametersAreNonnullByDefault
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
     {
         return GUARDIAN_SHAPE;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag)
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, @NotNull TooltipFlag tooltipFlag)
     {
         components.add(Component.translatable("block.betterarcheology.guardian_fossil_body_tooltip").withStyle(ChatFormatting.GRAY).append(Component.translatable("block.betterarcheology.fossil_body_set").withStyle(ChatFormatting.BLUE)));
         super.appendHoverText(stack, blockGetter, components, tooltipFlag);
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> pBuilder)
     {
         pBuilder.add(WATERLOGGED, FACING);
     }
