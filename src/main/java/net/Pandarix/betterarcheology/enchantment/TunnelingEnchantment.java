@@ -1,11 +1,11 @@
 package net.Pandarix.betterarcheology.enchantment;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class TunnelingEnchantment extends ArtifactEnchantment
 {
@@ -15,8 +15,13 @@ public class TunnelingEnchantment extends ArtifactEnchantment
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean canEnchant(ItemStack pStack)
     {
-        return pStack.getItem() instanceof PickaxeItem || pStack.getItem() instanceof ShovelItem || pStack.getItem() instanceof HoeItem;
+        if (BetterArcheologyConfig.tunnelingEnabled.get() && BetterArcheologyConfig.artifactsEnabled.get())
+        {
+            return pStack.getItem() instanceof PickaxeItem || pStack.getItem() instanceof ShovelItem || pStack.getItem() instanceof HoeItem || (pStack.getItem() instanceof AxeItem && BetterArcheologyConfig.tunnelingAxeEnabled.get());
+        }
+        return false;
     }
 }

@@ -23,15 +23,19 @@ public class PenetratingStrikeEnchantment extends ArtifactEnchantment
         super(weight, EnchantmentCategory.WEAPON, slotTypes);
     }
 
-    //also allowing axes
     @Override
+    @ParametersAreNonnullByDefault
     public boolean canEnchant(ItemStack pStack)
     {
-        if (pStack.getItem() instanceof AxeItem)
+        if (BetterArcheologyConfig.penetratingStrikeEnabled.get() && BetterArcheologyConfig.artifactsEnabled.get())
         {
-            return true;
+            if (pStack.getItem() instanceof AxeItem || pStack.getItem() instanceof SwordItem)
+            {
+                return true;
+            }
+            return super.canEnchant(pStack);
         }
-        return super.canEnchant(pStack);
+        return false;
     }
 
     //Enchantment Functionality-------------------------------------------------------------------------//
@@ -50,7 +54,7 @@ public class PenetratingStrikeEnchantment extends ArtifactEnchantment
     @ParametersAreNonnullByDefault
     public void doPostAttack(LivingEntity user, Entity target, int level)
     {
-        if (!BetterArcheologyConfig.artifactsEnabled.get())
+        if (!BetterArcheologyConfig.artifactsEnabled.get() || !BetterArcheologyConfig.penetratingStrikeEnabled.get())
         {
             return;
         }

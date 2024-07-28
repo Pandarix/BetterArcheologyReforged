@@ -22,7 +22,7 @@ public abstract class TunnelingEnchantmentMixin
     private void injectMethod(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, CallbackInfoReturnable<Boolean> cir)
     {
         //if it is enabled in the config and the stack exists, has Enchantments & is Tunneling
-        if (BetterArcheologyConfig.artifactsEnabled.get() && !miner.isShiftKeyDown() && !stack.isEmpty() && stack.isEnchanted() && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.TUNNELING.get(), stack) == 1)
+        if (BetterArcheologyConfig.artifactsEnabled.get() && BetterArcheologyConfig.tunnelingEnabled.get() && !miner.isShiftKeyDown() && !stack.isEmpty() && stack.isEnchanted() && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.TUNNELING.get(), stack) == 1)
         {
             //if the tool is right for the block that should be broken
             //if the difference of the hardness of the block below is not more than 3,75

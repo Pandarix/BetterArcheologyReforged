@@ -13,9 +13,12 @@ public class BetterArcheologyConfig
 {
     //ARTIFACTS
     public static final Supplier<Boolean> artifactsEnabled;
+    public static final Supplier<Boolean> penetratingStrikeEnabled;
     public static final Supplier<Double> penetratingStrikeIgnorance;
     public static final Supplier<Boolean> soaringWindsEnabled;
     public static final Supplier<Double> soaringWindsBoost;
+    public static final Supplier<Boolean> tunnelingEnabled;
+    public static final Supplier<Boolean> tunnelingAxeEnabled;
     //TOTEMS
     public static final Supplier<Boolean> totemsEnabled;
 
@@ -47,7 +50,17 @@ public class BetterArcheologyConfig
         builder.push("Artifacts");
             artifactsEnabled = builder.comment("Set to true or false to enable or disable effects.").define("artifactEnchantmentsEnabled", true);
 
-            penetratingStrikeIgnorance = builder.comment("Set to % of damage-reduction from Protection Enchantments that should be ignored.").define("penetratingStrikeProtectionIgnorance", 0.33d, 0d, 1d);
+            builder.push("PenetratingStrike");
+                penetratingStrikeEnabled = builder.comment("En-/Disables the effects of the Penetrating Strike enchantment.").define("penetratingStrikeEnabled", true);
+
+                penetratingStrikeIgnorance = builder.comment("Set to % of damage-reduction from Protection Enchantments that should be ignored.").define("penetratingStrikeProtectionIgnorance", 0.33d, 0d, 1d);
+            builder.pop();
+
+            builder.push("Tunneling");
+                tunnelingEnabled = builder.comment("En-/Disables the effects of the Tunneling enchantment.").define("tunnelingEnabled", true);
+
+                tunnelingAxeEnabled = builder.comment("En-/Disables the tunneling enchantment on the Axe. Already enchanted axes still work but enchantment cannot be applied to future axes.").define("tunnelingAxeEnabled", false);
+            builder.pop();
 
             builder.push("SoaringWinds");
                 soaringWindsEnabled = builder.comment("En-/Disables the effects of the Soaring Winds enchantment.").define("soaringWindsEnabled", true);
@@ -95,7 +108,7 @@ public class BetterArcheologyConfig
 
             chickenFossilEffectsEnabled = builder.comment("En-/Disables the slow falling effect of the chicken fossil.").define("chickenFossilEffectsEnabled", true);
 
-            ocelotFossilEffectsEnabled = builder.comment("En-/Disables Creepers fleeing from the ocelot fossil.").define("chickenFossilEffectsEnabled", true);
+            ocelotFossilEffectsEnabled = builder.comment("En-/Disables Creepers fleeing from the ocelot fossil.").define("ocelotFossilEffectsEnabled", true);
 
             wolfFossilEffectsEnabled = builder.comment("En-/Disables Skeletons fleeing from the ocelot fossil.").define("wolfFossilEffectsEnabled", true);
 

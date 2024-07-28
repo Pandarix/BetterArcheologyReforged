@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.enchantment;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -7,6 +8,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Set;
 
 public class ArtifactEnchantment extends Enchantment
@@ -36,6 +38,7 @@ public class ArtifactEnchantment extends Enchantment
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean canApplyAtEnchantingTable(ItemStack stack)
     {
         return false;
@@ -51,5 +54,12 @@ public class ArtifactEnchantment extends Enchantment
     public @NotNull Rarity getRarity()
     {
         return Rarity.VERY_RARE;
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public boolean canEnchant(ItemStack pStack)
+    {
+        return BetterArcheologyConfig.artifactsEnabled.get() && super.canEnchant(pStack);
     }
 }
