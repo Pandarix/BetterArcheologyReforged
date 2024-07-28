@@ -21,7 +21,7 @@ public class ChickenFossilBlockEntity extends BlockEntity
 
     public static void tick(Level world, BlockPos pos, BlockState state, ChickenFossilBlockEntity blockEntity)
     {
-        if (!BetterArcheologyConfig.fossilEffectsEnabled.get())
+        if (!BetterArcheologyConfig.fossilEffectsEnabled.get() || !BetterArcheologyConfig.chickenFossilEffectsEnabled.get())
         {
             return;
         }

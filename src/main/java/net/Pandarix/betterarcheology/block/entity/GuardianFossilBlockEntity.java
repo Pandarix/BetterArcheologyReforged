@@ -21,7 +21,7 @@ public class GuardianFossilBlockEntity extends BlockEntity
 
     public static void tick(Level world, BlockPos pos, BlockState state, GuardianFossilBlockEntity blockEntity)
     {
-        if (!BetterArcheologyConfig.fossilEffectsEnabled.get())
+        if (!BetterArcheologyConfig.fossilEffectsEnabled.get() || !BetterArcheologyConfig.guardianFossilEffectsEnabled.get())
         {
             return;
         }

@@ -16,7 +16,7 @@ public class AddSkeletonGoalsMixin
     @Redirect(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/goal/GoalSelector;addGoal(ILnet/minecraft/world/entity/ai/goal/Goal;)V", ordinal = 3))
     private void injectMethod(GoalSelector instance, int priority, Goal goal)
     {
-        if (BetterArcheologyConfig.fossilEffectsEnabled.get())
+        if (BetterArcheologyConfig.fossilEffectsEnabled.get() && BetterArcheologyConfig.wolfFossilEffectsEnabled.get())
         {
             instance.addGoal(priority, goal); //add what would've been added anyway
             instance.addGoal(priority, new FleeBlockGoal<>((AbstractSkeleton) (Object) this, SkeletonFleeFromBlockEntity.class, 1.0, 1.2));

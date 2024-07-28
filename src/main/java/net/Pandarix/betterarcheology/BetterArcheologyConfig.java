@@ -35,6 +35,10 @@ public class BetterArcheologyConfig
     //FOSSILS
     public static final Supplier<Boolean> fossilEffectsEnabled;
     public static final Supplier<Integer> fossilFleeRange;
+    public static final Supplier<Boolean> chickenFossilEffectsEnabled;
+    public static final Supplier<Boolean> ocelotFossilEffectsEnabled;
+    public static final Supplier<Boolean> wolfFossilEffectsEnabled;
+    public static final Supplier<Boolean> guardianFossilEffectsEnabled;
 
     static
     {
@@ -88,6 +92,14 @@ public class BetterArcheologyConfig
             fossilEffectsEnabled = builder.comment("En-/Disables the effects of the Fossils like PotionEffects etc.").define("fossilEffectsEnabled", true);
 
             fossilFleeRange = builder.comment("Range in Blocks that the Ocelot/Wolf Fossils scare their corresponding mobs away.").define("fossilFleeRange", 20, 10, 50);
+
+            chickenFossilEffectsEnabled = builder.comment("En-/Disables the slow falling effect of the chicken fossil.").define("chickenFossilEffectsEnabled", true);
+
+            ocelotFossilEffectsEnabled = builder.comment("En-/Disables Creepers fleeing from the ocelot fossil.").define("chickenFossilEffectsEnabled", true);
+
+            wolfFossilEffectsEnabled = builder.comment("En-/Disables Skeletons fleeing from the ocelot fossil.").define("wolfFossilEffectsEnabled", true);
+
+            guardianFossilEffectsEnabled = builder.comment("En-/Disables the water breathing effect of the guardian fossil.").define("guardianFossilEffectsEnabled", true);
         builder.pop();
 
         builder.build();
