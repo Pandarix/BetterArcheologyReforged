@@ -21,7 +21,7 @@ public abstract class FasterBrushingMixin
     {
         if (player.getUseItem().getItem() instanceof BetterBrushItem brushItem)
         {
-            this.coolDownEndsAtTick -= (10L - brushItem.getBrushingSpeed());
+            this.coolDownEndsAtTick -= (long) (10L - brushItem.getBrushingSpeed());
         }
     }
 }

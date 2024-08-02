@@ -83,12 +83,15 @@
   "advancements.all_fossils_found.description": "Collect all fossil parts!",
   "advancements.growth_totem": "Where you least expect it",
   "advancements.growth_totem.description": "Find the life that grew among the dead",
+  "advancements.netherite_brush.title": "Insane Investment",
+  "advancements.netherite_brush.description": "Sometimes, the path to greatness is paved with questionable choices - but never with dust.",
 
   "block.betterarcheology.fossil_head_set": " [1/2]",
   "block.betterarcheology.fossil_body_set": " [2/2]",
 
   "item.betterarcheology.iron_brush": "Iron Brush",
   "item.betterarcheology.diamond_brush": "Diamond Brush",
+  "item.betterarcheology.netherite_brush": "Netherite Brush",
   "block.betterarcheology.archeology_table": "Archeology Table",
   "item.betterarcheology.artifact_shards": "Artifact Shards",
   "item.betterarcheology.unidentified_artifact": "Unidentified Artifact",

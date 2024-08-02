@@ -14,6 +14,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BrushItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BrushableBlock;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.entity.BrushableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.NotNull;
 
 public class BetterBrushItem extends BrushItem
 {
@@ -42,15 +44,17 @@ public class BetterBrushItem extends BrushItem
     private HitResult calculateHitResult(LivingEntity pEntity)
     {
         return ProjectileUtil.getHitResultOnViewVector(pEntity, (p_281111_) ->
-        {
-            return !p_281111_.isSpectator() && p_281111_.isPickable();
-        }, MAX_BRUSH_DISTANCE);
+                !p_281111_.isSpectator() && p_281111_.isPickable(), MAX_BRUSH_DISTANCE);
+    }
+
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
+        return UseAnim.BRUSH;
     }
 
     /**
      * Called as the item is being used by an entity.
      */
-    public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration)
+    public void onUseTick(@NotNull Level pLevel, @NotNull LivingEntity pLivingEntity, @NotNull ItemStack pStack, int pRemainingUseDuration)
     {
         if (pRemainingUseDuration >= 0 && pLivingEntity instanceof Player player)
         {
@@ -69,9 +73,8 @@ public class BetterBrushItem extends BrushItem
                         this.spawnDustParticles(pLevel, blockhitresult, blockstate, pLivingEntity.getViewVector(0.0F), humanoidarm);
                         Block $$18 = blockstate.getBlock();
                         SoundEvent soundevent;
-                        if ($$18 instanceof BrushableBlock)
+                        if ($$18 instanceof BrushableBlock brushableblock)
                         {
-                            BrushableBlock brushableblock = (BrushableBlock) $$18;
                             soundevent = brushableblock.getBrushSound();
                         } else
                         {
@@ -82,17 +85,14 @@ public class BetterBrushItem extends BrushItem
                         if (!pLevel.isClientSide())
                         {
                             BlockEntity blockentity = pLevel.getBlockEntity(blockpos);
-                            if (blockentity instanceof BrushableBlockEntity)
+                            if (blockentity instanceof BrushableBlockEntity brushableblockentity)
                             {
-                                BrushableBlockEntity brushableblockentity = (BrushableBlockEntity) blockentity;
                                 boolean flag1 = brushableblockentity.brush(pLevel.getGameTime(), player, blockhitresult.getDirection());
                                 if (flag1)
                                 {
                                     EquipmentSlot equipmentslot = pStack.equals(player.getItemBySlot(EquipmentSlot.OFFHAND)) ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND;
                                     pStack.hurtAndBreak(1, pLivingEntity, (p_279044_) ->
-                                    {
-                                        p_279044_.broadcastBreakEvent(equipmentslot);
-                                    });
+                                            p_279044_.broadcastBreakEvent(equipmentslot));
                                 }
                             }
                         }
@@ -101,7 +101,6 @@ public class BetterBrushItem extends BrushItem
                     return;
                 }
             }
-
             pLivingEntity.releaseUsingItem();
         } else
         {

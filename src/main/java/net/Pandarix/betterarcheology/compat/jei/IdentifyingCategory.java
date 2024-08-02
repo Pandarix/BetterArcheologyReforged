@@ -70,7 +70,7 @@ public class IdentifyingCategory implements IRecipeCategory<IdentifyingRecipe>
     public void setRecipe(IRecipeLayoutBuilder builder, IdentifyingRecipe recipe, @NotNull IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 80, 20).addItemStacks(
-                List.of(Items.BRUSH.getDefaultInstance(), ModItems.DIAMOND_BRUSH.get().getDefaultInstance(), ModItems.IRON_BRUSH.get().getDefaultInstance())
+                List.of(Items.BRUSH.getDefaultInstance(), ModItems.IRON_BRUSH.get().getDefaultInstance(), ModItems.DIAMOND_BRUSH.get().getDefaultInstance(), ModItems.NETHERITE_BRUSH.get().getDefaultInstance())
         );
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 48).addIngredients(recipe.getIngredients().get(0));

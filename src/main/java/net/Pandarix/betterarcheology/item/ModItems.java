@@ -1,9 +1,7 @@
 package net.Pandarix.betterarcheology.item;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
-import net.minecraft.world.item.BrushItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -15,8 +13,9 @@ public class ModItems
 
     //ITEM ENTRIES-------------------------------------------------------------------------//
     //BRUSHES
-    public static final RegistryObject<Item> IRON_BRUSH = ITEMS.register("iron_brush", () -> new BrushItem(new Item.Properties().durability(128)));
-    public static final RegistryObject<Item> DIAMOND_BRUSH = ITEMS.register("diamond_brush", () -> new BrushItem(new Item.Properties().durability(256)));
+    public static final RegistryObject<Item> IRON_BRUSH = ITEMS.register("iron_brush", () -> new BetterBrushItem(new Item.Properties().durability(128), 8));
+    public static final RegistryObject<Item> DIAMOND_BRUSH = ITEMS.register("diamond_brush", () -> new BetterBrushItem(new Item.Properties().durability(512), 6));
+    public static final RegistryObject<Item> NETHERITE_BRUSH = ITEMS.register("netherite_brush", () -> new BetterBrushItem(new Item.Properties().durability(1024), 4));
 
     //ARTIFACTS
     public static final RegistryObject<Item> ARTIFACT_SHARDS = ITEMS.register("artifact_shards", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));

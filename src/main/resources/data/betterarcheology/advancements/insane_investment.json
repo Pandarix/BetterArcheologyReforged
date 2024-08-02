@@ -1,0 +1,41 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "betterarcheology:brush": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "betterarcheology:netherite_brush"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "betterarcheology:netherite_brush"
+    },
+    "title": {
+      "translate": "advancements.netherite_brush.title"
+    },
+    "description": {
+      "translate": "advancements.netherite_brush.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "rewards": {
+    "experience": 100
+  },
+  "requirements": [
+    [
+      "betterarcheology:brush"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

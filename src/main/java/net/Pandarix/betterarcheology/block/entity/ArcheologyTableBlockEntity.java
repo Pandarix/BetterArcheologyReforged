@@ -27,7 +27,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.BrushItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,6 +43,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
         protected void onContentsChanged(int slot)
         {
             setChanged();
-            if (!level.isClientSide())
+            if (level != null && !level.isClientSide())
             {
                 ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
             }
@@ -120,6 +120,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
+    @NotNull
     public net.minecraft.network.chat.Component getDisplayName()
     {
         return Component.translatable(new ResourceLocation("block." + BetterArcheology.MOD_ID, translationKey).toLanguageKey());
@@ -159,6 +160,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void load(CompoundTag nbt)
     {
         super.load(nbt);
@@ -167,13 +169,16 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
 
     public void drops()
     {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++)
+        if (this.level != null)
         {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
+            SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
+            for (int i = 0; i < itemHandler.getSlots(); i++)
+            {
+                inventory.setItem(i, itemHandler.getStackInSlot(i));
+            }
 
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+            Containers.dropContents(this.level, this.worldPosition, inventory);
+        }
     }
 
     public void setHandler(ItemStackHandler itemStackHandler)
@@ -186,6 +191,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
 
     @Nullable
     @Override
+    @ParametersAreNonnullByDefault
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player)
     {
         return new IdentifyingMenu(id, inventory, this, this.data);
@@ -267,7 +273,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
             }
 
             //if on server
-            if (!this.level.isClientSide())
+            if (this.level != null && !this.level.isClientSide())
             {
                 //play sound after crafting
                 this.level.playSound(null, this.worldPosition, SoundEvents.BRUSH_SAND_COMPLETED, SoundSource.BLOCKS, 0.5f, 1f);
@@ -276,7 +282,6 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
             this.resetProgress(); //resets crafting progress
             this.setChanged();
         }
-
     }
 
     private ItemStack generateCraftingLoot(BlockEntity entity, Level level)
@@ -293,7 +298,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
             ObjectArrayList<ItemStack> objectArrayList = lootTable.getRandomItems(lootparams, level.random.nextLong());
 
             //return first LootTable entry as crafting output
-            if (objectArrayList.size() == 0)
+            if (objectArrayList.isEmpty())
             {
                 return ItemStack.EMPTY;
             }
@@ -317,9 +322,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
 
         boolean hasShardInFirstSlot = entity.itemHandler.getStackInSlot(1).is(ModItems.UNIDENTIFIED_ARTIFACT.get());                     //Input
         Item itemInSlot0 = entity.itemHandler.getStackInSlot(0).getItem();
-        boolean hasBrushInSlot = itemInSlot0 == ModItems.IRON_BRUSH.get() ||
-                itemInSlot0 == ModItems.DIAMOND_BRUSH.get() ||
-                itemInSlot0 == Items.BRUSH;
+        boolean hasBrushInSlot = itemInSlot0 instanceof BrushItem;
         return hasShardInFirstSlot && hasBrushInSlot && canInsertAmountIntoOutputSlot(entity.itemHandler) && canInsertItemIntoOutputSlot(entity.itemHandler, entity.itemHandler.getStackInSlot(2).getItem());
     }
 
@@ -390,6 +393,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
+    @NotNull
     public CompoundTag getUpdateTag()
     {
         return this.saveWithoutMetadata();
