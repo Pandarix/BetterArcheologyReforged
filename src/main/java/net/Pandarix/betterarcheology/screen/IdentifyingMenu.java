@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class IdentifyingMenu extends AbstractContainerMenu
 {
@@ -56,13 +57,13 @@ public class IdentifyingMenu extends AbstractContainerMenu
     {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);                         // Maximum Progress, after reaching: progress done
-        int progressArrowSize = 74;                                 // This is the width in pixels of your arrow //TODO: Edit correct size
+        int progressArrowSize = 74;                                 // This is the width in pixels of your arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
     @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex)
+    public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex)
     {
         ItemStack newStack = ItemStack.EMPTY;   //defines an empty ItemStack, will be used to return the changed Item in the Slot
         Slot slot = this.slots.get(pIndex);    //the given InventorySlot
@@ -135,7 +136,7 @@ public class IdentifyingMenu extends AbstractContainerMenu
     }
 
     @Override
-    public boolean stillValid(Player pPlayer)
+    public boolean stillValid(@NotNull Player pPlayer)
     {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
                 pPlayer, ModBlocks.ARCHEOLOGY_TABLE.get());

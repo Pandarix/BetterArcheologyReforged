@@ -177,6 +177,16 @@ repositories {
     maven {
         url "https://www.cursemaven.com"
     }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 dependencies {
@@ -194,11 +204,11 @@ dependencies {
     // Config library
     implementation fg.deobf("curse.maven:supermartijn642s-config-lib-438332:${project.supermartins_config_file}")
 
-    // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    // compile against the JEI API but do not include it at runtime
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    // at runtime, use the full JEI jar for Forge
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
@@ -235,6 +245,7 @@ def replaceProperties = [
         minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
         forge_version       : forge_version, forge_version_range: forge_version_range,
         yungsapi_mc_version : yungsapi_mc_version, yungsapi_version: yungsapi_version,
+        jei_version: jei_version,
         supermartins_config_ver: supermartins_config_ver,
         loader_version_range: loader_version_range,
         mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
@@ -255,7 +266,7 @@ jar {
         attributes([
                 "Specification-Title"     : 'betterarcheology',
                 "Specification-Vendor"    : 'Pandarix',
-                "Specification-Version"   : "1.1.9-1.20.4", // We are version 1 of ourselves
+                "Specification-Version"   : "1.2.0-1.20.4", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : 'Pandarix',

@@ -3,6 +3,7 @@ package net.Pandarix.betterarcheology;
 import com.mojang.logging.LogUtils;
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
+import net.Pandarix.betterarcheology.compat.jei.recipe.ModRecipes;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
 import net.Pandarix.betterarcheology.entity.ModEntityTypes;
 import net.Pandarix.betterarcheology.item.ModItemGroup;
@@ -26,7 +27,9 @@ import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(BetterArcheology.MOD_ID)
-public class BetterArcheology
+public class
+
+BetterArcheology
 {
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "betterarcheology";
@@ -53,6 +56,7 @@ public class BetterArcheology
 
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
+        ModRecipes.SERIALIZERS.register(modEventBus);
 
         ModVillagers.POI_TYPES.register(modEventBus);
         ModVillagers.VILLAGER_PROFESSIONS.register(modEventBus);
