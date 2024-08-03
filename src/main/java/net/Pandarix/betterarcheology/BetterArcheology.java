@@ -7,7 +7,6 @@ import net.Pandarix.betterarcheology.compat.jei.recipe.ModRecipes;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
 import net.Pandarix.betterarcheology.entity.ModEntityTypes;
 import net.Pandarix.betterarcheology.item.ModItemGroup;
-import net.Pandarix.betterarcheology.item.ModItems;
 import net.Pandarix.betterarcheology.networking.ModMessages;
 import net.Pandarix.betterarcheology.screen.FossilInventoryScreen;
 import net.Pandarix.betterarcheology.screen.IdentifyingScreen;

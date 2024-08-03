@@ -2,7 +2,6 @@ package net.Pandarix.betterarcheology.block;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.custom.*;
-import net.Pandarix.betterarcheology.item.ModItems;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
