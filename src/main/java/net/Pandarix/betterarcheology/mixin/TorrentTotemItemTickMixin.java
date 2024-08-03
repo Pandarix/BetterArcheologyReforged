@@ -1,6 +1,5 @@
 package net.Pandarix.betterarcheology.mixin;
 
-import net.Pandarix.betterarcheology.item.ModItems;
 import net.Pandarix.betterarcheology.util.ModConfigs;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;

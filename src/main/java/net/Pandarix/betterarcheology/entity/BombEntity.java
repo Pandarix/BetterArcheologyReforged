@@ -1,6 +1,5 @@
 package net.Pandarix.betterarcheology.entity;
 
-import net.Pandarix.betterarcheology.item.ModItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;

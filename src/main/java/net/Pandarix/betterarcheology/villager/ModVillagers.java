@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
-import net.Pandarix.betterarcheology.item.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;

@@ -6,7 +6,6 @@ import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
 import net.Pandarix.betterarcheology.entity.ModEntityTypes;
 import net.Pandarix.betterarcheology.item.ModItemGroup;
-import net.Pandarix.betterarcheology.item.ModItems;
 import net.Pandarix.betterarcheology.networking.ModMessages;
 import net.Pandarix.betterarcheology.recipe.ModRecipes;
 import net.Pandarix.betterarcheology.screen.FossilInventoryScreen;

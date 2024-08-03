@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.networking.ModMessages;
 import net.Pandarix.betterarcheology.networking.packet.ItemStackSyncS2CPacket;
-import net.Pandarix.betterarcheology.item.ModItems;
 import net.Pandarix.betterarcheology.screen.IdentifyingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
