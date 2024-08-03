@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.entity;
 
+import net.Pandarix.betterarcheology.item.ModItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -8,6 +9,8 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class BombEntity extends ThrowableItemProjectile
 {
@@ -60,6 +63,7 @@ public class BombEntity extends ThrowableItemProjectile
         super.tick();
     }
 
+    @ParametersAreNonnullByDefault
     protected void onHit(HitResult pResult)
     {
         super.onHit(pResult);
