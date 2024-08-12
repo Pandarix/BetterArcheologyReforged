@@ -1,10 +1,7 @@
 package net.Pandarix.betterarcheology.datagen;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
-import net.Pandarix.betterarcheology.datagen.provider.ModBlockTagProvider;
-import net.Pandarix.betterarcheology.datagen.provider.ModItemModelProvider;
-import net.Pandarix.betterarcheology.datagen.provider.ModItemTagProvider;
-import net.Pandarix.betterarcheology.datagen.provider.ModPoiTagProvider;
+import net.Pandarix.betterarcheology.datagen.provider.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -24,7 +21,7 @@ public class ModDataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        //generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput));
+        generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput));
         //generator.addProvider(event.includeServer(), ModLootTableProvider.create(packOutput));
 
         //generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
