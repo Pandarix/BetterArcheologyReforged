@@ -1,7 +1,13 @@
 package net.Pandarix.betterarcheology.item;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
-import net.minecraft.world.item.*;
+import net.Pandarix.betterarcheology.block.custom.FossilBaseBlock;
+import net.Pandarix.betterarcheology.block.custom.FossilBaseBodyBlock;
+import net.Pandarix.betterarcheology.block.custom.FossilBaseHeadBlock;
+import net.Pandarix.betterarcheology.block.custom.FossilBaseWithEntityBlock;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -25,4 +31,12 @@ public class ModItems
     public static final RegistryObject<Item> BOMB_ITEM = ITEMS.register("bomb", () -> new BombItem(new Item.Properties().rarity(Rarity.COMMON).stacksTo(16)));
     public static final RegistryObject<Item> TORRENT_TOTEM = ITEMS.register("torrent_totem", () -> new TorrentTotemItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).durability(32)));
     public static final RegistryObject<Item> SOUL_TOTEM = ITEMS.register("soul_totem", () -> new SoulTotemItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).durability(32)));
+
+    public static boolean isFossil(Block block)
+    {
+        return block instanceof FossilBaseBodyBlock
+                || block instanceof FossilBaseWithEntityBlock
+                || block instanceof FossilBaseHeadBlock
+                || block instanceof FossilBaseBlock;
+    }
 }

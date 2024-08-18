@@ -60,7 +60,7 @@ public class ModItemGroup
                 output.accept(ModBlocks.GUARDIAN_FOSSIL_BODY.get());
                 //blocks
                 output.accept(ModBlocks.SUSPICIOUS_RED_SAND.get());
-                output.accept(ModBlocks.SUSPICIOUS_RED_SAND.get());
+                output.accept(ModBlocks.SUSPICIOUS_DIRT.get());
                 output.accept(ModBlocks.FOSSILIFEROUS_DIRT.get());
                 output.accept(ModBlocks.CHISELED_BONE_BLOCK.get());
                 //wood

@@ -2,10 +2,6 @@ package net.Pandarix.betterarcheology.datagen.provider;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
-import net.Pandarix.betterarcheology.block.custom.FossilBaseBlock;
-import net.Pandarix.betterarcheology.block.custom.FossilBaseBodyBlock;
-import net.Pandarix.betterarcheology.block.custom.FossilBaseHeadBlock;
-import net.Pandarix.betterarcheology.block.custom.FossilBaseWithEntityBlock;
 import net.Pandarix.betterarcheology.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
@@ -26,7 +22,7 @@ public class ModItemModelProvider extends ItemModelProvider
     protected void registerModels()
     {
         ModBlocks.BLOCKS.getEntries().stream()
-                .filter(block -> block != ModBlocks.RADIANCE_TOTEM && isFossil(block.get()))
+                .filter(block -> block != ModBlocks.RADIANCE_TOTEM && ModItems.isFossil(block.get()))
                 .forEach(fossil -> prefixedBlockParent(fossil, "fossils"));
 
         basicItem(ModItems.ARTIFACT_SHARDS.getId());
@@ -97,14 +93,6 @@ public class ModItemModelProvider extends ItemModelProvider
         return withExistingParent(item.getId().getPath(),
                 mcLoc("item/brush")).texture("layer0",
                 modLoc("item/brushes/" + item.getId().getPath()));
-    }
-
-    private static boolean isFossil(Block block)
-    {
-        return block instanceof FossilBaseBodyBlock
-                || block instanceof FossilBaseWithEntityBlock
-                || block instanceof FossilBaseHeadBlock
-                || block instanceof FossilBaseBlock;
     }
 
     private static boolean hasMultipleVariants(String path)
