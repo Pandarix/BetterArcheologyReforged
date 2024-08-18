@@ -1,12 +1,12 @@
 {
 	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"render_type": "cutout",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "betterarcheology:block/fossils/sheep",
 		"particle": "item/bone"
 	},
-	"render_type": "cutout",
-	"ambientocclusion": false,
 	"elements": [
 		{
 			"name": "head",
@@ -199,8 +199,9 @@
 			"translation": [1, 2.75, 0]
 		},
 		"head": {
-			"translation": [0, 14.5, 2.5],
-			"scale": [3, 3, 3]
+			"rotation": [-23, 0, 0],
+			"translation": [0, 13.75, -5],
+			"scale": [2.66, 2.5, 2.5]
 		},
 		"fixed": {
 			"rotation": [-48.5, 0, 0],
