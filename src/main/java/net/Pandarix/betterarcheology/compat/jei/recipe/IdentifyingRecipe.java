@@ -24,13 +24,11 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
 {
     private final Ingredient input;
     private final ItemStack result;
-    private final CompoundTag nbt;
 
-    public IdentifyingRecipe(Ingredient inputItems, ItemStack result, CompoundTag nbt)
+    public IdentifyingRecipe(Ingredient inputItems, ItemStack result)
     {
         this.input = inputItems;
         this.result = result;
-        this.nbt = nbt;
     }
 
     @Override
@@ -81,7 +79,6 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
     {
         //Adding the Enchantment Tags
         ItemStack modifiedResultBook = result.copy();
-        modifiedResultBook.setTag(this.nbt);
 
         //Adding the Custom Name Tags
         CompoundTag nameModification = new CompoundTag();
@@ -95,11 +92,6 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         //output the book with the modifications
         modifiedResultBook.addTagElement("display", nameModification);
         return modifiedResultBook;
-    }
-
-    public CompoundTag getNbt()
-    {
-        return this.nbt;
     }
 
     @Override
@@ -126,8 +118,7 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         private static final Codec<IdentifyingRecipe> CODEC = RecordCodecBuilder.create(
                 (builder) -> builder.group(
                         Ingredient.CODEC.fieldOf("input").forGetter((IdentifyingRecipe recipe) -> recipe.input),
-                        ItemStack.CODEC.fieldOf("result").forGetter((IdentifyingRecipe recipe) -> recipe.result),
-                        CompoundTag.CODEC.fieldOf("nbt").forGetter((IdentifyingRecipe recipe) -> recipe.nbt)
+                        ItemStack.CODEC.fieldOf("result").forGetter((IdentifyingRecipe recipe) -> recipe.result)
                 ).apply(builder, IdentifyingRecipe::new));
 
         public static final Serializer INSTANCE = new Serializer();
@@ -143,9 +134,8 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         {
             Ingredient input = Ingredient.fromNetwork(friendlyByteBuf);
             ItemStack result = friendlyByteBuf.readItem();
-            CompoundTag nbt = friendlyByteBuf.readNbt();
 
-            return new IdentifyingRecipe(input, result, nbt);
+            return new IdentifyingRecipe(input, result);
         }
 
         @Override
@@ -153,7 +143,6 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         {
             pRecipe.getIngredients().get(0).toNetwork(pBuffer);
             pBuffer.writeItemStack(pRecipe.result, false);
-            pBuffer.writeNbt(pRecipe.getNbt());
         }
     }
 }

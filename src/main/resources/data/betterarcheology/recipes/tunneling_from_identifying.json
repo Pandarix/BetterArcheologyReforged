@@ -5,14 +5,14 @@
   },
   "result": {
     "id": "minecraft:enchanted_book",
-    "Count": 1
-  },
-  "nbt": {
-    "StoredEnchantments": [
-      {
-        "id": "betterarcheology:tunneling",
-        "lvl": 1
-      }
-    ]
+    "Count": 1,
+    "tag": {
+      "StoredEnchantments": [
+        {
+          "id": "betterarcheology:tunneling",
+          "lvl": 1
+        }
+      ]
+    }
   }
 }
