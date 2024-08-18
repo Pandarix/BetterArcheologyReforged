@@ -38,7 +38,7 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
         protected void onContentsChanged(int slot)
         {
             setChanged();
-            if (level !=null && !level.isClientSide())
+            if (level != null && !level.isClientSide())
             {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }

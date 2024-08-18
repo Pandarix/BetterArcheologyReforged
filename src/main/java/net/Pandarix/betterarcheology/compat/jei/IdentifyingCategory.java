@@ -10,8 +10,8 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
+import net.Pandarix.betterarcheology.compat.jei.recipe.IdentifyingRecipe;
 import net.Pandarix.betterarcheology.item.ModItems;
-import net.Pandarix.betterarcheology.recipe.IdentifyingRecipe;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -69,12 +69,12 @@ public class IdentifyingCategory implements IRecipeCategory<IdentifyingRecipe>
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, IdentifyingRecipe recipe, @NotNull IFocusGroup focuses)
     {
-        builder.addSlot(RecipeIngredientRole.CATALYST, 80, 20).addItemStacks(
-                List.of(Items.BRUSH.getDefaultInstance(), ModItems.DIAMOND_BRUSH.get().getDefaultInstance(), ModItems.IRON_BRUSH.get().getDefaultInstance())
+        builder.addSlot(RecipeIngredientRole.INPUT, 80, 20).addItemStacks(
+                List.of(Items.BRUSH.getDefaultInstance(), ModItems.IRON_BRUSH.get().getDefaultInstance(), ModItems.DIAMOND_BRUSH.get().getDefaultInstance(), ModItems.NETHERITE_BRUSH.get().getDefaultInstance())
         );
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 48).addIngredients(recipe.getIngredients().get(0));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 134, 48).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 134, 48).addItemStack(recipe.getResult());
     }
 }

@@ -1,7 +1,7 @@
 package net.Pandarix.betterarcheology.mixin;
 
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.Pandarix.betterarcheology.item.ModItems;
-import net.Pandarix.betterarcheology.util.ModConfigs;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,18 +14,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public class TorrentTotemItemTickMixin {
+public class TorrentTotemItemTickMixin
+{
     @Inject(method = "checkAutoSpinAttack", at = @At("HEAD"))
-    private void injectMethod(AABB a, AABB b, CallbackInfo ci) {
+    private void injectMethod(AABB a, AABB b, CallbackInfo ci)
+    {
 
         LivingEntity betterarcheology$livingEntity = (LivingEntity) (Object) this;
 
-        if (ModConfigs.ARTIFACT_ENCHANTMENTS_ENABLED.get() && betterarcheology$livingEntity.getUseItem().is(ModItems.TORRENT_TOTEM.get())) {
+        if (BetterArcheologyConfig.artifactsEnabled.get() && betterarcheology$livingEntity.getUseItem().is(ModItems.TORRENT_TOTEM.get()))
+        {
             Level betterarcheology$level = betterarcheology$livingEntity.level();
-            if (betterarcheology$level.isClientSide()) {
+            if (betterarcheology$level.isClientSide())
+            {
                 RandomSource betterarcheology$random = betterarcheology$livingEntity.getRandom();
                 Vec3 betterarcheology$pos = betterarcheology$livingEntity.position();
-                for (int i = 0; i <= 75; ++i) {
+                for (int i = 0; i <= 75; ++i)
+                {
                     betterarcheology$level.addParticle(ParticleTypes.SPLASH,
                             betterarcheology$pos.x + (betterarcheology$random.nextDouble() - 0.5),
                             betterarcheology$pos.y + (betterarcheology$random.nextDouble() - 0.5),

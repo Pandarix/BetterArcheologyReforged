@@ -9,25 +9,29 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class IdentifyingScreen extends AbstractContainerScreen<IdentifyingMenu> {
+public class IdentifyingScreen extends AbstractContainerScreen<IdentifyingMenu>
+{
 
     //saves archeology_table_gui as TEXTURE
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(BetterArcheology.MOD_ID, "textures/gui/archeology_table_gui.png");
 
-    public IdentifyingScreen(IdentifyingMenu inventoryMenu, Inventory inventory, Component title) {
+    public IdentifyingScreen(IdentifyingMenu inventoryMenu, Inventory inventory, Component title)
+    {
         super(inventoryMenu, inventory, title);
     }
 
     @Override
-    protected void init() {
+    protected void init()
+    {
         super.init();
-        this.titleLabelX = imageWidth/2 - 43;
+        this.titleLabelX = imageWidth / 2 - 43;
         this.titleLabelY += 2;
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY)
+    {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -38,15 +42,18 @@ public class IdentifyingScreen extends AbstractContainerScreen<IdentifyingMenu> 
         renderProgressArrow(guiGraphics, x, y);
     }
 
-    private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isCrafting()) {
+    private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y)
+    {
+        if (menu.isCrafting())
+        {
             guiGraphics.blit(TEXTURE, x + 51, y + 48, 176, 0, menu.getScaledProgress(), 17);
         }
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        renderBackground(guiGraphics);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta)
+    {
+        renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }

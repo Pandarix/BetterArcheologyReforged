@@ -24,7 +24,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 import java.util.Map;
 
-public class CreeperFossilBlock extends FossilBaseBlock {
+public class CreeperFossilBlock extends FossilBaseBlock
+{
     //Map of hitboxes for every direction the model can be facing
     private static final Map<Direction, VoxelShape> CREEPER_SHAPES_FOR_DIRECTION = ImmutableMap.of(
             Direction.NORTH, Shapes.or(
@@ -48,18 +49,21 @@ public class CreeperFossilBlock extends FossilBaseBlock {
                     Block.box(1.5, 0, 3, 6.5, 6.5, 13),
                     Block.box(9.5, 0, 3, 14.5, 6.5, 13)));
 
-    public CreeperFossilBlock(Properties settings) {
+    public CreeperFossilBlock(Properties settings)
+    {
         super(settings);
     }
 
     @Override
-    public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource random) {
+    public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource random)
+    {
         super.animateTick(blockState, level, pos, random);
 
         ParticleOptions particle = random.nextBoolean() ? ParticleTypes.SMALL_FLAME : ParticleTypes.SMOKE; //50:50 chance for either spawning Smoke or Flames
         Vec3 center = pos.getCenter();
 
-        if (level.isClientSide()) {
+        if (level.isClientSide())
+        {
             //spawns particle at center of Block with random offset & velocity
             level.addParticle(particle,
                     center.x() + random.nextFloat() * getRandomSign(random),
@@ -72,18 +76,21 @@ public class CreeperFossilBlock extends FossilBaseBlock {
         }
     }
 
-    private static int getRandomSign(RandomSource rand) {
+    private static int getRandomSign(RandomSource rand)
+    {
         return (rand.nextBoolean() ? 1 : -1);
     }
 
     @Override
-    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext)
+    {
         return CREEPER_SHAPES_FOR_DIRECTION.get(blockState.getValue(FACING));
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag)
+    {
         component.add(Component.translatable("block.betterarcheology.creeper_fossil_tooltip").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, getter, component, flag);
     }

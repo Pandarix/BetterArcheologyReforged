@@ -14,20 +14,24 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class WolfFossilHeadBlock extends FossilBaseHeadBlock {
+public class WolfFossilHeadBlock extends FossilBaseHeadBlock
+{
     private static final VoxelShape WOLF_HEAD_SHAPE = Block.box(4, 0, 4, 12, 6, 12);
 
-    public WolfFossilHeadBlock(Properties settings) {
+    public WolfFossilHeadBlock(Properties settings)
+    {
         super(settings);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
+    {
         return WOLF_HEAD_SHAPE;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag)
+    {
         components.add(Component.translatable("block.betterarcheology.wolf_fossil_head_tooltip").withStyle(ChatFormatting.GRAY).append(Component.translatable("block.betterarcheology.fossil_head_set").withStyle(ChatFormatting.BLUE)));
         super.appendHoverText(stack, blockGetter, components, tooltipFlag);
     }

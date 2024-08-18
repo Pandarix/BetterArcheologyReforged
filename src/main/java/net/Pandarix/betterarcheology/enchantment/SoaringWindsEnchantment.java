@@ -1,11 +1,12 @@
 package net.Pandarix.betterarcheology.enchantment;
 
-import com.github.alexthe666.alexsmobs.item.ItemTarantulaHawkElytra;
+import net.Pandarix.betterarcheology.BetterArcheologyConfig;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraftforge.fml.ModList;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class SoaringWindsEnchantment extends ArtifactEnchantment
 {
@@ -15,24 +16,13 @@ public class SoaringWindsEnchantment extends ArtifactEnchantment
     }
 
     @Override
-    public int getMaxLevel()
-    {
-        return 1;
-    }
-
-    @Override
+    @ParametersAreNonnullByDefault
     public boolean canEnchant(ItemStack pStack)
     {
-        if (pStack.getItem() instanceof ElytraItem)
+        if (BetterArcheologyConfig.soaringWindsEnabled.get() && BetterArcheologyConfig.artifactsEnabled.get())
         {
-            return true;
+            return pStack.getItem() instanceof ElytraItem;
         }
-        // IF CURIOSAPI is installed
-        if (ModList.get().isLoaded("alexsmobs"))
-        {
-            return pStack.getItem() instanceof ItemTarantulaHawkElytra;
-        }
-
         return false;
     }
 }

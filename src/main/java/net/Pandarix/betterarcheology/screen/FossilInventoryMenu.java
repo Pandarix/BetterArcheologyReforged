@@ -1,28 +1,32 @@
 package net.Pandarix.betterarcheology.screen;
 
-import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.block.entity.VillagerFossilBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class FossilInventoryMenu extends AbstractContainerMenu {
+public class FossilInventoryMenu extends AbstractContainerMenu
+{
 
     public final VillagerFossilBlockEntity blockEntity;
     private final Level level;
 
-    public FossilInventoryMenu(int syncId, Inventory inventory, FriendlyByteBuf extraData){
+    public FossilInventoryMenu(int syncId, Inventory inventory, FriendlyByteBuf extraData)
+    {
         this(syncId, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public FossilInventoryMenu(int syncId, Inventory playerInventory, BlockEntity entity){
+    public FossilInventoryMenu(int syncId, Inventory playerInventory, BlockEntity entity)
+    {
         super(ModMenuTypes.FOSSIL_MENU.get(), syncId);
         checkContainerSize(playerInventory, 1);
         blockEntity = (VillagerFossilBlockEntity) entity;
@@ -31,13 +35,15 @@ public class FossilInventoryMenu extends AbstractContainerMenu {
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
 
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler ->
+        {
             this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 22));
         });
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(Player pPlayer)
+    {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), pPlayer, ModBlocks.VILLAGER_FOSSIL.get());
     }
 
@@ -60,32 +66,40 @@ public class FossilInventoryMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_SLOT_COUNT = 1;  // must be the number of slots you have!
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index)
+    {
         Slot sourceSlot = slots.get(index);
         if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
         // Check if the slot clicked is one of the vanilla container slots
-        if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
+        if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT)
+        {
             // This is a vanilla container slot so merge the stack into the tile inventory
             if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
+                    + TE_INVENTORY_SLOT_COUNT, false))
+            {
                 return ItemStack.EMPTY;  // EMPTY_ITEM
             }
-        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
+        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT)
+        {
             // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false))
+            {
                 return ItemStack.EMPTY;
             }
-        } else {
+        } else
+        {
             System.out.println("Invalid slotIndex:" + index);
             return ItemStack.EMPTY;
         }
         // If stack size == 0 (the entire stack was moved) set slot contents to null
-        if (sourceStack.getCount() == 0) {
+        if (sourceStack.getCount() == 0)
+        {
             sourceSlot.set(ItemStack.EMPTY);
-        } else {
+        } else
+        {
             sourceSlot.setChanged();
         }
         sourceSlot.onTake(playerIn, sourceStack);
@@ -93,7 +107,8 @@ public class FossilInventoryMenu extends AbstractContainerMenu {
     }
 
     //Helper Method to add Players Inventoryslots to Screen
-    private void addPlayerInventory(Inventory playerInventory) {
+    private void addPlayerInventory(Inventory playerInventory)
+    {
         /*Adding Slots of Main Inventory
                 COL:    COL:    COL:    ...
         ROW:    slot    slot    slot
@@ -109,9 +124,11 @@ public class FossilInventoryMenu extends AbstractContainerMenu {
         int inventoryColumns = hotbarSize;
 
         //For every Row in the Inventory
-        for (int i = 0; i < inventoryRows; ++i) {
+        for (int i = 0; i < inventoryRows; ++i)
+        {
             //Add a slot for every Column in the Row
-            for (int l = 0; l < inventoryColumns; ++l) {
+            for (int l = 0; l < inventoryColumns; ++l)
+            {
                 //Numbers are Minecrafts pre-defined offsets due to the textures
                 this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
             }
@@ -119,9 +136,11 @@ public class FossilInventoryMenu extends AbstractContainerMenu {
     }
 
     //Helper Method to add Players HotBarSlots to Screen
-    private void addPlayerHotbar(Inventory playerInventory) {
+    private void addPlayerHotbar(Inventory playerInventory)
+    {
         //Adds a new Slot to the Screen for every Slot in the Players Hotbar
-        for (int i = 0; i < Inventory.DEFAULT_DISTANCE_LIMIT + 1; ++i) {
+        for (int i = 0; i < Inventory.DEFAULT_DISTANCE_LIMIT + 1; ++i)
+        {
             //Numbers are Minecrafts pre-defined offsets due to the textures
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
         }
