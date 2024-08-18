@@ -7,7 +7,7 @@
 			"entries": [
 				{
 					"type": "minecraft:loot_table",
-					"value": "minecraft:archaeology/ocean_ruin_warm",
+					"name": "minecraft:archaeology/ocean_ruin_warm",
 					"weight": 6
 				},
 				{

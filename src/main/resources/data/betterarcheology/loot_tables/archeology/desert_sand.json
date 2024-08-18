@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "value": "minecraft:archaeology/desert_well",
+          "name": "minecraft:archaeology/desert_well",
           "weight": 5
         },
         {

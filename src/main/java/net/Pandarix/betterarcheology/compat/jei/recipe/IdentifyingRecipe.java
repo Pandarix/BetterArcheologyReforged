@@ -1,6 +1,7 @@
 package net.Pandarix.betterarcheology.compat.jei.recipe;
 
 import com.google.gson.JsonObject;
+import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -32,7 +33,8 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
     }
 
     @Override
-    public @NotNull ResourceLocation getId() {
+    public @NotNull ResourceLocation getId()
+    {
         return id;
     }
 
@@ -78,12 +80,15 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
 
     /**
      * Extra method instead of {@link #getResultItem} for use without unnecessary parameter
+     *
      * @return ItemStack to be crafted when done
      */
     public ItemStack getResult()
     {
         //Adding the Enchantment Tags
         ItemStack modifiedResultBook = result.copy();
+
+        BetterArcheology.LOGGER.info("wtf ist this: " + modifiedResultBook.getTag());
 
         //Adding the Custom Name Tags
         CompoundTag nameModification = new CompoundTag();
@@ -123,8 +128,10 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public IdentifyingRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
-
+        @ParametersAreNonnullByDefault
+        @NotNull
+        public IdentifyingRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe)
+        {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "result"));
             Ingredient input = Ingredient.fromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "input"));
 
@@ -132,6 +139,7 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         }
 
         @Override
+        @ParametersAreNonnullByDefault
         public @org.jetbrains.annotations.Nullable IdentifyingRecipe fromNetwork(ResourceLocation pRecipeId, @NotNull FriendlyByteBuf friendlyByteBuf)
         {
             Ingredient input = Ingredient.fromNetwork(friendlyByteBuf);

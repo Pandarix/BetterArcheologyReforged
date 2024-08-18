@@ -4,9 +4,9 @@
     "item": "betterarcheology:unidentified_artifact"
   },
   "result": {
-    "id": "minecraft:enchanted_book",
+    "item": "minecraft:enchanted_book",
     "Count": 1,
-    "tag": {
+    "nbt": {
       "StoredEnchantments": [
         {
           "id": "betterarcheology:soaring_winds",
