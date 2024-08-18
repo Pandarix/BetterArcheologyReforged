@@ -110,14 +110,17 @@ public class ModBlocks
 
     public static final RegistryObject<Block> ROTTEN_FENCE = registerBlock("rotten_fence", () -> new FenceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).ignitedByLava().sound(SoundType.STEM)));
 
-    public static final RegistryObject<Block> ROTTEN_FENCE_GATE = registerBlock("rotten_fence_gate", () -> new FenceGateBlock(ROTTEN_WOOD_TYPE, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).ignitedByLava().sound(SoundType.STEM)));
+    public static final RegistryObject<Block> ROTTEN_FENCE_GATE = registerBlock("rotten_fence_gate",
+            () -> new FenceGateBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).ignitedByLava().sound(SoundType.STEM), ROTTEN_WOOD_TYPE));
 
     public static final RegistryObject<Block> ROTTEN_TRAPDOOR = registerBlock("rotten_trapdoor",
-            () -> new TrapDoorBlock(ROTTEN_WOOD_BLOCKSET, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().isValidSpawn((state, getter, pos, entityType) -> false).ignitedByLava().sound(SoundType.STEM)));
+            () -> new TrapDoorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().isValidSpawn((state, getter, pos, entityType) -> false).ignitedByLava().sound(SoundType.STEM), ROTTEN_WOOD_BLOCKSET));
 
-    public static final RegistryObject<Block> ROTTEN_DOOR = registerBlock("rotten_door", () -> new DoorBlock(ROTTEN_WOOD_BLOCKSET, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY).sound(SoundType.STEM)));
+    public static final RegistryObject<Block> ROTTEN_DOOR = registerBlock("rotten_door",
+            () -> new DoorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().ignitedByLava().pushReaction(PushReaction.DESTROY).sound(SoundType.STEM), ROTTEN_WOOD_BLOCKSET));
 
-    public static final RegistryObject<Block> ROTTEN_PRESSURE_PLATE = registerBlock("rotten_pressure_plate", () -> new PressurePlateBlock(ROTTEN_WOOD_BLOCKSET, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).ignitedByLava().pushReaction(PushReaction.DESTROY).sound(SoundType.STEM)));
+    public static final RegistryObject<Block> ROTTEN_PRESSURE_PLATE = registerBlock("rotten_pressure_plate",
+            () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).ignitedByLava().pushReaction(PushReaction.DESTROY).sound(SoundType.STEM), ROTTEN_WOOD_BLOCKSET));
 
     //-------------MUD Brick Stuff----------------//
     public static final RegistryObject<Block> INFESTED_MUD_BRICKS = registerBlock("infested_mud_bricks", () -> new InfestedBlock(Blocks.MUD_BRICKS, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_LIGHT_GRAY).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 3.0F).sound(SoundType.MUD_BRICKS)));

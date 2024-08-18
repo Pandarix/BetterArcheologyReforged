@@ -22,13 +22,14 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
-      "has_rotten_planks"
+      "has_rotten_planks",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "betterarcheology:rotten_pressure_plate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

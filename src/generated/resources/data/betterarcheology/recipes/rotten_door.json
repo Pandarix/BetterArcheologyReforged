@@ -15,5 +15,6 @@
   "result": {
     "count": 3,
     "item": "betterarcheology:rotten_door"
-  }
+  },
+  "show_notification": true
 }

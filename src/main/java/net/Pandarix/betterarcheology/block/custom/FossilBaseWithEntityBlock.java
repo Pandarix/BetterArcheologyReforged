@@ -23,15 +23,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilBaseWithEntityBlock extends BaseEntityBlock
 {
-    public static final MapCodec<FossilBaseWithEntityBlock> CODEC = simpleCodec(FossilBaseWithEntityBlock::new);
-
-    @Override
-    @NotNull
-    protected MapCodec<? extends BaseEntityBlock> codec()
-    {
-        return CODEC;
-    }
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     protected FossilBaseWithEntityBlock(BlockBehaviour.Properties settings)

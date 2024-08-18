@@ -2,7 +2,7 @@ package net.Pandarix.betterarcheology.block.custom;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.util.ServerPlayerHelper;
-import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +44,7 @@ public class LootVaseBlock extends Block
                 Entity xpOrb = new ExperienceOrb(level, pos.getX(), pos.getY(), pos.getZ(), 4);
                 level.addFreshEntity(xpOrb);
             }
-            AdvancementHolder advancement = level.getServer().getAdvancements().get(ADVANCEMENT_ID);
+            Advancement advancement = level.getServer().getAdvancements().getAdvancement(ADVANCEMENT_ID);
             if (advancement != null)
             {
                 ServerPlayerHelper.getServerPlayer(player).getAdvancements().award(advancement, "criteria");

@@ -34,14 +34,15 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
       "has_guardian_fossil_body",
-      "has_guardian_fossil_head"
+      "has_guardian_fossil_head",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "betterarcheology:guardian_fossil"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

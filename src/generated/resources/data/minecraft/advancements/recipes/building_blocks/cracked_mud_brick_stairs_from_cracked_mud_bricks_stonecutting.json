@@ -22,13 +22,14 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
-      "has_cracked_mud_bricks"
+      "has_cracked_mud_bricks",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:cracked_mud_brick_stairs_from_cracked_mud_bricks_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -12,5 +12,6 @@
   "result": {
     "count": 6,
     "item": "betterarcheology:cracked_mud_brick_slab"
-  }
+  },
+  "show_notification": true
 }

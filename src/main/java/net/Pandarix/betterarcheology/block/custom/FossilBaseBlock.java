@@ -20,15 +20,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilBaseBlock extends HorizontalDirectionalBlock
 {
-    public static final MapCodec<FossilBaseBlock> CODEC = simpleCodec(FossilBaseBlock::new);
-
-    @Override
-    @NotNull
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
-    {
-        return CODEC;
-    }
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     protected FossilBaseBlock(Properties settings)

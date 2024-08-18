@@ -23,7 +23,7 @@ public class ArtifactEnchantmentHelper
         }
 
         //  if there is an elytra in the chestslot and it has the enchantment
-        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem
+        if (player.getItemBySlot(EquipmentSlot.CHEST).canElytraFly(player)
                 && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.SOARING_WINDS.get(), player.getItemBySlot(EquipmentSlot.CHEST)) >= 1)
         {
             return true;
@@ -32,17 +32,18 @@ public class ArtifactEnchantmentHelper
         // If ElytraSlot mod is installed (means that CuriosAPI must be installed too)
         if (ModList.get().isLoaded("elytraslot"))
         {
-            Map<String, ISlotType> playerSlots = CuriosApi.getPlayerSlots(player);
+            Map<String, ISlotType> playerSlots = CuriosApi.getPlayerSlots();
             // check for back-slot (used by ElytraSlot mod)
             if (playerSlots != null && playerSlots.containsKey("back"))
             {
                 Optional<ICuriosItemHandler> curios = CuriosApi.getCuriosInventory(player).resolve();
-
-                // searching the backslot for the Elytra
-                return curios.map((itemHandler) ->
-                        curios.get().findCurios("back").stream().anyMatch(
-                                (slotResult) -> slotResult.stack().getItem() instanceof ElytraItem
-                                        && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.SOARING_WINDS.get(), slotResult.stack()) >= 1)).orElse(false);
+                if(curios.isPresent()) {
+                    // searching the backslot for the Elytra
+                    return curios.map((itemHandler) ->
+                            curios.get().findCurios("back").stream().anyMatch(
+                                    (slotResult) -> slotResult.stack().getItem() instanceof ElytraItem
+                                            && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.SOARING_WINDS.get(), slotResult.stack()) >= 1)).orElse(false);
+                }
             }
         }
 

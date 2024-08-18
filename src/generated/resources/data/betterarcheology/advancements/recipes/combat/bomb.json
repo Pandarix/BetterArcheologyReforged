@@ -22,13 +22,14 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
-      "has_gunpowder"
+      "has_gunpowder",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "betterarcheology:bomb"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

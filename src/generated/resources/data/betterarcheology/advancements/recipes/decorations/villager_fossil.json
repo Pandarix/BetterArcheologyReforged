@@ -34,14 +34,15 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
       "has_villager_fossil_body",
-      "has_villager_fossil_head"
+      "has_villager_fossil_head",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "betterarcheology:villager_fossil"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

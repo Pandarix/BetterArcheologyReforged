@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "betterarcheology:iron_brush"
-  }
+  },
+  "show_notification": true
 }

@@ -25,15 +25,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class EvokerTrapBlock extends HorizontalDirectionalBlock
 {
-    public static final MapCodec<EvokerTrapBlock> CODEC = simpleCodec(EvokerTrapBlock::new);
-
-    @Override
-    @NotNull
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
-    {
-        return CODEC;
-    }
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty TRIGGERED = BooleanProperty.create("triggered");
     private static final int fangCooldown = 40; //cooldown used to prevent Fang-spamming

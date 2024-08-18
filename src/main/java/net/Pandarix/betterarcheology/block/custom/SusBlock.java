@@ -13,7 +13,7 @@ public class SusBlock extends BrushableBlock
 {
     public SusBlock(Block baseBlock, Properties settings, SoundEvent brushingSound, SoundEvent brushingCompleteSound)
     {
-        super(baseBlock, brushingSound, brushingCompleteSound, settings);
+        super(baseBlock, settings, brushingSound, brushingCompleteSound);
     }
 
     @Override

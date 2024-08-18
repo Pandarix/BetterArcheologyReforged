@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "betterarcheology:unidentified_artifact"
-  }
+  },
+  "show_notification": true
 }

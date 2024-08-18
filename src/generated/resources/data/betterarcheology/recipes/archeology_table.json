@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "betterarcheology:archeology_table"
-  }
+  },
+  "show_notification": true
 }

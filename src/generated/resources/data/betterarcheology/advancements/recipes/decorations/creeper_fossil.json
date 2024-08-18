@@ -34,14 +34,15 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
       "has_creeper_fossil_body",
-      "has_creeper_fossil_head"
+      "has_creeper_fossil_head",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "betterarcheology:creeper_fossil"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -3,7 +3,7 @@ package net.Pandarix.betterarcheology.item;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.entity.BombEntity;
 import net.Pandarix.betterarcheology.util.ServerPlayerHelper;
-import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -46,7 +46,7 @@ public class BombItem extends Item
             bombEntity.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 0.75F, 1.0F);
             pLevel.addFreshEntity(bombEntity);
 
-            AdvancementHolder advancement = Objects.requireNonNull(pLevel.getServer()).getAdvancements().get(ADVANCEMENT_ID);
+            Advancement advancement = Objects.requireNonNull(pLevel.getServer()).getAdvancements().getAdvancement(ADVANCEMENT_ID);
             if (advancement != null)
             {
                 ServerPlayerHelper.getServerPlayer(pPlayer).getAdvancements().award(advancement, "criteria");

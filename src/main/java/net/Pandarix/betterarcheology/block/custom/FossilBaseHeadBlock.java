@@ -22,15 +22,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilBaseHeadBlock extends HorizontalDirectionalBlock implements Equipable
 {
-    public static final MapCodec<FossilBaseHeadBlock> CODEC = simpleCodec(FossilBaseHeadBlock::new);
-
-    @Override
-    @NotNull
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
-    {
-        return CODEC;
-    }
-
     public static DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public FossilBaseHeadBlock(BlockBehaviour.Properties settings)

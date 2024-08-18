@@ -13,12 +13,9 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasBinding;
-import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 import java.util.Optional;
 
 public class ArcheologyStructures extends Structure
@@ -33,8 +30,7 @@ public class ArcheologyStructures extends Structure
                     Codec.intRange(0, 50).fieldOf("size").forGetter(structure -> structure.size),
                     HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
                     Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
-                    Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter),
-                    Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter((structure) -> structure.poolAliasBindings)
+                    Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter)
             ).apply(instance, ArcheologyStructures::new)).codec();
 
     private final Holder<StructureTemplatePool> startPool;
@@ -44,16 +40,13 @@ public class ArcheologyStructures extends Structure
     private final Optional<Heightmap.Types> projectStartToHeightmap;
     private final int maxDistanceFromCenter;
 
-    private final List<PoolAliasBinding> poolAliasBindings;
-
     public ArcheologyStructures(StructureSettings config,
                                 Holder<StructureTemplatePool> startPool,
                                 Optional<ResourceLocation> startJigsawName,
                                 int size,
                                 HeightProvider startHeight,
                                 Optional<Heightmap.Types> projectStartToHeightmap,
-                                int maxDistanceFromCenter,
-                                List<PoolAliasBinding> poolAliasBindings)
+                                int maxDistanceFromCenter)
     {
         super(config);
         this.startPool = startPool;
@@ -62,7 +55,6 @@ public class ArcheologyStructures extends Structure
         this.startHeight = startHeight;
         this.projectStartToHeightmap = projectStartToHeightmap;
         this.maxDistanceFromCenter = maxDistanceFromCenter;
-        this.poolAliasBindings = poolAliasBindings;
     }
 
     /*
@@ -140,8 +132,7 @@ public class ArcheologyStructures extends Structure
                         // Here, blockpos's y value is 60 which means the structure spawn 60 blocks above terrain height.
                         // Set this to false for structure to be place only at the passed in blockpos's Y value instead.
                         // Definitely keep this false when placing structures in the nether as otherwise, heightmap placing will put the structure on the Bedrock roof.
-                        this.maxDistanceFromCenter, // Maximum limit for how far pieces can spawn from center. You cannot set this bigger than 128 or else pieces gets cutoff.
-                        PoolAliasLookup.create(this.poolAliasBindings, blockPos, context.seed()));
+                        this.maxDistanceFromCenter); // Maximum limit for how far pieces can spawn from center. You cannot set this bigger than 128 or else pieces gets cutoff.
 
         /*
          * Note, you are always free to make your own JigsawPlacement class and implementation of how the structure

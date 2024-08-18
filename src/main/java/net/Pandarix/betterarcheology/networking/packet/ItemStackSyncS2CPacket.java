@@ -5,12 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ItemStackSyncS2CPacket
 {
@@ -47,12 +48,10 @@ public class ItemStackSyncS2CPacket
         buf.writeBlockPos(pos);
     }
 
-    public boolean handle(CustomPayloadEvent.Context context)
-    {
-        context.enqueueWork(() ->
-        {
-            if ( Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof ArcheologyTableBlockEntity blockEntity)
-            {
+    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
+        NetworkEvent.Context context = supplier.get();
+        context.enqueueWork(() -> {
+            if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof ArcheologyTableBlockEntity blockEntity) {
                 blockEntity.setHandler(this.itemStackHandler);
             }
         });

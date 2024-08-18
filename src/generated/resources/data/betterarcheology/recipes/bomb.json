@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "betterarcheology:bomb"
-  }
+  },
+  "show_notification": true
 }

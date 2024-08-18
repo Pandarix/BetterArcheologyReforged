@@ -94,7 +94,7 @@ public class GrowthTotemBlock extends FlowerBlock
 
                 if (state.getBlock() instanceof CropBlock cropBlock)
                 {
-                    if (cropBlock.isValidBonemealTarget(pLevel, pos, state))
+                    if (cropBlock.isValidBonemealTarget(pLevel, pos, state, pLevel.isClientSide))
                     {
                         if (cropBlock.isBonemealSuccess(pLevel, pLevel.random, pos, state))
                         {

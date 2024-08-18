@@ -34,14 +34,15 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
       "has_sheep_fossil_body",
-      "has_sheep_fossil_head"
+      "has_sheep_fossil_head",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "betterarcheology:sheep_fossil"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

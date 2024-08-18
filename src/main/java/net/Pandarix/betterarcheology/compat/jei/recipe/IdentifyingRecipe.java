@@ -1,7 +1,6 @@
 package net.Pandarix.betterarcheology.compat.jei.recipe;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.google.gson.JsonObject;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -9,12 +8,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,13 +22,18 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
 {
     private final Ingredient input;
     private final ItemStack result;
-    private final CompoundTag nbt;
+    private final ResourceLocation id;
 
-    public IdentifyingRecipe(Ingredient inputItems, ItemStack result, CompoundTag nbt)
+    public IdentifyingRecipe(Ingredient inputItems, ItemStack result, ResourceLocation id)
     {
         this.input = inputItems;
         this.result = result;
-        this.nbt = nbt;
+        this.id = id;
+    }
+
+    @Override
+    public @NotNull ResourceLocation getId() {
+        return id;
     }
 
     @Override
@@ -81,7 +84,6 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
     {
         //Adding the Enchantment Tags
         ItemStack modifiedResultBook = result.copy();
-        modifiedResultBook.setTag(this.nbt);
 
         //Adding the Custom Name Tags
         CompoundTag nameModification = new CompoundTag();
@@ -95,11 +97,6 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         //output the book with the modifications
         modifiedResultBook.addTagElement("display", nameModification);
         return modifiedResultBook;
-    }
-
-    public CompoundTag getNbt()
-    {
-        return this.nbt;
     }
 
     @Override
@@ -123,29 +120,24 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
 
     public static class Serializer implements RecipeSerializer<IdentifyingRecipe>
     {
-        private static final Codec<IdentifyingRecipe> CODEC = RecordCodecBuilder.create(
-                (builder) -> builder.group(
-                        Ingredient.CODEC.fieldOf("input").forGetter((IdentifyingRecipe recipe) -> recipe.input),
-                        ItemStack.CODEC.fieldOf("result").forGetter((IdentifyingRecipe recipe) -> recipe.result),
-                        CompoundTag.CODEC.fieldOf("nbt").forGetter((IdentifyingRecipe recipe) -> recipe.nbt)
-                ).apply(builder, IdentifyingRecipe::new));
-
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public @NotNull Codec<IdentifyingRecipe> codec()
-        {
-            return CODEC;
+        public IdentifyingRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
+
+            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "result"));
+            Ingredient input = Ingredient.fromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "input"));
+
+            return new IdentifyingRecipe(input, output, pRecipeId);
         }
 
         @Override
-        public @org.jetbrains.annotations.Nullable IdentifyingRecipe fromNetwork(@NotNull FriendlyByteBuf friendlyByteBuf)
+        public @org.jetbrains.annotations.Nullable IdentifyingRecipe fromNetwork(ResourceLocation pRecipeId, @NotNull FriendlyByteBuf friendlyByteBuf)
         {
             Ingredient input = Ingredient.fromNetwork(friendlyByteBuf);
             ItemStack result = friendlyByteBuf.readItem();
-            CompoundTag nbt = friendlyByteBuf.readNbt();
 
-            return new IdentifyingRecipe(input, result, nbt);
+            return new IdentifyingRecipe(input, result, pRecipeId);
         }
 
         @Override
@@ -153,7 +145,6 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         {
             pRecipe.getIngredients().get(0).toNetwork(pBuffer);
             pBuffer.writeItemStack(pRecipe.result, false);
-            pBuffer.writeNbt(pRecipe.getNbt());
         }
     }
 }

@@ -24,15 +24,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilBaseBodyBlock extends HorizontalDirectionalBlock
 {
-    public static final MapCodec<FossilBaseBodyBlock> CODEC = simpleCodec(FossilBaseBodyBlock::new);
-
-    @Override
-    @NotNull
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
-    {
-        return CODEC;
-    }
-
     public static DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public FossilBaseBodyBlock(BlockBehaviour.Properties settings)

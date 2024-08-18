@@ -1,12 +1,12 @@
 package net.Pandarix.betterarcheology.block.custom;
 
-import com.mojang.serialization.MapCodec;
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
 import net.Pandarix.betterarcheology.block.entity.ModBlockEntities;
 import net.Pandarix.betterarcheology.util.ServerPlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,15 +32,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class ArchelogyTable extends BaseEntityBlock
 {
-    public static final MapCodec<ArchelogyTable> CODEC = simpleCodec(ArchelogyTable::new);
-
-    @Override
-    @NotNull
-    protected MapCodec<? extends BaseEntityBlock> codec()
-    {
-        return CODEC;
-    }
-
     //indicates if the table is currently "crafting" the identified artifact
     //triggers particle creation
     public static final BooleanProperty DUSTING = BooleanProperty.create("dusting");
@@ -94,7 +86,7 @@ public class ArchelogyTable extends BaseEntityBlock
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof ArcheologyTableBlockEntity)
             {
-                ServerPlayerHelper.tryOpenScreen(pPlayer, (ArcheologyTableBlockEntity) entity, pPos);
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (ArcheologyTableBlockEntity)entity, pPos);
             } else
             {
                 throw new IllegalStateException("Container Provider Missing!");

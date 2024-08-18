@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "betterarcheology:diamond_brush"
-  }
+  },
+  "show_notification": true
 }
