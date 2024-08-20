@@ -49,6 +49,16 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         return input.test(pContainer.getItem(0));
     }
 
+    /**
+     * Makes recipe not display in the recipe book
+     * @return false
+     */
+    @Override
+    public boolean isSpecial()
+    {
+        return true;
+    }
+
     @Override
     @NotNull
     public NonNullList<Ingredient> getIngredients()

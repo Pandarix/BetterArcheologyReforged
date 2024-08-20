@@ -77,7 +77,7 @@ public class GrowthTotemBlock extends FlowerBlock
     @ParametersAreNonnullByDefault
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
     {
-        if (!BetterArcheologyConfig.totemsEnabled.get() || !BetterArcheologyConfig.growthTotemEnabled.get() || pRandom.nextBoolean())
+        if (!BetterArcheologyConfig.totemsEnabled.get() || !BetterArcheologyConfig.growthTotemEnabled.get())
         {
             return;
         }
