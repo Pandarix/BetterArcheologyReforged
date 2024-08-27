@@ -1,7 +1,6 @@
 package net.Pandarix.betterarcheology.compat.jei.recipe;
 
 import com.google.gson.JsonObject;
-import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -97,8 +96,6 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
     {
         //Adding the Enchantment Tags
         ItemStack modifiedResultBook = result.copy();
-
-        BetterArcheology.LOGGER.info("wtf ist this: " + modifiedResultBook.getTag());
 
         //Adding the Custom Name Tags
         CompoundTag nameModification = new CompoundTag();
