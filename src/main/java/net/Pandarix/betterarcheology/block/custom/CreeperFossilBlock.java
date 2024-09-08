@@ -8,6 +8,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -20,7 +21,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +58,7 @@ public class CreeperFossilBlock extends FossilBaseBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource random)
     {
         super.animateTick(blockState, level, pos, random);
@@ -82,6 +86,8 @@ public class CreeperFossilBlock extends FossilBaseBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @NotNull
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext)
     {
         return CREEPER_SHAPES_FOR_DIRECTION.get(blockState.getValue(FACING));
@@ -89,9 +95,10 @@ public class CreeperFossilBlock extends FossilBaseBlock
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag)
+    @ParametersAreNonnullByDefault
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> component, TooltipFlag flag)
     {
         component.add(Component.translatable("block.betterarcheology.creeper_fossil_tooltip").withStyle(ChatFormatting.GRAY));
-        super.appendHoverText(stack, getter, component, flag);
+        super.appendHoverText(stack, context, component, flag);
     }
 }

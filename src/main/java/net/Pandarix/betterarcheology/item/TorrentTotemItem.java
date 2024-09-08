@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -54,15 +54,14 @@ public class TorrentTotemItem extends Item
                 (rotationVector.y * 0.1D + (rotationVector.y * 1.5D - velocity.y)) * boostY,
                 rotationVector.z * 0.1D + (rotationVector.z * 1.5D - velocity.z) * boostX)
         );
-        pPlayer.startAutoSpinAttack(8);
+        pPlayer.startAutoSpinAttack(8, 2, itemStack);
 
         //sounds
         pLevel.playSound(null, pPlayer, SoundEvents.WATER_AMBIENT, SoundSource.NEUTRAL, 0.1f, (float) pLevel.getRandom().nextDouble() * 0.5f + 0.5f);
         pLevel.playSound(null, pPlayer, SoundEvents.PLAYER_SPLASH_HIGH_SPEED, SoundSource.NEUTRAL, 0.25F, 0.35F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
 
         pPlayer.getCooldowns().addCooldown(this, 120);
-        itemStack.hurtAndBreak(1, pPlayer, (p) ->
-                p.broadcastBreakEvent(pPlayer.getUsedItemHand()));
+        itemStack.hurtAndBreak(1, pPlayer, pPlayer.getEquipmentSlotForItem(itemStack));
         return InteractionResultHolder.consume(itemStack);
     }
 
@@ -74,14 +73,16 @@ public class TorrentTotemItem extends Item
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced)
+    @ParametersAreNonnullByDefault
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag)
     {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
         pTooltipComponents.add(Component.translatable("item.betterarcheology.torrent_totem_description").withStyle(ChatFormatting.DARK_AQUA));
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack pStack)
+    @ParametersAreNonnullByDefault
+    public int getUseDuration(ItemStack pStack, LivingEntity pEntity)
     {
         return 0;
     }

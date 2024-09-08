@@ -1,29 +1,30 @@
 package net.Pandarix.betterarcheology.compat.jei.recipe;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
+import net.Pandarix.betterarcheology.BetterArcheology;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 
-public class IdentifyingRecipe implements Recipe<SimpleContainer>
+public class IdentifyingRecipe implements Recipe<CraftingInput>
 {
     private final Ingredient input;
     private final ItemStack result;
+    private static int POSSIBLE_RESULT_COUNT = 0;
 
     public IdentifyingRecipe(Ingredient inputItems, ItemStack result)
     {
@@ -31,19 +32,22 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
         this.result = result;
     }
 
+
     @Override
-    public boolean matches(@NotNull SimpleContainer pContainer, Level pLevel)
+    @ParametersAreNonnullByDefault
+    public boolean matches(CraftingInput pInput, Level pLevel)
     {
         if (pLevel.isClientSide())
         {
             return false;
         }
 
-        return input.test(pContainer.getItem(0));
+        return input.test(pInput.getItem(0));
     }
 
     /**
      * Makes recipe not display in the recipe book
+     *
      * @return false
      */
     @Override
@@ -62,9 +66,9 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
     @NotNull
     @ParametersAreNonnullByDefault
     @Override
-    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess)
+    public ItemStack assemble(CraftingInput pInput, HolderLookup.Provider pRegistries)
     {
-        return this.getResultItem(pRegistryAccess);
+        return this.getResultItem(pRegistries);
     }
 
     @Override
@@ -76,31 +80,30 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
     @NotNull
     @ParametersAreNonnullByDefault
     @Override
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess)
+    public ItemStack getResultItem(HolderLookup.Provider pRegistries)
     {
-        return this.getResult();
+        if (POSSIBLE_RESULT_COUNT == 0)
+        {
+            try
+            {
+                POSSIBLE_RESULT_COUNT = pRegistries.lookupOrThrow(Registries.ENCHANTMENT).listElementIds().filter(reference -> reference.registryKey().registry().getNamespace().equals(BetterArcheology.MOD_ID)).toList().size();
+            } catch (Exception e)
+            {
+                BetterArcheology.LOGGER.error("Could not load possible enchantments!", e);
+            }
+        }
+        return getResult(POSSIBLE_RESULT_COUNT);
     }
 
-    /**
-     * Extra method instead of {@link #getResultItem} for use without unnecessary parameter
-     * @return ItemStack to be crafted when done
-     */
-    public ItemStack getResult()
+    public ItemStack getResult(int amountOfEnchantsPossible)
     {
         //Adding the Enchantment Tags
         ItemStack modifiedResultBook = result.copy();
-
-        //Adding the Custom Name Tags
-        CompoundTag nameModification = new CompoundTag();
-        nameModification.putString("Name", "{\"translate\":\"item.betterarcheology.identified_artifact\"}");
-
-        //Adding Chance as Lore Tag
-        ListTag lore = new ListTag();
-        lore.add(StringTag.valueOf(String.format("{\"text\":\"Chance: 1/%d\",\"color\":\"aqua\"}", ModEnchantments.ENCHANTMENTS.getEntries().size())));
-        nameModification.put("Lore", lore);
-
-        //output the book with the modifications
-        modifiedResultBook.addTagElement("display", nameModification);
+        //apply custom naming to the book
+        modifiedResultBook.set(DataComponents.ITEM_NAME, Component.translatable("item.betterarcheology.identified_artifact"));
+        modifiedResultBook.set(DataComponents.LORE,
+                new ItemLore(List.of(Component.literal(String.format("Chance: 1/%d", amountOfEnchantsPossible)).withColor(ChatFormatting.AQUA.getColor())))
+        );
         return modifiedResultBook;
     }
 
@@ -125,34 +128,42 @@ public class IdentifyingRecipe implements Recipe<SimpleContainer>
 
     public static class Serializer implements RecipeSerializer<IdentifyingRecipe>
     {
-        private static final Codec<IdentifyingRecipe> CODEC = RecordCodecBuilder.create(
+        private static final MapCodec<IdentifyingRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 (builder) -> builder.group(
                         Ingredient.CODEC.fieldOf("input").forGetter((IdentifyingRecipe recipe) -> recipe.input),
                         ItemStack.CODEC.fieldOf("result").forGetter((IdentifyingRecipe recipe) -> recipe.result)
-                ).apply(builder, IdentifyingRecipe::new));
+                ).apply(builder, IdentifyingRecipe::new)
+        );
 
         public static final Serializer INSTANCE = new Serializer();
 
+        public static final StreamCodec<RegistryFriendlyByteBuf, IdentifyingRecipe> STREAM_CODEC = StreamCodec.of(
+                IdentifyingRecipe.Serializer::toNetwork, IdentifyingRecipe.Serializer::fromNetwork
+        );
+
         @Override
-        public @NotNull Codec<IdentifyingRecipe> codec()
+        public @NotNull MapCodec<IdentifyingRecipe> codec()
         {
             return CODEC;
         }
 
         @Override
-        public @org.jetbrains.annotations.Nullable IdentifyingRecipe fromNetwork(@NotNull FriendlyByteBuf friendlyByteBuf)
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, IdentifyingRecipe> streamCodec()
         {
-            Ingredient input = Ingredient.fromNetwork(friendlyByteBuf);
-            ItemStack result = friendlyByteBuf.readItem();
+            return STREAM_CODEC;
+        }
 
+        public static IdentifyingRecipe fromNetwork(@NotNull RegistryFriendlyByteBuf friendlyByteBuf)
+        {
+            Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(friendlyByteBuf);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(friendlyByteBuf);
             return new IdentifyingRecipe(input, result);
         }
 
-        @Override
-        public void toNetwork(@NotNull FriendlyByteBuf pBuffer, IdentifyingRecipe pRecipe)
+        public static void toNetwork(@NotNull RegistryFriendlyByteBuf pBuffer, IdentifyingRecipe pRecipe)
         {
-            pRecipe.getIngredients().get(0).toNetwork(pBuffer);
-            pBuffer.writeItemStack(pRecipe.result, false);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(pBuffer, pRecipe.input);
+            ItemStack.STREAM_CODEC.encode(pBuffer, pRecipe.result);
         }
     }
 }

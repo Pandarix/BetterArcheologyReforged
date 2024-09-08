@@ -2,7 +2,8 @@ package net.Pandarix.betterarcheology.datagen.provider;
 
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.item.ModItems;
-import net.Pandarix.betterarcheology.util.ModItemTags;
+import net.Pandarix.betterarcheology.util.ModTags;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
@@ -11,12 +12,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder
 {
-    public ModRecipeProvider(PackOutput pOutput)
+    public ModRecipeProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pRegistries)
     {
-        super(pOutput);
+        super(pOutput, pRegistries);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     private static void buildRottenRecipes(RecipeOutput recipeOutput)
     {
-        planksFromLog(recipeOutput, ModBlocks.ROTTEN_PLANKS.get(), ModItemTags.Items.ROTTEN_LOGS, 4);
+        planksFromLog(recipeOutput, ModBlocks.ROTTEN_PLANKS.get(), ModTags.Items.ROTTEN_LOGS, 4);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.ROTTEN_DOOR.get(), 3)
                 .pattern("PP")
@@ -106,7 +108,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("BS")
                 .pattern("WW")
                 .pattern("WW")
-                .define('B', ModItemTags.Items.BRUSHES)
+                .define('B', ModTags.Items.BRUSHES)
                 .define('S', ModItems.ARTIFACT_SHARDS.get())
                 .define('W', ItemTags.PLANKS)
                 .unlockedBy(getHasName(ModItems.ARTIFACT_SHARDS.get()), has(ModItems.ARTIFACT_SHARDS.get()))

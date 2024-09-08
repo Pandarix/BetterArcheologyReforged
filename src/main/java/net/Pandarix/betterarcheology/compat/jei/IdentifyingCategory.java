@@ -22,8 +22,8 @@ import java.util.List;
 
 public class IdentifyingCategory implements IRecipeCategory<IdentifyingRecipe>
 {
-    public static final ResourceLocation UID = new ResourceLocation(BetterArcheology.MOD_ID, "identifying");
-    public static final ResourceLocation TEXTURE = new ResourceLocation(BetterArcheology.MOD_ID,
+    public static final ResourceLocation UID = BetterArcheology.createResource( "identifying");
+    public static final ResourceLocation TEXTURE = BetterArcheology.createResource(
             "textures/gui/archeology_table_overlay.png");
 
     public static final RecipeType<IdentifyingRecipe> IDENTIFYING_RECIPE_TYPE =
@@ -75,6 +75,6 @@ public class IdentifyingCategory implements IRecipeCategory<IdentifyingRecipe>
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 48).addIngredients(recipe.getIngredients().get(0));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 134, 48).addItemStack(recipe.getResult());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 134, 48).addItemStack(recipe.getResult(3));
     }
 }

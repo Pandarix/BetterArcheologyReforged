@@ -159,7 +159,7 @@ public class IdentifyingMenu extends AbstractContainerMenu
 
         //MainSize is the number of Slots besides the Armor and Offhand
         //HotbarSize is the number of Slots in the Hotbar, which incidentally is the number of slots per Column
-        int hotbarSize = Inventory.DEFAULT_DISTANCE_LIMIT + 1;
+        int hotbarSize = Math.round(Inventory.DEFAULT_DISTANCE_BUFFER + 1);
         int inventorySize = Inventory.INVENTORY_SIZE - hotbarSize;    //Because Main includes the Hotbar Slots, we have to subtract them to get the raw Inventory size
         int inventoryRows = inventorySize / hotbarSize;    //All Slots : Slots per Column = Number of Rows to draw
         int inventoryColumns = hotbarSize;
@@ -180,7 +180,7 @@ public class IdentifyingMenu extends AbstractContainerMenu
     private void addPlayerHotbar(Inventory playerInventory)
     {
         //Adds a new Slot to the Screen for every Slot in the Players Hotbar
-        for (int i = 0; i < Inventory.DEFAULT_DISTANCE_LIMIT + 1; ++i)
+        for (int i = 0; i < Math.round(Inventory.DEFAULT_DISTANCE_BUFFER + 1); ++i)
         {
             //Numbers are Minecrafts pre-defined offsets due to the textures
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));

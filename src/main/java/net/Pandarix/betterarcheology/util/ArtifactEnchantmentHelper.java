@@ -1,17 +1,14 @@
 package net.Pandarix.betterarcheology.util;
 
+import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ElytraItem;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraftforge.fml.ModList;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.ISlotType;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-
-import java.util.Map;
-import java.util.Optional;
 
 public class ArtifactEnchantmentHelper
 {
@@ -22,13 +19,22 @@ public class ArtifactEnchantmentHelper
             return false;
         }
 
-        //  if there is an elytra in the chestslot and it has the enchantment
-        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem
-                && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.SOARING_WINDS.get(), player.getItemBySlot(EquipmentSlot.CHEST)) >= 1)
+        try
         {
-            return true;
+            Holder.Reference<Enchantment> tunneling = player.level().registryAccess().asGetterLookup().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ModEnchantments.TUNNELING_KEY);
+
+            //  if there is an elytra in the chestslot and it has the enchantment
+            if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem
+                    && EnchantmentHelper.getItemEnchantmentLevel(tunneling, player.getItemBySlot(EquipmentSlot.CHEST)) >= 1)
+            {
+                return true;
+            }
+        } catch (Exception e)
+        {
+            BetterArcheology.LOGGER.error("Could not find enchantment in registries: " + ModEnchantments.TUNNELING_KEY, e);
         }
 
+/*
         // If ElytraSlot mod is installed (means that CuriosAPI must be installed too)
         if (ModList.get().isLoaded("elytraslot"))
         {
@@ -44,7 +50,7 @@ public class ArtifactEnchantmentHelper
                                 (slotResult) -> slotResult.stack().getItem() instanceof ElytraItem
                                         && EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.SOARING_WINDS.get(), slotResult.stack()) >= 1)).orElse(false);
             }
-        }
+        }*/
 
         return false;
     }

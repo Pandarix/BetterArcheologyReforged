@@ -4,6 +4,7 @@ import net.Pandarix.betterarcheology.block.custom.VillagerFossilBlock;
 import net.Pandarix.betterarcheology.screen.FossilInventoryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -28,6 +29,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvider
@@ -80,17 +82,18 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
 
     //Reading & writing----------------------------------------------------------------------------------//
     @Override
-    protected void saveAdditional(CompoundTag nbt)
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.@NotNull Provider pRegistries)
     {
-        nbt.put("inventory", itemStackHandler.serializeNBT());
-        super.saveAdditional(nbt);
+        nbt.put("inventory", itemStackHandler.serializeNBT(pRegistries));
+        super.saveAdditional(nbt, pRegistries);
     }
-
     @Override
-    public void load(CompoundTag nbt)
+    @ParametersAreNonnullByDefault
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries)
     {
-        super.load(nbt);
-        itemStackHandler.deserializeNBT(nbt.getCompound("inventory"));
+        itemStackHandler.deserializeNBT(pRegistries, pTag);
+        super.loadAdditional(pTag, pRegistries);
+        setChanged();
     }
 
     public void drops()
@@ -105,25 +108,15 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
+    @NotNull
     public Component getDisplayName()
     {
         return Component.translatable("block.betterarcheology.villager_fossil");
     }
 
-    /*
-    Still From Forge
-    //update luminance of block based on the luminance of the item given when it would be in its placed state
-    @Override
-    public void onClose(Player player) {
-        ImplementedInventory.super.onClose(player);
-        int luminance = Block.byItem(this.getInventoryContents().getItem()).defaultBlockState().getLightEmission();
-        player.level().setBlock(this.getBlockPos(), level.getBlockState(this.getBlockPos()).setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance), 3);
-    }
-     */
-
-
     @Nullable
     @Override
+    @ParametersAreNonnullByDefault
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer)
     {
         return new FossilInventoryMenu(pContainerId, pPlayerInventory, this);
@@ -159,12 +152,14 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     @Override
     public void setChanged()
     {
-        super.setChanged();
         if (this.level != null)
         {
             int luminance = Block.byItem(this.getInventoryContents().getItem()).defaultBlockState().getLightEmission();
-            this.level.setBlock(this.getBlockPos(), level.getBlockState(this.getBlockPos()).setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance), 3);
+            BlockState newState = this.getBlockState().setValue(VillagerFossilBlock.INVENTORY_LUMINANCE, luminance);
+            this.level.setBlock(this.getBlockPos(), newState, 3);
+            level.sendBlockUpdated(worldPosition, this.getBlockState(), newState, 3);
         }
+        super.setChanged();
     }
 
     /*Synchronization to the client*/
@@ -176,8 +171,12 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    public CompoundTag getUpdateTag()
+    @NotNull
+    @ParametersAreNonnullByDefault
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries)
     {
-        return this.saveWithoutMetadata();
+        CompoundTag nbt = super.getUpdateTag(pRegistries);
+        this.saveAdditional(nbt, pRegistries);
+        return nbt;
     }
 }

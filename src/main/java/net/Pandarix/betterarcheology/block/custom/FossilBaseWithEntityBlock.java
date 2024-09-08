@@ -2,7 +2,6 @@ package net.Pandarix.betterarcheology.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -66,7 +65,7 @@ public class FossilBaseWithEntityBlock extends BaseEntityBlock
     @Override
     @NotNull
     @ParametersAreNonnullByDefault
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult)
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult)
     {
         return InteractionResult.SUCCESS;
     }

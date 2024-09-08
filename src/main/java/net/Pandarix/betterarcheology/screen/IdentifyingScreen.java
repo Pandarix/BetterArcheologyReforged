@@ -9,12 +9,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 public class IdentifyingScreen extends AbstractContainerScreen<IdentifyingMenu>
 {
 
     //saves archeology_table_gui as TEXTURE
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(BetterArcheology.MOD_ID, "textures/gui/archeology_table_gui.png");
+            BetterArcheology.createResource( "textures/gui/archeology_table_gui.png");
 
     public IdentifyingScreen(IdentifyingMenu inventoryMenu, Inventory inventory, Component title)
     {
@@ -51,6 +53,7 @@ public class IdentifyingScreen extends AbstractContainerScreen<IdentifyingMenu>
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta)
     {
         renderBackground(guiGraphics, mouseX, mouseY, delta);

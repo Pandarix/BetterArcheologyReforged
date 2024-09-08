@@ -8,9 +8,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -131,8 +131,7 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
     @Override
     @ParametersAreNonnullByDefault
     @NotNull
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
-                                 Player pPlayer, InteractionHand pHand, BlockHitResult pHit)
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult)
     {
         if (!pLevel.isClientSide())
         {
@@ -151,9 +150,10 @@ public class VillagerFossilBlock extends FossilBaseWithEntityBlock
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, BlockGetter getter, List<Component> component, @NotNull TooltipFlag flag)
+    @ParametersAreNonnullByDefault
+    public void appendHoverText(@NotNull ItemStack stack, Item.TooltipContext pContext, List<Component> component, @NotNull TooltipFlag flag)
     {
         component.add(Component.translatable("block.betterarcheology.villager_fossil_tooltip").withStyle(ChatFormatting.GRAY));
-        super.appendHoverText(stack, getter, component, flag);
+        super.appendHoverText(stack, pContext, component, flag);
     }
 }

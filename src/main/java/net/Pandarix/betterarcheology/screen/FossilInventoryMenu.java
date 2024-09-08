@@ -13,6 +13,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class FossilInventoryMenu extends AbstractContainerMenu
 {
@@ -42,6 +45,7 @@ public class FossilInventoryMenu extends AbstractContainerMenu
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean stillValid(Player pPlayer)
     {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), pPlayer, ModBlocks.VILLAGER_FOSSIL.get());
@@ -66,7 +70,8 @@ public class FossilInventoryMenu extends AbstractContainerMenu
     private static final int TE_INVENTORY_SLOT_COUNT = 1;  // must be the number of slots you have!
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index)
+    @NotNull
+    public ItemStack quickMoveStack(@NotNull Player playerIn, int index)
     {
         Slot sourceSlot = slots.get(index);
         if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
@@ -118,7 +123,7 @@ public class FossilInventoryMenu extends AbstractContainerMenu
 
         //MainSize is the number of Slots besides the Armor and Offhand
         //HotbarSize is the number of Slots in the Hotbar, which incidentally is the number of slots per Column
-        int hotbarSize = Inventory.DEFAULT_DISTANCE_LIMIT + 1;
+        int hotbarSize = Math.round(Inventory.DEFAULT_DISTANCE_BUFFER + 1);
         int inventorySize = Inventory.INVENTORY_SIZE - hotbarSize;    //Because Main includes the Hotbar Slots, we have to subtract them to get the raw Inventory size
         int inventoryRows = inventorySize / hotbarSize;    //All Slots : Slots per Column = Number of Rows to draw
         int inventoryColumns = hotbarSize;
@@ -139,7 +144,7 @@ public class FossilInventoryMenu extends AbstractContainerMenu
     private void addPlayerHotbar(Inventory playerInventory)
     {
         //Adds a new Slot to the Screen for every Slot in the Players Hotbar
-        for (int i = 0; i < Inventory.DEFAULT_DISTANCE_LIMIT + 1; ++i)
+        for (int i = 0; i < Math.round(Inventory.DEFAULT_DISTANCE_BUFFER + 1); ++i)
         {
             //Numbers are Minecrafts pre-defined offsets due to the textures
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));

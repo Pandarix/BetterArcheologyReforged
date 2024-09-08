@@ -2,6 +2,7 @@ package net.Pandarix.betterarcheology.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -76,8 +77,7 @@ public class FossilBaseHeadBlock extends HorizontalDirectionalBlock implements E
     }
 
     @Override
-    @NotNull
-    public SoundEvent getEquipSound()
+    public @NotNull Holder<SoundEvent> getEquipSound()
     {
         return SoundEvents.ARMOR_EQUIP_TURTLE;
     }

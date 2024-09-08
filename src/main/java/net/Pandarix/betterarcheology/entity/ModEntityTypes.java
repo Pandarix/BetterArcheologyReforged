@@ -2,7 +2,6 @@ package net.Pandarix.betterarcheology.entity;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,5 +17,5 @@ public class ModEntityTypes
                     () -> EntityType.Builder.<BombEntity>of(BombEntity::new, MobCategory.MISC)
                             .sized(0.25F, 0.25F)
                             .clientTrackingRange(4).updateInterval(10)
-                            .build(new ResourceLocation(BetterArcheology.MOD_ID, "bombentity").toString()));
+                            .build(BetterArcheology.createResource( "bombentity").toString()));
 }

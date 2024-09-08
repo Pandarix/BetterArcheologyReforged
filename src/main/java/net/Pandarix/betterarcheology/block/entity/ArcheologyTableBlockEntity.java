@@ -3,16 +3,17 @@ package net.Pandarix.betterarcheology.block.entity;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.item.ModItems;
-import net.Pandarix.betterarcheology.networking.ModMessages;
-import net.Pandarix.betterarcheology.networking.packet.ItemStackSyncS2CPacket;
 import net.Pandarix.betterarcheology.screen.IdentifyingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -64,10 +65,6 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
         protected void onContentsChanged(int slot)
         {
             setChanged();
-            if (level != null && !level.isClientSide())
-            {
-                ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
-            }
         }
     };
 
@@ -81,7 +78,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     private int maxProgress = 72;
 
     //loottable for crafting results
-    private static final ResourceLocation CRAFTING_LOOT = new ResourceLocation(BetterArcheology.MOD_ID, "identifying_loot");
+    protected static final ResourceKey<LootTable> CRAFTING_LOOT = ResourceKey.create(Registries.LOOT_TABLE, BetterArcheology.createResource("identifying_loot"));
 
     public ArcheologyTableBlockEntity(BlockPos pos, BlockState state)
     {
@@ -123,7 +120,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     @NotNull
     public net.minecraft.network.chat.Component getDisplayName()
     {
-        return Component.translatable(new ResourceLocation("block." + BetterArcheology.MOD_ID, translationKey).toLanguageKey());
+        return Component.translatable(ResourceLocation.fromNamespaceAndPath("block." + BetterArcheology.MOD_ID, translationKey).toLanguageKey());
     }
 
     @Override
@@ -152,19 +149,21 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt)
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.@NotNull Provider pRegistries)
     {
-        nbt.put("inventory", itemHandler.serializeNBT());
-
-        super.saveAdditional(nbt);
+        nbt.put("inventory", itemHandler.serializeNBT(pRegistries));
+        nbt.putInt("archeology_table.progress", progress);
+        super.saveAdditional(nbt, pRegistries);
     }
 
     @Override
     @ParametersAreNonnullByDefault
-    public void load(CompoundTag nbt)
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries)
     {
-        super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        itemHandler.deserializeNBT(pRegistries, pTag);
+        super.loadAdditional(pTag, pRegistries);
+        progress = pTag.getInt("archeology_table");
+        setChanged();
     }
 
     public void drops()
@@ -290,7 +289,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
         if (level != null && !level.isClientSide() && level.getServer() != null)
         {
             //gets loot-table based on .json loot
-            LootTable lootTable = level.getServer().getLootData().getLootTable(CRAFTING_LOOT);
+            LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(CRAFTING_LOOT);
             //parameters for determining loot such as luck, origin and position
             LootParams lootparams = (new LootParams.Builder((ServerLevel) level)).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(entity.getBlockPos())).withLuck(0).create(LootContextParamSets.CHEST);
 
@@ -363,26 +362,15 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
         return Arrays.asList(itemHandler.getStackInSlot(0), itemHandler.getStackInSlot(1), itemHandler.getStackInSlot(2));
     }
 
-    /*
-    Forge stuff
     @Override
-    public void markDirty() {
-        if (world != null && !world.isClient()) {
-            PacketByteBuf data = PacketByteBufs.create();
-            data.writeInt(inventory.size());
-            for (ItemStack itemStack : inventory) {
-                data.writeItemStack(itemStack);
-            }
-            data.writeBlockPos(getPos());
-
-            for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
-                ServerPlayNetworking.send(player, ModMessages.ITEM_SYNC, data);
-            }
+    public void setChanged()
+    {
+        if (this.level != null)
+        {
+            level.sendBlockUpdated(worldPosition, this.getBlockState(), this.getBlockState(), 3);
         }
-
-        super.markDirty();
+        super.setChanged();
     }
-    */
 
     /*Synchronization to the client*/
     @Nullable
@@ -394,8 +382,11 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     @NotNull
-    public CompoundTag getUpdateTag()
+    @ParametersAreNonnullByDefault
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries)
     {
-        return this.saveWithoutMetadata();
+        CompoundTag nbt = super.getUpdateTag(pRegistries);
+        this.saveAdditional(nbt, pRegistries);
+        return nbt;
     }
 }

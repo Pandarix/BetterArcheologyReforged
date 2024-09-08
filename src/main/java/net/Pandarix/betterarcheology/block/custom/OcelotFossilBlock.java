@@ -6,6 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -19,8 +20,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Map;
 
@@ -47,18 +50,23 @@ public class OcelotFossilBlock extends FossilBaseWithEntityBlock
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
         return new FleeFromBlockEntity(pos, state);
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @NotNull
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
     {
         return OCELOT_SHAPES_FOR_DIRECTION.get(pState.getValue(FACING));
     }
 
     @Override
+    @NotNull
+    @ParametersAreNonnullByDefault
     public RenderShape getRenderShape(BlockState pState)
     {
         return RenderShape.MODEL;
@@ -66,9 +74,10 @@ public class OcelotFossilBlock extends FossilBaseWithEntityBlock
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> component, TooltipFlag flag)
+    @ParametersAreNonnullByDefault
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> component, TooltipFlag flag)
     {
         component.add(Component.translatable("block.betterarcheology.ocelot_fossil_tooltip").withStyle(ChatFormatting.GRAY));
-        super.appendHoverText(stack, getter, component, flag);
+        super.appendHoverText(stack, context, component, flag);
     }
 }

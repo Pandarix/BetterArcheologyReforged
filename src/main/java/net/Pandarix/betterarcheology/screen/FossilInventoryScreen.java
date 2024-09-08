@@ -10,9 +10,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 public class FossilInventoryScreen extends AbstractContainerScreen<FossilInventoryMenu>
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(BetterArcheology.MOD_ID, "textures/gui/fossil_gui.png");
+    private static final ResourceLocation TEXTURE = BetterArcheology.createResource( "textures/gui/fossil_gui.png");
 
     public FossilInventoryScreen(FossilInventoryMenu handler, Inventory inventory, Component title)
     {
@@ -38,6 +40,7 @@ public class FossilInventoryScreen extends AbstractContainerScreen<FossilInvento
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta)
     {
         renderBackground(guiGraphics, mouseX, mouseY, delta);

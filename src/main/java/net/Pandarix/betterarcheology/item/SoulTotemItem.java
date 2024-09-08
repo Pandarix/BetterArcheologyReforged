@@ -3,7 +3,6 @@ package net.Pandarix.betterarcheology.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -21,8 +20,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -34,17 +33,22 @@ public class SoulTotemItem extends Item
     }
 
     @Override
-    public int getUseDuration(ItemStack pStack)
+    @ParametersAreNonnullByDefault
+    public int getUseDuration(ItemStack pStack, LivingEntity pEntity)
     {
         return 8;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public @NotNull UseAnim getUseAnimation(ItemStack pStack)
     {
         return UseAnim.BLOCK;
     }
 
+    @Override
+    @NotNull
+    @ParametersAreNonnullByDefault
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand)
     {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
@@ -53,6 +57,7 @@ public class SoulTotemItem extends Item
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public @NotNull ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity)
     {
         if (!(pLivingEntity instanceof Player player))
@@ -60,7 +65,7 @@ public class SoulTotemItem extends Item
             return pStack;
         }
 
-        HitResult hitresult = ProjectileUtil.getHitResultOnViewVector(player, Predicate.not(Entity::isSpectator), Math.sqrt(ServerGamePacketListenerImpl.MAX_INTERACTION_DISTANCE) - 1.0);
+        HitResult hitresult = ProjectileUtil.getHitResultOnViewVector(player, Predicate.not(Entity::isSpectator), player.blockInteractionRange());
 
         //if an entity is being targeted
         if (hitresult instanceof EntityHitResult entityHitResult)
@@ -97,10 +102,7 @@ public class SoulTotemItem extends Item
                         player.heal(4);
                         //set cooldown and damage stack
                         player.getCooldowns().addCooldown(this, 180);
-                        pStack.hurtAndBreak(1, player, (p) ->
-                        {
-                            p.broadcastBreakEvent(player.getUsedItemHand());
-                        });
+                        pStack.hurtAndBreak(1, player, pLivingEntity.getEquipmentSlotForItem(pStack));
                     }
                 }
 
@@ -116,9 +118,10 @@ public class SoulTotemItem extends Item
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced)
+    @ParametersAreNonnullByDefault
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag)
     {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
         pTooltipComponents.add(Component.translatable("item.betterarcheology.soul_totem_description").withStyle(ChatFormatting.DARK_AQUA));
     }
 }

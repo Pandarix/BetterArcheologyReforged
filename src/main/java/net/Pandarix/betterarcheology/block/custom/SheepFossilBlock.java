@@ -10,9 +10,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -97,7 +97,7 @@ public class SheepFossilBlock extends FossilBaseBlock
     @Override
     @NotNull
     @ParametersAreNonnullByDefault
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit)
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult)
     {
         //if sound is already being played, abort
         if (pState.getValue(PLAYING))
@@ -144,9 +144,10 @@ public class SheepFossilBlock extends FossilBaseBlock
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, BlockGetter getter, List<Component> component, @NotNull TooltipFlag flag)
+    @ParametersAreNonnullByDefault
+    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag)
     {
-        component.add(Component.translatable("block.betterarcheology.sheep_fossil_tooltip").withStyle(ChatFormatting.GRAY));
-        super.appendHoverText(stack, getter, component, flag);
+        pTooltipComponents.add(Component.translatable("block.betterarcheology.sheep_fossil_tooltip").withStyle(ChatFormatting.GRAY));
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

@@ -3,13 +3,12 @@ package net.Pandarix.betterarcheology.item;
 import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.enchantment.ModEnchantments;
-import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -83,9 +82,18 @@ public class ModItemGroup
                 output.accept(ModBlocks.VASE_CREEPER.get());
                 output.accept(ModBlocks.VASE_GREEN.get());
                 output.accept(ModBlocks.EVOKER_TRAP.get());
+
                 //enchantments
-                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.SOARING_WINDS.get(), 1)).setHoverName(Component.translatable("item.betterarcheology.identified_artifact").withStyle(ChatFormatting.RESET, ChatFormatting.YELLOW)));
-                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.TUNNELING.get(), 1)).setHoverName(Component.translatable("item.betterarcheology.identified_artifact").withStyle(ChatFormatting.RESET, ChatFormatting.YELLOW)));
-                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.PENETRATING_STRIKE.get(), 1)).setHoverName(Component.translatable("item.betterarcheology.identified_artifact").withStyle(ChatFormatting.RESET, ChatFormatting.YELLOW)));
+                try
+                {
+                    HolderGetter<Enchantment> getter = parameters.holders().asGetterLookup().lookupOrThrow(Registries.ENCHANTMENT);
+
+                    ModEnchantments.registerEnchantedBookWith(output, getter.getOrThrow(ModEnchantments.TUNNELING_KEY));
+                    ModEnchantments.registerEnchantedBookWith(output, getter.getOrThrow(ModEnchantments.PENETRATING_STRIKE_KEY));
+                    ModEnchantments.registerEnchantedBookWith(output, getter.getOrThrow(ModEnchantments.SOARING_WINDS_KEY));
+                } catch (Exception e)
+                {
+                    BetterArcheology.LOGGER.error("Could not add Enchanted Book to creative tab!", e);
+                }
             }).build());
 }

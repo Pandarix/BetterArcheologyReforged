@@ -13,13 +13,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 
 public class BombItem extends Item
 {
     //gets id of advancement for having thrown a bomb which has the condition "impossible" because it needs to be triggered here
-    ResourceLocation ADVANCEMENT_ID = new ResourceLocation(BetterArcheology.MOD_ID, "used_bomb_item");
+    ResourceLocation ADVANCEMENT_ID = BetterArcheology.createResource( "used_bomb_item");
 
     public BombItem(Item.Properties pProperties)
     {
@@ -27,6 +29,8 @@ public class BombItem extends Item
     }
 
     @Override
+    @NotNull
+    @ParametersAreNonnullByDefault
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
     {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);

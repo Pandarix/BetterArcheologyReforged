@@ -12,10 +12,10 @@ public class ModStructuresMain
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = BetterArcheology.MOD_ID;
 
-    public ModStructuresMain()
+    public ModStructuresMain(FMLJavaModLoadingContext context)
     {
         // For registration and init stuff.
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = context.getModEventBus();
         ModStructures.DEFERRED_REGISTRY_STRUCTURE.register(modEventBus);
     }
 

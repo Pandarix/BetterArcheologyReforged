@@ -25,7 +25,7 @@ public class JeiPlugin implements IModPlugin
     @NotNull
     public ResourceLocation getPluginUid()
     {
-        return new ResourceLocation(BetterArcheology.MOD_ID, "jei_plugin");
+        return BetterArcheology.createResource( "jei_plugin");
     }
 
     @Override

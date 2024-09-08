@@ -12,9 +12,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -102,9 +102,9 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
     @Override
     @ParametersAreNonnullByDefault
     @NotNull
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult)
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult)
     {
-        if (!blockState.is(this))
+        if (!pState.is(this))
         {
             return InteractionResult.PASS;
         }
@@ -112,29 +112,29 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
         // if feature is disabled, notify the user and skip
         if (!BetterArcheologyConfig.radianceTotemEnabled.get() || !BetterArcheologyConfig.totemsEnabled.get())
         {
-            if (level.isClientSide())
+            if (pLevel.isClientSide())
             {
-                player.displayClientMessage(Component.translatableWithFallback("config.notify.disabled", "This feature has been disabled in the config!"), true);
+                pPlayer.displayClientMessage(Component.translatableWithFallback("config.notify.disabled", "This feature has been disabled in the config!"), true);
             }
             return InteractionResult.PASS;
         }
-        BlockState newState = blockState.cycle(SELECTOR);
-        level.setBlock(blockPos, newState, 3);
+        BlockState newState = pState.cycle(SELECTOR);
+        pLevel.setBlock(pPos, newState, 3);
 
-        if (level.isClientSide())
+        if (pLevel.isClientSide())
         {
-            player.displayClientMessage(Component.translatable("block.betterarcheology.radiance_totem_message_" + newState.getValue(SELECTOR)).withStyle(ChatFormatting.GREEN), true);
-            level.playLocalSound(blockPos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 0.5f, 0.5f, false);
-            RandomSource random = level.getRandom();
+            pPlayer .displayClientMessage(Component.translatable("block.betterarcheology.radiance_totem_message_" + newState.getValue(SELECTOR)).withStyle(ChatFormatting.GREEN), true);
+            pLevel.playLocalSound(pPos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 0.5f, 0.5f, false);
+            RandomSource random = pLevel.getRandom();
             for (int i = 0; i <= 10; i++)
             {
-                level.addParticle(ParticleTypes.GLOW,
-                        blockPos.getCenter().x() + randomDirectionModifier(random, 3),
-                        blockPos.getCenter().y() - 0.25 + randomDirectionModifier(random, 5),
-                        blockPos.getCenter().z() + randomDirectionModifier(random, 3), 0, -4, 0);
+                pLevel.addParticle(ParticleTypes.GLOW,
+                        pPos.getCenter().x() + randomDirectionModifier(random, 3),
+                        pPos.getCenter().y() - 0.25 + randomDirectionModifier(random, 5),
+                        pPos.getCenter().z() + randomDirectionModifier(random, 3), 0, -4, 0);
             }
         }
-        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     @Override
@@ -164,9 +164,10 @@ public class RadianceTotemBlock extends FossilBaseWithEntityBlock
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack pStack, @Nullable BlockGetter pLevel, @NotNull List<Component> pTooltip, @NotNull TooltipFlag pFlag)
+    @ParametersAreNonnullByDefault
+    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltip, TooltipFlag pTooltipFlag)
     {
-        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
+        super.appendHoverText(pStack, pContext, pTooltip, pTooltipFlag);
         pTooltip.add(Component.translatable("block.betterarcheology.radiance_totem_tooltip").withStyle(ChatFormatting.DARK_GREEN));
     }
 

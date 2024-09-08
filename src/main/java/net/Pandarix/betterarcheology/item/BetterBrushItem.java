@@ -1,7 +1,6 @@
 package net.Pandarix.betterarcheology.item;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 public class BetterBrushItem extends BrushItem
 {
     private float brushingSpeed;
-    private static final double MAX_BRUSH_DISTANCE = Math.sqrt(ServerGamePacketListenerImpl.MAX_INTERACTION_DISTANCE) - 1.0D;
 
     public BetterBrushItem(Item.Properties pProperties, float pBrushingSpeed)
     {
@@ -41,13 +39,13 @@ public class BetterBrushItem extends BrushItem
         return brushingSpeed;
     }
 
-    private HitResult calculateHitResult(LivingEntity pEntity)
+    private HitResult calculateHitResult(Player pPlayer)
     {
-        return ProjectileUtil.getHitResultOnViewVector(pEntity, (p_281111_) ->
-                !p_281111_.isSpectator() && p_281111_.isPickable(), MAX_BRUSH_DISTANCE);
+        return ProjectileUtil.getHitResultOnViewVector(pPlayer, entity -> !entity.isSpectator() && entity.isPickable(), pPlayer.blockInteractionRange());
     }
 
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack)
+    {
         return UseAnim.BRUSH;
     }
 
@@ -58,12 +56,12 @@ public class BetterBrushItem extends BrushItem
     {
         if (pRemainingUseDuration >= 0 && pLivingEntity instanceof Player player)
         {
-            HitResult hitresult = this.calculateHitResult(pLivingEntity);
+            HitResult hitresult = this.calculateHitResult(player);
             if (hitresult instanceof BlockHitResult blockhitresult)
             {
                 if (hitresult.getType() == HitResult.Type.BLOCK)
                 {
-                    int i = this.getUseDuration(pStack) - pRemainingUseDuration + 1;
+                    int i = this.getUseDuration(pStack, player) - pRemainingUseDuration + 1;
                     boolean flag = i % brushingSpeed == brushingSpeed / 2;
                     if (flag)
                     {
@@ -91,8 +89,7 @@ public class BetterBrushItem extends BrushItem
                                 if (flag1)
                                 {
                                     EquipmentSlot equipmentslot = pStack.equals(player.getItemBySlot(EquipmentSlot.OFFHAND)) ? EquipmentSlot.OFFHAND : EquipmentSlot.MAINHAND;
-                                    pStack.hurtAndBreak(1, pLivingEntity, (p_279044_) ->
-                                            p_279044_.broadcastBreakEvent(equipmentslot));
+                                    pStack.hurtAndBreak(1, pLivingEntity, equipmentslot);
                                 }
                             }
                         }

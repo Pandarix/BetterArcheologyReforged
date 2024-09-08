@@ -1,6 +1,7 @@
 package net.Pandarix.betterarcheology.world.structure;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -11,10 +12,13 @@ import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasBinding;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -26,7 +30,7 @@ public class ArcheologyStructures extends Structure
 
     // A custom codec that changes the size limit for our code_structure_sky_fan.json's config to not be capped at 7.
     // With this, we can have a structure with a size limit up to 30 if we want to have extremely long branches of pieces in the structure.
-    public static final Codec<ArcheologyStructures> CODEC = RecordCodecBuilder.<ArcheologyStructures>mapCodec(instance ->
+    public static final MapCodec<ArcheologyStructures> CODEC = RecordCodecBuilder.<ArcheologyStructures>mapCodec(instance ->
             instance.group(ArcheologyStructures.settingsCodec(instance),
                     StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(structure -> structure.startPool),
                     ResourceLocation.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(structure -> structure.startJigsawName),
@@ -34,8 +38,10 @@ public class ArcheologyStructures extends Structure
                     HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
                     Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
                     Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter),
-                    Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter((structure) -> structure.poolAliasBindings)
-            ).apply(instance, ArcheologyStructures::new)).codec();
+                    Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter((structure) -> structure.poolAliasBindings),
+                    DimensionPadding.CODEC.optionalFieldOf("dimension_padding", JigsawStructure.DEFAULT_DIMENSION_PADDING).forGetter(structure -> structure.dimensionPadding),
+                    LiquidSettings.CODEC.optionalFieldOf("liquid_settings", JigsawStructure.DEFAULT_LIQUID_SETTINGS).forGetter(structure -> structure.liquidSettings)
+            ).apply(instance, ArcheologyStructures::new));
 
     private final Holder<StructureTemplatePool> startPool;
     private final Optional<ResourceLocation> startJigsawName;
@@ -43,6 +49,8 @@ public class ArcheologyStructures extends Structure
     private final HeightProvider startHeight;
     private final Optional<Heightmap.Types> projectStartToHeightmap;
     private final int maxDistanceFromCenter;
+    private final LiquidSettings liquidSettings;
+    private final DimensionPadding dimensionPadding;
 
     private final List<PoolAliasBinding> poolAliasBindings;
 
@@ -53,7 +61,9 @@ public class ArcheologyStructures extends Structure
                                 HeightProvider startHeight,
                                 Optional<Heightmap.Types> projectStartToHeightmap,
                                 int maxDistanceFromCenter,
-                                List<PoolAliasBinding> poolAliasBindings)
+                                List<PoolAliasBinding> poolAliasBindings,
+                                DimensionPadding dimensionPadding,
+                                LiquidSettings liquidSettings)
     {
         super(config);
         this.startPool = startPool;
@@ -63,6 +73,8 @@ public class ArcheologyStructures extends Structure
         this.projectStartToHeightmap = projectStartToHeightmap;
         this.maxDistanceFromCenter = maxDistanceFromCenter;
         this.poolAliasBindings = poolAliasBindings;
+        this.dimensionPadding = dimensionPadding;
+        this.liquidSettings = liquidSettings;
     }
 
     /*
@@ -141,7 +153,10 @@ public class ArcheologyStructures extends Structure
                         // Set this to false for structure to be place only at the passed in blockpos's Y value instead.
                         // Definitely keep this false when placing structures in the nether as otherwise, heightmap placing will put the structure on the Bedrock roof.
                         this.maxDistanceFromCenter, // Maximum limit for how far pieces can spawn from center. You cannot set this bigger than 128 or else pieces gets cutoff.
-                        PoolAliasLookup.create(this.poolAliasBindings, blockPos, context.seed()));
+                        PoolAliasLookup.create(this.poolAliasBindings, blockPos, context.seed()),
+                        this.dimensionPadding,
+                        this.liquidSettings
+                        );
 
         /*
          * Note, you are always free to make your own JigsawPlacement class and implementation of how the structure

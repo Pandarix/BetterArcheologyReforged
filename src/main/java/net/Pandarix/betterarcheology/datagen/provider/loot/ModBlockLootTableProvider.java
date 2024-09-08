@@ -2,6 +2,7 @@ package net.Pandarix.betterarcheology.datagen.provider.loot;
 
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.item.ModItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
@@ -9,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
@@ -19,9 +20,9 @@ import java.util.Set;
 
 public class ModBlockLootTableProvider extends BlockLootSubProvider
 {
-    public ModBlockLootTableProvider()
+    public ModBlockLootTableProvider(HolderLookup.Provider pRegistries)
     {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), pRegistries);
     }
 
     @Override
@@ -76,29 +77,29 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider
         //VASES
         this.add(ModBlocks.LOOT_VASE.get(), block ->
                 LootTable.lootTable()
-                        .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModBlocks.VASE.get()).when(HAS_SILK_TOUCH)))
+                        .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModBlocks.VASE.get()).when(hasSilkTouch())))
                         .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                                .add(LootTableReference.lootTableReference(ModLootTableProvider.SUPPLY_LOOTTABLE_ID))
-                                .add(LootTableReference.lootTableReference(ModLootTableProvider.TREASURE_LOOTTABLE_ID))
-                                .when(HAS_NO_SILK_TOUCH))
+                                .add(NestedLootTable.lootTableReference(ModLootTableProvider.SUPPLY_LOOTTABLE_KEY))
+                                .add(NestedLootTable.lootTableReference(ModLootTableProvider.TREASURE_LOOTTABLE_KEY))
+                                .when(doesNotHaveSilkTouch()))
         );
 
         this.add(ModBlocks.LOOT_VASE_CREEPER.get(), block ->
                 LootTable.lootTable()
-                        .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModBlocks.VASE_CREEPER.get()).when(HAS_SILK_TOUCH)))
+                        .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModBlocks.VASE_CREEPER.get()).when(hasSilkTouch())))
                         .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                                .add(LootTableReference.lootTableReference(ModLootTableProvider.SUPPLY_LOOTTABLE_ID))
-                                .add(LootTableReference.lootTableReference(ModLootTableProvider.TREASURE_LOOTTABLE_ID))
-                                .when(HAS_NO_SILK_TOUCH))
+                                .add(NestedLootTable.lootTableReference(ModLootTableProvider.SUPPLY_LOOTTABLE_KEY))
+                                .add(NestedLootTable.lootTableReference(ModLootTableProvider.TREASURE_LOOTTABLE_KEY))
+                                .when(doesNotHaveSilkTouch()))
         );
 
         this.add(ModBlocks.LOOT_VASE_GREEN.get(), block ->
                 LootTable.lootTable()
-                        .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModBlocks.VASE_GREEN.get()).when(HAS_SILK_TOUCH)))
+                        .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModBlocks.VASE_GREEN.get()).when(hasSilkTouch())))
                         .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                                .add(LootTableReference.lootTableReference(ModLootTableProvider.SUPPLY_LOOTTABLE_ID))
-                                .add(LootTableReference.lootTableReference(ModLootTableProvider.GREEN_TREASURE_LOOTTABLE_ID))
-                                .when(HAS_NO_SILK_TOUCH))
+                                .add(NestedLootTable.lootTableReference(ModLootTableProvider.SUPPLY_LOOTTABLE_KEY))
+                                .add(NestedLootTable.lootTableReference(ModLootTableProvider.GREEN_TREASURE_LOOTTABLE_KEY))
+                                .when(doesNotHaveSilkTouch()))
         );
     }
 
