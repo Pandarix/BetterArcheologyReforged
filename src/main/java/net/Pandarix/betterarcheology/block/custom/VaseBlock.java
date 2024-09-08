@@ -8,6 +8,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 public class VaseBlock extends Block
 {
@@ -19,6 +22,8 @@ public class VaseBlock extends Block
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @NotNull
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext)
     {
         return SHAPE;
