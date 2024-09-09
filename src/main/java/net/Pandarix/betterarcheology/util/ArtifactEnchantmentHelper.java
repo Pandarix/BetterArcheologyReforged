@@ -21,7 +21,7 @@ public class ArtifactEnchantmentHelper
 
         try
         {
-            Holder.Reference<Enchantment> tunneling = player.level().registryAccess().asGetterLookup().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ModEnchantments.TUNNELING_KEY);
+            Holder.Reference<Enchantment> tunneling = player.level().registryAccess().asGetterLookup().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ModEnchantments.SOARING_WINDS_KEY);
 
             //  if there is an elytra in the chestslot and it has the enchantment
             if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem
@@ -31,7 +31,7 @@ public class ArtifactEnchantmentHelper
             }
         } catch (Exception e)
         {
-            BetterArcheology.LOGGER.error("Could not find enchantment in registries: " + ModEnchantments.TUNNELING_KEY, e);
+            BetterArcheology.LOGGER.error("Could not find enchantment in registries: " + ModEnchantments.SOARING_WINDS_KEY, e);
         }
 
 /*

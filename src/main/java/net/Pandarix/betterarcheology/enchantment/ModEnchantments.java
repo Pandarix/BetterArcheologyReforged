@@ -1,22 +1,18 @@
 package net.Pandarix.betterarcheology.enchantment;
 
 import net.Pandarix.betterarcheology.BetterArcheology;
-import net.Pandarix.betterarcheology.util.ModTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
 public class ModEnchantments
 {
@@ -33,7 +29,7 @@ public class ModEnchantments
         output.accept(book);
     }
 
-    public static void bootstrap(BootstrapContext<Enchantment> context)
+/*    public static void enchantmentBootstrap(BootstrapContext<Enchantment> context)
     {
         HolderGetter<Item> itemLookup = context.lookup(Registries.ITEM);
 
@@ -73,7 +69,7 @@ public class ModEnchantments
                         7, // anvil applying cost
                         EquipmentSlotGroup.ANY
                 )));
-    }
+    }*/
 
     private static void register(BootstrapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder)
     {

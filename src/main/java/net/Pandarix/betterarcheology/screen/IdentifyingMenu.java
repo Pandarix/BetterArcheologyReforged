@@ -147,6 +147,8 @@ public class IdentifyingMenu extends AbstractContainerMenu
         return invSlot < this.slots.size() - ArcheologyTableBlockEntity.INV_SIZE - 1;
     }
 
+
+    //TODO: fix slots
     //Helper Method to add Players Inventoryslots to Screen
     private void addPlayerInventory(Inventory playerInventory)
     {
