@@ -1,5 +1,6 @@
 package net.Pandarix.betterarcheology.mixin;
 
+import net.Pandarix.betterarcheology.BetterArcheology;
 import net.Pandarix.betterarcheology.item.BetterBrushItem;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -19,9 +20,15 @@ public abstract class FasterBrushingMixin
     @Inject(method = "brush", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BrushableBlockEntity;unpackLootTable(Lnet/minecraft/world/entity/player/Player;)V"))
     private void injectMethod(long worldTime, Player player, Direction hitDirection, CallbackInfoReturnable<Boolean> cir)
     {
-        if (player.getUseItem().getItem() instanceof BetterBrushItem brushItem)
+        try
         {
-            this.coolDownEndsAtTick -= (long) (10L - brushItem.getBrushingSpeed());
+            if (player.getUseItem().getItem() instanceof BetterBrushItem ba$brushItem)
+            {
+                this.coolDownEndsAtTick -= (long) (10L - ba$brushItem.getBrushingSpeed());
+            }
+        } catch (Exception e)
+        {
+            BetterArcheology.LOGGER.info("Could not apply faster brushing due to error: " + e);
         }
     }
 }
