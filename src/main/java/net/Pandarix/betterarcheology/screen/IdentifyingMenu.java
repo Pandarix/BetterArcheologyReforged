@@ -3,6 +3,7 @@ package net.Pandarix.betterarcheology.screen;
 import net.Pandarix.betterarcheology.block.ModBlocks;
 import net.Pandarix.betterarcheology.block.entity.ArcheologyTableBlockEntity;
 import net.Pandarix.betterarcheology.item.ModItems;
+import net.Pandarix.betterarcheology.util.MenuHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -34,8 +35,8 @@ public class IdentifyingMenu extends AbstractContainerMenu
         this.level = playerInventory.player.level();
         this.data = data;
 
-        addPlayerInventory(playerInventory);
-        addPlayerHotbar(playerInventory);
+        MenuHelper.createPlayerInventory(this, playerInventory);
+        MenuHelper.createPlayerHotbar(this, playerInventory);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler ->
         {
@@ -147,45 +148,4 @@ public class IdentifyingMenu extends AbstractContainerMenu
         return invSlot < this.slots.size() - ArcheologyTableBlockEntity.INV_SIZE - 1;
     }
 
-
-    //TODO: fix slots
-    //Helper Method to add Players Inventoryslots to Screen
-    private void addPlayerInventory(Inventory playerInventory)
-    {
-        /*Adding Slots of Main Inventory
-                COL:    COL:    COL:    ...
-        ROW:    slot    slot    slot
-        ROW:    slot    slot    slot
-        ...
-        */
-
-        //MainSize is the number of Slots besides the Armor and Offhand
-        //HotbarSize is the number of Slots in the Hotbar, which incidentally is the number of slots per Column
-        int hotbarSize = Math.round(Inventory.DEFAULT_DISTANCE_BUFFER + 1);
-        int inventorySize = Inventory.INVENTORY_SIZE - hotbarSize;    //Because Main includes the Hotbar Slots, we have to subtract them to get the raw Inventory size
-        int inventoryRows = inventorySize / hotbarSize;    //All Slots : Slots per Column = Number of Rows to draw
-        int inventoryColumns = hotbarSize;
-
-        //For every Row in the Inventory
-        for (int i = 0; i < inventoryRows; ++i)
-        {
-            //Add a slot for every Column in the Row
-            for (int l = 0; l < inventoryColumns; ++l)
-            {
-                //Numbers are Minecrafts pre-defined offsets due to the textures
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
-            }
-        }
-    }
-
-    //Helper Method to add Players HotBarSlots to Screen
-    private void addPlayerHotbar(Inventory playerInventory)
-    {
-        //Adds a new Slot to the Screen for every Slot in the Players Hotbar
-        for (int i = 0; i < Math.round(Inventory.DEFAULT_DISTANCE_BUFFER + 1); ++i)
-        {
-            //Numbers are Minecrafts pre-defined offsets due to the textures
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
-        }
-    }
 }
