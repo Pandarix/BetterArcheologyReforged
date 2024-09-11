@@ -36,7 +36,7 @@ public class SoulTotemItem extends Item
     @ParametersAreNonnullByDefault
     public int getUseDuration(ItemStack pStack, LivingEntity pEntity)
     {
-        return 8;
+        return 1;
     }
 
     @Override

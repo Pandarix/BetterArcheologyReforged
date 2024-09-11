@@ -5,11 +5,13 @@ import net.Pandarix.betterarcheology.screen.FossilInventoryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -82,15 +84,32 @@ public class VillagerFossilBlockEntity extends BlockEntity implements MenuProvid
 
     //Reading & writing----------------------------------------------------------------------------------//
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.@NotNull Provider pRegistries)
+    @ParametersAreNonnullByDefault
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider pRegistries)
     {
-        nbt.put("inventory", itemStackHandler.serializeNBT(pRegistries));
+        NonNullList<ItemStack> items = NonNullList.withSize(itemStackHandler.getSlots(), ItemStack.EMPTY);
+
+        for (int i = 0; i < itemStackHandler.getSlots(); ++i)
+        {
+            items.set(i, itemStackHandler.getStackInSlot(i));
+        }
+
+        ContainerHelper.saveAllItems(nbt, items, pRegistries);
         super.saveAdditional(nbt, pRegistries);
     }
+
     @Override
     @ParametersAreNonnullByDefault
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries)
     {
+        NonNullList<ItemStack> items = NonNullList.withSize(itemStackHandler.getSlots(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(pTag, items, pRegistries);
+
+        for (int i = 0; i < itemStackHandler.getSlots(); ++i)
+        {
+            itemStackHandler.setStackInSlot(i, items.get(i));
+        }
+
         itemStackHandler.deserializeNBT(pRegistries, pTag);
         super.loadAdditional(pTag, pRegistries);
         setChanged();

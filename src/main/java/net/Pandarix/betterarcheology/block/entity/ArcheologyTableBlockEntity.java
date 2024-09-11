@@ -7,6 +7,7 @@ import net.Pandarix.betterarcheology.screen.IdentifyingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -52,7 +54,6 @@ import static net.Pandarix.betterarcheology.block.custom.ArchelogyTable.DUSTING;
 
 public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvider
 {
-
     //default inventory size of the archeology table,
     public static final int INV_SIZE = 3;
     //default number of Properties of ArcheologyTableBlockEntity
@@ -118,7 +119,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     @NotNull
-    public net.minecraft.network.chat.Component getDisplayName()
+    public Component getDisplayName()
     {
         return Component.translatable(ResourceLocation.fromNamespaceAndPath("block." + BetterArcheology.MOD_ID, translationKey).toLanguageKey());
     }
@@ -149,9 +150,17 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.@NotNull Provider pRegistries)
+    @ParametersAreNonnullByDefault
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider pRegistries)
     {
-        nbt.put("inventory", itemHandler.serializeNBT(pRegistries));
+        NonNullList<ItemStack> items = NonNullList.withSize(itemHandler.getSlots(), ItemStack.EMPTY);
+
+        for (int i = 0; i < itemHandler.getSlots(); ++i)
+        {
+            items.set(i, itemHandler.getStackInSlot(i));
+        }
+
+        ContainerHelper.saveAllItems(nbt, items, pRegistries);
         nbt.putInt("archeology_table.progress", progress);
         super.saveAdditional(nbt, pRegistries);
     }
@@ -160,6 +169,14 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
     @ParametersAreNonnullByDefault
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries)
     {
+        NonNullList<ItemStack> items = NonNullList.withSize(itemHandler.getSlots(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(pTag, items, pRegistries);
+
+        for (int i = 0; i < itemHandler.getSlots(); ++i)
+        {
+            itemHandler.setStackInSlot(i, items.get(i));
+        }
+
         itemHandler.deserializeNBT(pRegistries, pTag);
         super.loadAdditional(pTag, pRegistries);
         progress = pTag.getInt("archeology_table");
@@ -303,7 +320,7 @@ public class ArcheologyTableBlockEntity extends BlockEntity implements MenuProvi
             }
             if (objectArrayList.size() == 1)
             {
-                return objectArrayList.get(0);
+                return objectArrayList.getFirst();
             }
         }
         return ItemStack.EMPTY;
