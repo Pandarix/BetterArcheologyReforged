@@ -24,20 +24,17 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(BetterArcheology.MOD_ID)
-public class
-
-BetterArcheology
+public class BetterArcheology
 {
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "betterarcheology";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public BetterArcheology(FMLJavaModLoadingContext context)
+    public BetterArcheology(FMLJavaModLoadingContext fmlContext)
     {
-        IEventBus modEventBus = context.getModEventBus();
+        IEventBus modEventBus = fmlContext.getModEventBus();
 
         BetterArcheologyConfig.init();
 

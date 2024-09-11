@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "net.Pandarix.betterarcheology.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "refmap": "betterarcheology.refmap.json",
   "mixins": [
     "AddCreeperGoalsMixin",

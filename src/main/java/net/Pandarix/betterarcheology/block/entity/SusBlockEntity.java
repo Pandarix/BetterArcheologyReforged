@@ -6,8 +6,6 @@ import net.minecraft.world.level.block.entity.BrushableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 public class SusBlockEntity extends BrushableBlockEntity
 {
     public SusBlockEntity(BlockPos pos, BlockState state)
@@ -16,10 +14,9 @@ public class SusBlockEntity extends BrushableBlockEntity
     }
 
     @Override
-    @ParametersAreNonnullByDefault
-    public boolean m_345532_(BlockState blockState)
+    public boolean isValidBlockState(@NotNull BlockState blockState)
     {
-        return ModBlockEntities.SUSBLOCK.get().isValid(blockState) || super.m_345532_(blockState);
+        return ModBlockEntities.SUSBLOCK.get().isValid(blockState) ||  super.isValidBlockState(blockState);
     }
 
     @Override

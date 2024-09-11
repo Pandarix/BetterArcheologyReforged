@@ -47,6 +47,8 @@ public abstract class TunnelingEnchantmentMixin
                         Block ba$block = ba$blockStateBelow.getBlock();
                         ItemStack ba$stackCopy = stack.copy();
 
+                        BetterArcheology.LOGGER.info("Das ist ein Test von: Tunneling");
+
                         int ba$exp = net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(level, player.gameMode.getGameModeForPlayer(), player, ba$downPos);
                         if (ba$exp != -1)
                         {

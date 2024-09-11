@@ -29,6 +29,8 @@ public class PenetratingStrikeMixin
 
                 if (pDamageSource.getWeaponItem() != null && EnchantmentHelper.getItemEnchantmentLevel(ba$penetratingStrike, pDamageSource.getWeaponItem()) >= 1)
                 {
+                    BetterArcheology.LOGGER.info("Das ist ein Test von: PStrike");
+
                     float dmgWithReducedProt = cir.getReturnValue() * (float) (1 - BetterArcheologyConfig.penetratingStrikeIgnorance.get());
                     cir.setReturnValue(Math.max(0, dmgWithReducedProt));
                 }
